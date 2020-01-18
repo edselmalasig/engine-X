@@ -1,0 +1,159 @@
+[Alpha]
+1.000
+[WindowPadding]
+8.000 8.000
+[WindowRounding]
+7.000
+[WindowBorderSize]
+1.000
+[WindowMinSize]
+32.000 32.000
+[ChildRounding]
+0.000
+[ChildBorderSize]
+1.000
+[PopupRounding]
+0.000
+[PopupBorderSize]
+1.000
+[FramePadding]
+4.000 3.000
+[FrameRounding]
+0.000
+[FrameBorderSize]
+0.000
+[ItemSpacing]
+8.000 4.000
+[ItemInnerSpacing]
+4.000 4.000
+[TouchExtraPadding]
+0.000 0.000
+[ScrollbarRounding]
+9.000
+[WindowTitleAlign]
+0.000 0.500
+[ButtonTextAlign]
+0.500 0.500
+[IndentSpacing]
+21.000
+[ColumnsMinSpacing]
+6.000
+[ScrollbarSize]
+16.000
+[GrabMinSize]
+10.000
+[GrabRounding]
+0.000
+[TabRounding]
+4.000
+[TabBorderSize]
+0.000
+[SelectableTextAlign]
+0.000 0.000
+[DisplayWindowPadding]
+19.000 3.000
+[DisplaySafeAreaPadding]
+3.000 3.000
+[AntiAliasedLines]
+1
+[AntiAliasedFill]
+1
+[CurveTessellationTol]
+1.250
+[Text]
+1.000 1.000 1.000 1.000
+[TextDisabled]
+0.500 0.500 0.500 1.000
+[WindowBg]
+0.130 0.130 0.130 0.940
+[ChildBg]
+0.110 0.110 0.110 0.000
+[PopupBg]
+0.080 0.080 0.080 0.940
+[Border]
+0.430 0.430 0.500 0.500
+[BorderShadow]
+0.000 0.000 0.000 0.000
+[FrameBg]
+0.180 0.620 0.980 0.540
+[FrameBgHovered]
+0.620 0.310 0.620 0.400
+[FrameBgActive]
+0.680 0.260 0.980 0.670
+[TitleBg]
+0.160 0.150 0.150 1.000
+[TitleBgActive]
+0.250 0.600 0.800 1.000
+[TitleBgCollapsed]
+0.000 0.000 0.000 0.510
+[MenuBarBg]
+0.140 0.140 0.140 1.000
+[ScrollbarBg]
+0.350 0.810 0.980 0.530
+[ScrollbarGrab]
+0.510 0.510 0.510 1.000
+[ScrollbarGrabHovered]
+0.410 0.410 0.410 1.000
+[ScrollbarGrabActive]
+0.510 0.510 0.510 1.000
+[CheckMark]
+0.980 0.600 0.260 1.000
+[SliderGrab]
+0.880 0.660 0.240 1.000
+[SliderGrabActive]
+0.260 0.980 0.310 1.000
+[Button]
+0.730 0.260 0.980 0.400
+[ButtonHovered]
+0.510 0.200 0.710 1.000
+[ButtonActive]
+0.770 0.060 0.980 1.000
+[Header]
+0.210 0.570 0.990 0.310
+[HeaderHovered]
+0.170 0.590 1.000 0.810
+[HeaderActive]
+0.260 0.590 0.980 1.000
+[Separator]
+1.000 1.000 1.000 0.500
+[SeparatorHovered]
+0.100 0.400 0.750 0.780
+[SeparatorActive]
+0.100 0.400 0.750 1.000
+[ResizeGrip]
+1.000 0.380 0.610 0.720
+[ResizeGripHovered]
+0.980 0.260 0.780 1.000
+[ResizeGripActive]
+0.260 0.590 0.980 0.950
+[Tab]
+0.390 0.350 0.580 0.860
+[TabHovered]
+0.560 0.590 0.980 0.800
+[TabActive]
+0.200 0.470 0.830 1.000
+[TabUnfocused]
+0.070 0.100 0.150 0.970
+[TabUnfocusedActive]
+0.140 0.260 0.420 1.000
+[PlotLines]
+0.610 0.610 0.610 1.000
+[PlotLinesHovered]
+1.000 0.430 0.350 1.000
+[PlotHistogram]
+0.900 0.700 0.000 1.000
+[PlotHistogramHovered]
+1.000 0.600 0.000 1.000
+[TextSelectedBg]
+0.260 0.590 0.980 0.350
+[DragDropTarget]
+1.000 1.000 0.000 0.900
+[NavHighlight]
+0.260 0.590 0.980 1.000
+[NavWindowingHighlight]
+1.000 1.000 1.000 0.700
+[NavWindowingDimBg]
+0.800 0.800 0.800 0.200
+[ModalWindowDimBg]
+0.800 0.800 0.800 0.350
+
