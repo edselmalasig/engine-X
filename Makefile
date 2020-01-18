@@ -14,8 +14,8 @@
 #CXX = g++
 CXX = clang++
 
-FREEIMAGE = /Users/edselmalasig/Experiments_in_Computer_Science/lib/Computer_Graphics/FreeImage
-FREEIMAGE_LIB = /Users/edselmalasig/Experiments_in_Computer_Science/lib/FreeImage
+FREEIMAGE = ../lib/Computer_Graphics/FreeImage
+FREEIMAGE_LIB = ../lib/FreeImage
 FREEIMAGE_EXT = extensions/FreeImage
 IMGUI = extensions/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
@@ -39,8 +39,8 @@ UNAME_S := $(shell uname -s)
 
 ## Using OpenGL loader: glew
 ## (This assumes a system-wide installation)
- CXXFLAGS = -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW
-
+CXXFLAGS = -DIMGUI_IMPL_OPENGL_LOADER_GLEW
+LIBS = -lGLEW
 ## Using OpenGL loader: glad
 ## (You'll also need to change the rule at line ~77 of this Makefile to compile/link glad.c/.o)
 # SOURCES += ../libs/glad/src/glad.c
@@ -55,7 +55,7 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	FREEIMAGE = /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage
 	FREEIMAGE_LIB =  /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage/Dist
 	EXE = engine-X.out
-	LIBS = -lGL -lglfw
+	LIBS += -lGL -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus `pkg-config --libs glfw3`
 
 	CXXFLAGS += `pkg-config --cflags glfw3`
@@ -70,7 +70,7 @@ endif
 ifeq ($(UNAME_S), Darwin) #APPLE
 	ECHO_MESSAGE = "Mac OS X"
 	EXE = engine-X.macos
-	LIBS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+	LIBS += -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 	#LIBS += -L/usr/local/lib -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
 	LIBS += -lglfw
