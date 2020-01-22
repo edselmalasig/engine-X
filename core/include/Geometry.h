@@ -123,20 +123,20 @@ public:
         -0.5f,  0.5f, -0.5f,
   };
 
-  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
+  void init_triangle(Geometry *geometry);
+  void init_cube_no_indicies(Geometry *geometry);
+  void initobject(Geometry *geometry);
+  void inittexture(Geometry * geometry, int i, char * texturefpath);
 
-  void init_object(Geometry *geometry);
+  void initshader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
+
+  void enableshader();
+
+  void draw_triangle(Geometry *geometry);
   void draw_object(Geometry *geometry);
 
-  void init_cube_no_indicies(Geometry *geometry);
-
-  void delete_object(Geometry *geometry);
-
-  void init_triangle(Geometry *geometry);
-  void draw_triangle(Geometry *geometry);
-
-  void init_object_texture(Geometry * geometry, int i, char * texturefpath);
   void renderTexLayer(int i);
+  void delete_object(Geometry *geometry);
 };
 
 #endif

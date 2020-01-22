@@ -13,50 +13,6 @@ Geometry::Geometry(float verts[])
 
 }
 
-void Geometry::init_shader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
-{
-    // build and compile our shader program
-    // ------------------------------------
-    // vertex shader
-    geometry->vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(geometry->vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(geometry->vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(geometry->vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(geometry->vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // fragment shader
-    geometry->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(geometry->fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(geometry->fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(geometry->fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(geometry->fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // link shaders
-    geometry->shaderProgram = glCreateProgram();
-    glAttachShader(geometry->shaderProgram, geometry->vertexShader);
-    glAttachShader(geometry->shaderProgram, geometry->fragmentShader);
-    glLinkProgram(geometry->shaderProgram);
-    // check for linking errors
-    glGetProgramiv(geometry->shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(geometry->shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(geometry->vertexShader);
-    glDeleteShader(geometry->fragmentShader);
-
-}
-
 void Geometry::init_triangle(Geometry *geometry)
 {
     glGenVertexArrays(1, &geometry->VAO);
@@ -93,7 +49,7 @@ void Geometry::init_cube_no_indicies(Geometry *geometry)
     geometry->lo_shader->use();
 }
 
-void Geometry::init_object(Geometry *geometry)
+void Geometry::initobject(Geometry *geometry)
 {
     glGenVertexArrays(1, &geometry->VAO);
     glGenBuffers(1, &geometry->VBO);
@@ -120,7 +76,7 @@ void Geometry::init_object(Geometry *geometry)
 
 }
 
-void Geometry::init_object_texture(Geometry * geometry, int i, char * texturefpath)
+void Geometry::inittexture(Geometry * geometry, int i, char * texturefpath)
 {
     glGenTextures(1, &this->texture[i]);
     glBindTexture(GL_TEXTURE_2D, this->texture[i]);
@@ -177,6 +133,55 @@ void Geometry::init_object_texture(Geometry * geometry, int i, char * texturefpa
     }
 }
 
+void Geometry::initshader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
+{
+    // build and compile our shader program
+    // ------------------------------------
+    // vertex shader
+    geometry->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(geometry->vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(geometry->vertexShader);
+    // check for shader compile errors
+    int success;
+    char infoLog[512];
+    glGetShaderiv(geometry->vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(geometry->vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    // fragment shader
+    geometry->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(geometry->fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(geometry->fragmentShader);
+    // check for shader compile errors
+    glGetShaderiv(geometry->fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(geometry->fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    // link shaders
+    geometry->shaderProgram = glCreateProgram();
+    glAttachShader(geometry->shaderProgram, geometry->vertexShader);
+    glAttachShader(geometry->shaderProgram, geometry->fragmentShader);
+    glLinkProgram(geometry->shaderProgram);
+    // check for linking errors
+    glGetProgramiv(geometry->shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(geometry->shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+    glDeleteShader(geometry->vertexShader);
+    glDeleteShader(geometry->fragmentShader);
+
+}
+
+void Geometry::enableshader()
+{
+  this->lo_shader->use();
+}
+
 void Geometry::draw_triangle(Geometry *geometry)
 {
     //glEnable(GL_CULL_FACE);
@@ -188,14 +193,6 @@ void Geometry::draw_triangle(Geometry *geometry)
     glBindVertexArray(geometry->VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0); // no need to unbind it every time
-}
-
-void Geometry::renderTexLayer(int i)
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->texture[i]);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, this->texture[i+1]);
 }
 
 void Geometry::draw_object(Geometry *geometry)
@@ -212,6 +209,14 @@ void Geometry::draw_object(Geometry *geometry)
     glBindVertexArray(geometry->VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void Geometry::renderTexLayer(int i)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->texture[i]);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, this->texture[i+1]);
 }
 
 void Geometry::delete_object(Geometry *geometry)

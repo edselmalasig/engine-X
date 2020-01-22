@@ -45,20 +45,21 @@ int main(int, char**)
      */
 
     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-    g_rectangle->lo_shader = new Shader("resources/rectangle.vs", "resources/rectangle.fs");
+    g_rectangle->lo_shader = new Shader("resources/shader/rectangle.vs", "resources/shader/rectangle.fs");
     //init_object(vertices, indices, lo_rectangle);
     //init_object(lo_rectangle);
-    g_rectangle->init_object(g_rectangle);
-    g_rectangle->init_object_texture(g_rectangle, 0, "resources/container.jpg");
-    g_rectangle->init_object_texture(g_rectangle, 1, "resources/awesomeface.png");
+    g_rectangle->initobject(g_rectangle);
+    g_rectangle->inittexture(g_rectangle, 0, "resources/textures/container.jpg");
+    g_rectangle->inittexture(g_rectangle, 1, "resources/textures/awesomeface.png");
+    g_rectangle->initshader("resources/shader/rectangle.vs", "resources/shader/rectangle.fs", g_rectangle);
 
-    g_rectangle->lo_shader->use(); // don't forget to activate/use the shader before setting uniforms!
+    g_rectangle->enableshader(); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
     // glUniform1i(glGetUniformLocation(g_rectangle->lo_shader->ID, "texture1"), 0);
     // the above is the same as below.
     // the above is the same as g_rectangle->lo_shader->setInt("texture1", 0)
     // or set it via the texture class
-    g_rectangle->lo_shader->setInt("texture1", 0);
+    g_rectangle->lo_shader->setInt("texture1", 0); //// Should I include this in the Geo Class?
     g_rectangle->lo_shader->setInt("texture2", 1);
 
     printf("Starting main loop.\n");
@@ -81,8 +82,8 @@ int main(int, char**)
 
     clearColor[0]=0.0f; clearColor[1]=0.0f; clearColor[2]=0.0f; clearColor[3]=0.0f;
 
-    Shader lightingshader("resources/lightingshader.vs", "resources/lightingshader.fs");
-    Shader lampshader("resources/lampshader.vs", "resources/lampshader.fs");
+    Shader lightingshader("resources/shader/lightingshader.vs", "resources/shader/lightingshader.fs");
+    Shader lampshader("resources/shader/lampshader.vs", "resources/shader/lampshader.fs");
     glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
     unsigned int lightVAO;
@@ -201,15 +202,6 @@ int main(int, char**)
         //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
         //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
         // get matrix's uniform location and set matrix
-        g_rectangle->lo_shader->use();
-        unsigned int modelLoc = glGetUniformLocation(g_rectangle->lo_shader->ID, "model");
-        unsigned int viewLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "view");
-        unsigned int projectionLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "projection");
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
         lightingshader.use();
         lightingshader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
@@ -230,6 +222,15 @@ int main(int, char**)
 
         glBindVertexArray(lightVAO);
 
+        model = glm::mat4(1.0f);
+        g_rectangle->lo_shader->use();
+        unsigned int modelLoc = glGetUniformLocation(g_rectangle->lo_shader->ID, "model");
+        unsigned int viewLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "view");
+        unsigned int projectionLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "projection");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         g_rectangle->renderTexLayer(0);
         g_rectangle->draw_object(g_rectangle);
 

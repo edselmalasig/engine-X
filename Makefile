@@ -16,8 +16,8 @@ CXX = clang++
 
 FREEIMAGE = ../lib/Computer_Graphics/FreeImage
 FREEIMAGE_LIB = ../lib/FreeImage
-FREEIMAGE_EXT = extensions/FreeImage
-IMGUI = extensions/imgui
+FREEIMAGE_EXT = external/FreeImage
+IMGUI = external/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
 SOURCES = main.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/initialize.cpp
