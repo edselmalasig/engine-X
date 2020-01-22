@@ -38,7 +38,7 @@ public:
     int t=0;
     glm::mat4 view;
     // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
-  
+
     // Camera Attributes
     glm::vec3 Position;
     glm::vec3 Front;
@@ -56,7 +56,7 @@ public:
     glm::mat4 ProjectionMatrix;
     int display_w=1280;
     int display_h=800;
-    
+
     //new Camera variables/
     glm::vec2 oldMousePosition;
     Camera();
@@ -64,7 +64,7 @@ public:
     Camera(GLfloat posX, GLfloat posY, GLfloat posZ,
            GLfloat upX, GLfloat upY, GLfloat upZ,
            GLfloat yaw, GLfloat pitch);
-    
+
     glm::mat4 getViewMatrix();
     glm::mat4 processViewMatrix();
     glm::mat4 getProjectionMatrix();
@@ -72,7 +72,7 @@ public:
     void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch);
     void ProcessMouseScroll(GLfloat yoffset);
     void computeMatricesFromInputs();
-    
+
 private:
     void updateCameraVectors();
 

@@ -10,7 +10,7 @@ Geometry::Geometry()
 
 Geometry::Geometry(float verts[])
 {
-
+		//vertices = verts; Consider implementing this
 }
 
 void Geometry::init_triangle(Geometry *geometry)
@@ -31,22 +31,40 @@ void Geometry::init_triangle(Geometry *geometry)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    geometry->lo_shader->use();
+    //geometry->lo_shader->use();
 
 }
 
-void Geometry::init_cube_no_indicies(Geometry *geometry)
+void Geometry::init_cube(Geometry *geometry)
 {
     glGenVertexArrays(1, &geometry->VAO);
     glBindVertexArray(geometry->VAO);
     glGenBuffers(1, &geometry->VBO);
     glBindBuffer(GL_ARRAY_BUFFER, geometry->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(geometry->vertices), geometry->vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(geometry->cube), geometry->cube, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(0);
 
-    geometry->lo_shader->use();
+    //geometry->lo_shader->use();
+}
+
+void Geometry::init_cube_wnml(Geometry *geometry)
+{
+    glGenVertexArrays(1, &geometry->VAO);
+    glBindVertexArray(geometry->VAO);
+    glGenBuffers(1, &geometry->VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(geometry->cube_wnml), geometry->cube_wnml, GL_STATIC_DRAW);
+
+		//vertex vap
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		//normal data vap
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+    //geometry->lo_shader->use();
 }
 
 void Geometry::initobject(Geometry *geometry)
@@ -209,6 +227,14 @@ void Geometry::draw_object(Geometry *geometry)
     glBindVertexArray(geometry->VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void Geometry::draw_cube(Geometry *geometry)
+{
+		geometry->enableshader();
+		glBindVertexArray(geometry->VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0); // no need to unbind it every time
 }
 
 void Geometry::renderTexLayer(int i)

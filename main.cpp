@@ -115,6 +115,8 @@ int main(int, char**)
             ImGui::NewFrame();
 
             // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+
+            //Put this in a new function.
             if (show_demo_window)
                 ImGui::ShowDemoWindow(&show_demo_window);
 
@@ -224,13 +226,15 @@ int main(int, char**)
 
         model = glm::mat4(1.0f);
         g_rectangle->lo_shader->use();
+
         unsigned int modelLoc = glGetUniformLocation(g_rectangle->lo_shader->ID, "model");
         unsigned int viewLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "view");
         unsigned int projectionLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "projection");
+
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
         g_rectangle->renderTexLayer(0);
         g_rectangle->draw_object(g_rectangle);
 

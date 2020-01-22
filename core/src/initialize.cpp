@@ -339,11 +339,11 @@ GLFWmousebuttonfun mouseButtonFunc( GLFWwindow * window, int button, int action,
     if(button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
     {
         rotateView();
-        printf("MMB Pressed.\n");
+        //printf("MMB Pressed.\n");
     }
     if(button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE)
     {
-        printf("MMB Released.\n");
+        //printf("MMB Released.\n");
         gcw_UIC->g_cnc->firstMouse = true;
     }
 	return (GLFWmousebuttonfun)1;
@@ -352,10 +352,10 @@ GLFWmousebuttonfun mouseButtonFunc( GLFWwindow * window, int button, int action,
 
 void rotateView()
 {
-    printf("MMB pressed rotating view. ");
+    //printf("MMB pressed rotating view. ");
     double xpos, ypos;
     glfwGetCursorPos(gcw_UIC->window, &xpos, &ypos);
-    printf("Mouse pos: %f %f\n", xpos, ypos);
+    //printf("Mouse pos: %f %f\n", xpos, ypos);
     if(gcw_UIC->g_cnc->firstMouse)
     {
         gcw_UIC->g_cnc->lastX = xpos;
@@ -380,13 +380,13 @@ GLFWcursorposfun mouseFunc(double xpos, double ypos)
 
     if( mmbState == GLFW_PRESS && shiftState != GLFW_PRESS)
     {
-        printf("mouseFunc - mmbState pressed - shiftState not pressed.\n");
+        //printf("mouseFunc - mmbState pressed - shiftState not pressed.\n");
         rotateView();
     }
 
     if((mmbState == GLFW_PRESS) && (shiftState == GLFW_PRESS))
     {
-        printf("MMB Clicked & shiftState pressed.\n");
+        //printf("MMB Clicked & shiftState pressed.\n");
         panView();
     }
 
@@ -398,7 +398,7 @@ void panView()
 {
     double xpos, ypos;
     glfwGetCursorPos(gcw_UIC->window, &xpos, &ypos);
-    printf("Mouse pos: %f %f\n", xpos, ypos);
+    //printf("Mouse pos: %f %f\n", xpos, ypos);
     if(gcw_UIC->g_cnc->firstMouse)
     {
         gcw_UIC->g_cnc->lastX = xpos;
@@ -436,7 +436,7 @@ void panView()
 GLFWscrollfun scrollBackFunc(GLFWwindow *window, double xOffset, double yOffset)
 {
     gcw_UIC->g_cnc->ProcessMouseScroll(yOffset);
-    printf("Scroll back function - %f : %f\n", xOffset, yOffset);
+    //printf("Scroll back function - %f : %f\n", xOffset, yOffset);
 	return (GLFWscrollfun)1;
 }
 

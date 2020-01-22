@@ -1,6 +1,6 @@
 //
 //  camera.cpp
-//  
+//
 //
 //  Created by Edsel Malasig on 12/24/19.
 //
@@ -17,10 +17,10 @@
 #include "camera.h"
 
 Camera::Camera(){
-    this->Position = glm::vec3(0.0f, 0.0f, 3.0f);
+    this->Position = glm::vec3(1.0f, 1.0f, 3.0f);
     this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-    this->Front = glm::vec3(0.0f, 0.0f, -1.0f);
+    this->Front = glm::vec3(-1.0f, -1.0f, -1.0f);
     this->Yaw = YAW;
     this->Pitch = PITCH;
     this->Zoom = new GLfloat(ZOOM);
@@ -63,12 +63,13 @@ Camera::Camera(GLfloat posX, GLfloat posY, GLfloat posZ,
 // Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 glm::mat4 Camera::getViewMatrix()
 {
-    return ViewMatrix = glm::lookAt(this->Position, this->Front + this->Position, this->Up);
+		// glm::lookAt(position, target, up) all 3 parameter is vec3
+    return ViewMatrix = glm::lookAt(this->Position, this->Position + this->Front, this->Up);
 }
 
 glm::mat4 Camera::processViewMatrix()
 {
-    return ViewMatrix = glm::lookAt(this->Position, this->Front, this->Up);
+    return ViewMatrix = glm::lookAt(this->Position, this->Position + this->Front, this->Up);
 }
 
 glm::mat4 Camera::getProjectionMatrix()
@@ -99,7 +100,8 @@ void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
         glm::vec3 ClimbDirection = glm::normalize(glm::cross(this->Front, this->Right));
         this->Position += ClimbDirection * velocity;
     }
-    printf("Position: %f %f %f\n", this->Position.x, this->Position.y, this->Position.z);
+
+    //printf("Position: %f %f %f\n", this->Position.x, this->Position.y, this->Position.z);
 }
 
 // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
@@ -108,10 +110,10 @@ void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean co
     xoffset *= this->MouseSensitivity;
     yoffset *= this->MouseSensitivity;
     //viewUpdate(glm::vec2(xoffset, yoffset));
-    
+
     this->Yaw   += xoffset;
     this->Pitch += yoffset;
-    
+
     // Make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch)
     {
@@ -120,7 +122,7 @@ void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean co
         if (this->Pitch < -89.0f)
             this->Pitch = -89.0f;
     }
-    
+
     // Update Front, Right and Up Vectors using the updated Eular angles
     this->updateCameraVectors();
     //this->processViewMatrix();
