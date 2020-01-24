@@ -17,10 +17,10 @@
 #include "camera.h"
 
 Camera::Camera(){
-    this->Position = glm::vec3(1.0f, 1.0f, 3.0f);
+    this->Position = glm::vec3(15.0f, 15.0f, 50.0f);
     this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-    this->Front = glm::vec3(-1.0f, -1.0f, -1.0f);
+    this->Front = glm::vec3(-5.0f, -5.0f, -1.0f);
     this->Yaw = YAW;
     this->Pitch = PITCH;
     this->Zoom = new GLfloat(ZOOM);
@@ -28,6 +28,20 @@ Camera::Camera(){
     this->MovementSpeed = SPEED;
     this->MouseSensitivity = SENSITIVTY;
 }
+
+/*
+Camera::Camera(glm::vec3 POSITION, glm::vec3 HEADSUP):  Yaw(YAW), Pitch(PITCH),
+					MovementSpeed( SPEED ), MouseSensitivity (SENSITIVTY)
+{
+		this->Position = POSITION;
+		this->Front = FRONT;
+		this->WorldUp  = this->Up = HEADSUP;
+		Yaw = YAW;
+		Pitch = PITCH;
+		Zoom = new GLfloat(ZOOM);
+		updateCameraVectors();
+}
+*/
 
 // Constructor with vectors
 Camera::Camera(glm::vec3 position, //viewDirection
@@ -76,6 +90,22 @@ glm::mat4 Camera::getProjectionMatrix()
 {
     return ProjectionMatrix;
 }
+
+glm::vec3 * Camera::getFrontVector()
+{
+		return &this->Front;
+}
+
+glm::vec3 * Camera::getPositionVector()
+{
+		return &this->Position;
+}
+
+glm::vec3 * Camera::getHeadsUpVector()
+{
+		return &this->Up;
+}
+
 // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
 {
@@ -101,7 +131,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
         this->Position += ClimbDirection * velocity;
     }
 
-    //printf("Position: %f %f %f\n", this->Position.x, this->Position.y, this->Position.z);
+    printf("Position: %f %f %f\n", this->Position.x, this->Position.y, this->Position.z);
 }
 
 // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.

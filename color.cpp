@@ -24,8 +24,7 @@
 struct coordinates
 {
     glm::vec3 coords;
-    glm::vec3 * view_coords;
-    GLfloat *radians;
+    GLfloat radians;
     float near, far, angle;
 };
 
@@ -33,6 +32,16 @@ int main(int, char**)
 {
     printf("Initializing.\n");
     std::shared_ptr<gcw_UI_Controls>  s_gcw_UIC(gcw_UIC);
+
+		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
+
+		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
+		glm::vec3 * cameraLookAt = s_gcw_UIC->g_cnc->getFrontVector();
+
+		glm::vec3 * cameraHeadsUp = s_gcw_UIC->g_cnc->getHeadsUpVector();
+
+		glm::vec3 cameraProp( 0.1f, 100.0f, *s_gcw_UIC->g_cnc->Zoom);
+
     init_glfw();
     init_ImGui();
 
@@ -40,17 +49,6 @@ int main(int, char**)
     //---------------------------------------
     // Main loop
     bool show_demo_window = false;
-    coordinates c_model, c_view, c_projection, c_view_pos, c_view_la, c_view_hu;
-
-    c_model.coords.x = 1.0f; c_model.coords.y = 1.0f; c_model.coords.z = 0.0f;
-    c_model.radians = new GLfloat(0.0f);
-
-    c_view_pos.coords.x = 0.0f; c_view_pos.coords.y = 0.0f; c_view_pos.coords.z = 2.0f;
-    c_view_la.coords.x = 0.0f; c_view_la.coords.y = 0.0f; c_view_la.coords.z = 0.0f;
-    c_view_hu.coords.x = 0.0f; c_view_hu.coords.y = 1.0f; c_view_hu.coords.z = 0.0f;
-
-    c_projection.radians = gcw_UIC->g_cnc->Zoom;
-    c_projection.near = 0.1f; c_projection.far = 10.0f;
 
     float clearColor[4];
 
@@ -123,23 +121,17 @@ int main(int, char**)
 
                 ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
 
-                ImGui::DragFloat("Model X", &c_model.coords.x, 0.5f);
-                ImGui::DragFloat("Model Y", &c_model.coords.y, 0.5f);
-                ImGui::DragFloat("Model Z", &c_model.coords.z, 0.5f);
+                ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
+                ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
+                ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
 
-                ImGui::InputFloat("Model radians", c_model.radians);
+                ImGui::DragFloat("View LookAt X", &cameraLookAt->x, 0.01);
+                ImGui::DragFloat("View LookAt Y", &cameraLookAt->y, 0.01);
+                ImGui::DragFloat("View LookAt Z", &cameraLookAt->z, 0.01);
 
-                ImGui::DragFloat("View Pos X", &c_view_pos.coords.x, 0.5);
-                ImGui::DragFloat("View Pos Y", &c_view_pos.coords.y, 0.5);
-                ImGui::DragFloat("View Pos Z", &c_view_pos.coords.z, 0.5);
-
-                ImGui::DragFloat("View LookAt X", &c_view_la.coords.x, 0.5);
-                ImGui::DragFloat("View LookAt Y", &c_view_la.coords.y, 0.5);
-                ImGui::DragFloat("View LookAt Z", &c_view_la.coords.z, 0.5);
-
-                ImGui::DragFloat("Projection radians", c_projection.radians, 0.5f);
-                ImGui::DragFloat("Projection zNear", &c_projection.near, 0.01f);
-                ImGui::DragFloat("Projection zFar", &c_projection.far, 2.5f);
+                ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
+                ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
+                ImGui::DragFloat("Projection zFar", &cameraProp.y, 2.5f);
 
                 ImGui::Text("\n");
                 ImGui::Text("Please modify the current style in:");
@@ -177,17 +169,19 @@ int main(int, char**)
         glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         glClear(GL_COLOR_BUFFER_BIT);
 
-				gcw_UIC->g_cnc->computeMatricesFromInputs();
-				
+				s_gcw_UIC->g_cnc->computeMatricesFromInputs();
+
         // create transformations
         glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view          = glm::mat4(1.0f);
         glm::mat4 projection    = glm::mat4(1.0f);
 
-        view  = gcw_UIC->g_cnc->getViewMatrix();
-        projection = gcw_UIC->g_cnc->getProjectionMatrix();
+        //view  = s_gcw_UIC->g_cnc->getViewMatrix();
 
-        //view = s_gcw_UIC->g_cnc->camera->getViewMatrix();
+        projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
+				//glm::vec3 cLAt = *cameraPosition + *cameraLookAt;
+        //view = glm::lookAt(cameraPosition, *cameraPosition + *cameraLookAt, cameraHeadsUp);
+				view = s_gcw_UIC->g_cnc->processViewMatrix();
         //projection = glm::perspective(glm::radians(c_projection.angle), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, c_projection.near, c_projection.far);
         //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
         //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();

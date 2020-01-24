@@ -60,6 +60,7 @@ public:
     //new Camera variables/
     glm::vec2 oldMousePosition;
     Camera();
+		//Camera(glm::vec3 POSITION, glm::vec3 HEADSUP);
     Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
     Camera(GLfloat posX, GLfloat posY, GLfloat posZ,
            GLfloat upX, GLfloat upY, GLfloat upZ,
@@ -68,6 +69,10 @@ public:
     glm::mat4 getViewMatrix();
     glm::mat4 processViewMatrix();
     glm::mat4 getProjectionMatrix();
+		glm::vec3 * getFrontVector();
+		glm::vec3 * getPositionVector();
+		glm::vec3 * getHeadsUpVector();
+
     void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
     void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch);
     void ProcessMouseScroll(GLfloat yoffset);

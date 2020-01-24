@@ -8,8 +8,8 @@
 gcw_UI_Controls::gcw_UI_Controls()
 {
     g_cnc = new Camera();
-    this->display_w = g_cnc->display_w;
-    this->display_h = g_cnc->display_h;
+    this->display_w = this->g_cnc->display_w;
+    this->display_h = this->g_cnc->display_h;
 }
 
 static void glfw_error_callback(int error, const char* description)
