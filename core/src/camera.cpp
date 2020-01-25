@@ -17,10 +17,10 @@
 #include "camera.h"
 
 Camera::Camera(){
-    this->Position = glm::vec3(15.0f, 15.0f, 50.0f);
+    this->Position = glm::vec3(4.0f, 4.0f, 15.0f);
     this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-    this->Front = glm::vec3(-5.0f, -5.0f, -1.0f);
+    this->Front = glm::vec3(-0.310f, -0.280f, -1.0f);
     this->Yaw = YAW;
     this->Pitch = PITCH;
     this->Zoom = new GLfloat(ZOOM);

@@ -36,7 +36,7 @@ int main(int, char**)
 		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
 
 		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
-		glm::vec3 * cameraLookAt = s_gcw_UIC->g_cnc->getFrontVector();
+		glm::vec3 * cameraFront = s_gcw_UIC->g_cnc->getFrontVector();
 
 		glm::vec3 * cameraHeadsUp = s_gcw_UIC->g_cnc->getHeadsUpVector();
 
@@ -52,7 +52,7 @@ int main(int, char**)
 
     float clearColor[4];
 
-    clearColor[0]=0.0f; clearColor[1]=0.0f; clearColor[2]=0.0f; clearColor[3]=0.0f;
+    clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
 
 		printf("Initializing shaders and objects.\n");
 
@@ -125,9 +125,13 @@ int main(int, char**)
                 ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
                 ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
 
-                ImGui::DragFloat("View LookAt X", &cameraLookAt->x, 0.01);
-                ImGui::DragFloat("View LookAt Y", &cameraLookAt->y, 0.01);
-                ImGui::DragFloat("View LookAt Z", &cameraLookAt->z, 0.01);
+                ImGui::DragFloat("View Front X", &cameraFront->x, 0.01);
+                ImGui::DragFloat("View Front Y", &cameraFront->y, 0.01);
+                ImGui::DragFloat("View Front Z", &cameraFront->z, 0.01);
+
+								ImGui::DragFloat("View Heads Up X", &cameraHeadsUp->x, 0.01);
+                ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
+                ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
 
                 ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
                 ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
