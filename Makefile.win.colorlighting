@@ -1,0 +1,15 @@
+CXX = cl.exe
+CFLAGS = /EHsc /D_WIN32 /D__WINDOWS_WASAPI__ /D_WIN32 /DUSLEEP /DMSC_VER /D__OS_WINDOWS__
+CFLAGS = $(CFLAGS) /Fd"Release\vc140.pdb" /Zc:inline /fp:precise /D "_X86_" /D "MSC_VER" /D "__OS_WINDOWS__" /D "_CRT_SECURE_NO_WARNINGS" /D "_WIN32" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /Fp"Release\Virtuoso_Reality.pch"
+CFILES = ./src/*.cpp ./marsyas/*.cpp ../lib-windows/imgui/*.cpp ../lib-windows/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.cpp ../lib-windows/imgui/examples/addons/*.cpp
+INCLUDES = /I ../lib-windows/imgui/ /I ../lib-windows/imgui/examples/addons /I ../lib-windows/imgui/examples/opengl3_example/ /I ../LearnOpenGL/includes/ /I ../lib-windows/glew-2.0.0/include /I ./include/ /I ../lib-windows/freeglut/include/ /I ../lib-windows/glfw-3.2.1/include/ /I ../lib-windows/glm/ /I ../lib-windows/portaudio/include/ /I ../lib-windows/libaudiodecoder/include/ /I ./marsyas/
+LD = /link
+LDFLAGS = /libpath
+LDLIBS = ole32.lib Shell32.lib Mfplat.lib Mf.lib mfreadwrite.lib mfuuid.lib ../lib-windows/freeglut/build/lib/Release/freeglut.lib ../lib-windows/libaudiodecoder/src/audiodecoder.lib ../lib-windows/glfw-3.2.1/Win32/Release/glfw3dll.lib ../lib-windows/rtaudio/build/Release/rtaudio_static.lib ../lib-windows/glew-2.0.0/lib/Release/Win32/glew32.lib
+
+all:
+    $(CXX) $(CFLAGS) $(INCLUDES) $(CFILES) $(LD) $(LDFLAGS) $(LDLIBS) /out:VirtuosoReality.exe
+
+clean:
+	del *.obj *.o VirtuosoReality.exe
+.PHONY: all clean
