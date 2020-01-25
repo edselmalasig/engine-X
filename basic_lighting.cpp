@@ -36,32 +36,6 @@ int main(int, char**)
     init_glfw();
     init_ImGui();
 
-    printf("Initializing shaders and objects.\n");
-    //Geometry * lo_rectangle= new Geometry();
-
-    Geometry * g_rectangle = new Geometry();
-    /* Obsolete function but still implemented.
-     init_shader(vertexShaderSource, fragmentShaderSource, lo_rectangle);
-     */
-
-    //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-    g_rectangle->lo_shader = new Shader("resources/shader/rectangle.vs", "resources/shader/rectangle.fs");
-    //init_object(vertices, indices, lo_rectangle);
-    //init_object(lo_rectangle);
-    g_rectangle->initobject(g_rectangle);
-    g_rectangle->inittexture(g_rectangle, 0, "resources/textures/container.jpg");
-    g_rectangle->inittexture(g_rectangle, 1, "resources/textures/awesomeface.png");
-    g_rectangle->initshader("resources/shader/rectangle.vs", "resources/shader/rectangle.fs", g_rectangle);
-
-    g_rectangle->enableshader(); // don't forget to activate/use the shader before setting uniforms!
-    // either set it manually like so:
-    // glUniform1i(glGetUniformLocation(g_rectangle->lo_shader->ID, "texture1"), 0);
-    // the above is the same as below.
-    // the above is the same as g_rectangle->lo_shader->setInt("texture1", 0)
-    // or set it via the texture class
-    g_rectangle->lo_shader->setInt("texture1", 0); //// Should I include this in the Geo Class?
-    g_rectangle->lo_shader->setInt("texture2", 1);
-
     printf("Starting main loop.\n");
     //---------------------------------------
     // Main loop
@@ -76,20 +50,40 @@ int main(int, char**)
     c_view_hu.coords.x = 0.0f; c_view_hu.coords.y = 1.0f; c_view_hu.coords.z = 0.0f;
 
     c_projection.radians = gcw_UIC->g_cnc->Zoom;
-    c_projection.near = 0.1f; c_projection.far = 100.0f;
+    c_projection.near = 0.1f; c_projection.far = 10.0f;
 
     float clearColor[4];
 
     clearColor[0]=0.0f; clearColor[1]=0.0f; clearColor[2]=0.0f; clearColor[3]=0.0f;
 
-    Shader lightingshader("resources/shader/lightingshader.vs", "resources/shader/lightingshader.fs");
-    Shader lampshader("resources/shader/lampshader.vs", "resources/shader/lampshader.fs");
-    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		printf("Initializing shaders and objects.\n");
 
-    unsigned int lightVAO;
-    glGenVertexArrays(1,&lightVAO);
-    glBindVertexArray(lightVAO);
+    Geometry * g_cube = new Geometry();
+    //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
+    g_cube->lo_shader = new Shader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs");
+		g_cube->enableshader();
+    g_cube->init_cube(g_cube);
+    //g_cube->inittexture(g_cube, 0, "resources/textures/container.jpg");
+    //g_cube->inittexture(g_cube, 1, "resources/textures/awesomeface.png");
+    //g_cube->initshader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs", g_cube);
+  	// don't forget to activate/use the shader before setting uniforms!
 
+		// either set it manually like so:
+    // glUniform1i(glGetUniformLocation(g_cube->lo_shader->ID, "texture1"), 0);
+    // the above is the same as below.
+    // the above is the same as g_cube->lo_shader->setInt("texture1", 0)
+    // or set it via the texture class
+    //g_cube->lo_shader->setInt("texture1", 0); //// Should I include this in the Geo Class?
+    //g_cube->lo_shader->setInt("texture2", 1);
+
+		Geometry * g_cubelamp = new Geometry();
+		g_cubelamp->lo_shader = new Shader("resources/shader/lampshader.vs", "resources/shader/lampshader.fs");
+		g_cubelamp->enableshader();
+		g_cubelamp->init_cube_wnml(g_cubelamp);
+
+    glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
+
+		printf("glfw main loop.\n");
     while (!glfwWindowShouldClose(s_gcw_UIC->window))
     {
         // Poll and handle events (inputs, window resize, etc.)
@@ -180,22 +174,16 @@ int main(int, char**)
         glfwMakeContextCurrent(s_gcw_UIC->window);
         glfwGetFramebufferSize(s_gcw_UIC->window, &s_gcw_UIC->display_w, &s_gcw_UIC->display_h);
         glViewport(0, 0, s_gcw_UIC->display_w, s_gcw_UIC->display_h);
-        //glClearColor(s_gcw_UIC->clear_color.x, s_gcw_UIC->clear_color.y, s_gcw_UIC->clear_color.z, s_gcw_UIC->clear_color.w);
         glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // create transformations
         // create transformations
         glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view          = glm::mat4(1.0f);
         glm::mat4 projection    = glm::mat4(1.0f);
 
-        //model = glm::rotate(model, glm::radians(*c_model.radians), glm::vec3(c_model.coords.x, c_model.coords.y, c_model.coords.z));
-
         view  = gcw_UIC->g_cnc->getViewMatrix();
-
-        projection = glm::perspective(glm::radians(*c_projection.radians), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, c_projection.near, c_projection.far);
-
+        projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
 
         s_gcw_UIC->g_cnc->computeMatricesFromInputs();
 
@@ -205,38 +193,25 @@ int main(int, char**)
         //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
         // get matrix's uniform location and set matrix
 
-        lightingshader.use();
-        lightingshader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightingshader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        g_cube->enableshader();
+        g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-        lightingshader.setMat4("projection", projection);
-        lightingshader.setMat4("view", view);
-        lightingshader.setMat4("model", model);
+        g_cube->lo_shader->setMat4("projection", projection);
+        g_cube->lo_shader->setMat4("view", view);
+				model = glm::mat4(1.0f);
+        g_cube->lo_shader->setMat4("model", model);
+				g_cube->draw_cube(g_cube);
 
-        lampshader.use();
-        lampshader.setMat4("projection", projection);
-        lampshader.setMat4("view", view);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(2.0f));
-        lampshader.setMat4("model", model);
-
-        glBindVertexArray(lightVAO);
+				g_cubelamp->enableshader();
+        g_cubelamp->lo_shader->setMat4("projection", projection);
+        g_cubelamp->lo_shader->setMat4("view", view);
 
         model = glm::mat4(1.0f);
-        g_rectangle->lo_shader->use();
-
-        unsigned int modelLoc = glGetUniformLocation(g_rectangle->lo_shader->ID, "model");
-        unsigned int viewLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "view");
-        unsigned int projectionLoc  = glGetUniformLocation(g_rectangle->lo_shader->ID, "projection");
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-        g_rectangle->renderTexLayer(0);
-        g_rectangle->draw_object(g_rectangle);
+        model = glm::translate(model, cubelampPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+        g_cubelamp->lo_shader->setMat4("model", model);
+				g_cubelamp->draw_cube(g_cubelamp);
 
         //draw_object(lo_rectangle);
         if(s_gcw_UIC->show_ui == true)
@@ -252,7 +227,7 @@ int main(int, char**)
     ImGui::DestroyContext();
 
     //delete_object(lo_rectangle);
-    g_rectangle->delete_object(g_rectangle);
+    g_cube->delete_object(g_cube);
 
     glfwDestroyWindow(s_gcw_UIC->window);
     glfwTerminate();

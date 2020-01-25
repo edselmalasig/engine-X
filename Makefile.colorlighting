@@ -13,14 +13,14 @@
 
 #CXX = g++
 CXX = clang++
-
+EXE = engine-X_colorlighting
 FREEIMAGE = ../lib/Computer_Graphics/FreeImage
 FREEIMAGE_LIB = ../lib/FreeImage
 FREEIMAGE_EXT = external/FreeImage
 IMGUI = external/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
-SOURCES = main.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/initialize.cpp
+SOURCES = color.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/initialize.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
 SOURCES += $(IMGUI)/imgui.cpp $(IMGUI)/imgui_demo.cpp $(IMGUI)/imgui_draw.cpp $(IMGUI)/imgui_widgets.cpp
@@ -54,7 +54,6 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux compilation"
 	FREEIMAGE = /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage
 	FREEIMAGE_LIB =  /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage/Dist
-	EXE = engine-X.out
 	LIBS += -lGL -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus `pkg-config --libs glfw3`
 
@@ -69,7 +68,6 @@ endif
 
 ifeq ($(UNAME_S), Darwin) #APPLE
 	ECHO_MESSAGE = "Mac OS X"
-	EXE = engine-X.macos
 	LIBS += -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 	#LIBS += -L/usr/local/lib -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
@@ -82,13 +80,12 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CXXFLAGS += -I /Users/edselmalasig/lib/glm -I/Users/edselmalasig/lib/glfw/include
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
 	CXXFLAGS += -I $(FREEIMAGE_EXT)/
-	CXXFLAGS += -Wall -Wformat
+	CXXFLAGS += -g -Wall -Wformat
 	CFLAGS = $(CXXFLAGS)
 endif
 
 ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
    ECHO_MESSAGE = "Windows"
-	 EXE = example_glfw_opengl
    LIBS = -lglfw3 -lgdi32 -lopengl32 -limm32
 
    CXXFLAGS += -I../ -I../../ `pkg-config --cflags glfw3`

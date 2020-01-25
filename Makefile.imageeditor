@@ -16,7 +16,7 @@ CXX = clang++
 
 FREEIMAGE = ../lib/Computer_Graphics/FreeImage
 FREEIMAGE_LIB = ../lib/FreeImage
-FREEIMAGE_EXT = extensions/FreeImage
+FREEIMAGE_EXT = external/FreeImage
 IMGUI = extensions/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons

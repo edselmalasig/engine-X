@@ -1,0 +1,4 @@
+TODO:
+
+  After lighting chapter add a C implementation of the code.
+  Fix camera::getViewMatrix and camera::processViewMatrix.
