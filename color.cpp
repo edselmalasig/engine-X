@@ -37,10 +37,9 @@ int main(int, char**)
 
 		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
 		glm::vec3 * cameraFront = s_gcw_UIC->g_cnc->getFrontVector();
-
 		glm::vec3 * cameraHeadsUp = s_gcw_UIC->g_cnc->getHeadsUpVector();
 
-		glm::vec3 cameraProp( 0.1f, 100.0f, *s_gcw_UIC->g_cnc->Zoom);
+		glm::vec2 * cameraProp = new glm::vec2( 0.1f, 100.0f);
 
     init_glfw();
     init_ImGui();
@@ -81,6 +80,14 @@ int main(int, char**)
 
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
+		//For display debugging
+		/*
+		Geometry * g_triangle = new Geometry();
+		g_triangle->lo_shader = new Shader("resources/shader/triangle.vs", "resources/shader/triangle.fs");
+		g_triangle->enableshader();
+		g_triangle->init_triangle(g_triangle);
+		*/
+
 		printf("glfw main loop.\n");
     while (!glfwWindowShouldClose(s_gcw_UIC->window))
     {
@@ -97,6 +104,8 @@ int main(int, char**)
         GLfloat currentFrame = (GLfloat) glfwGetTime();
         s_gcw_UIC->g_cnc->deltaTime = currentFrame - s_gcw_UIC->g_cnc->lastFrame;
         s_gcw_UIC->g_cnc->lastFrame = currentFrame;
+
+				static int e = 0;
 
         glfwPollEvents();
 
@@ -133,9 +142,12 @@ int main(int, char**)
                 ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
                 ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
 
-                ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
-                ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
-                ImGui::DragFloat("Projection zFar", &cameraProp.y, 2.5f);
+								ImGui::RadioButton("Perspective", &e, 0);
+
+                ImGui::DragFloat("Projection zNear", &cameraProp->x, 0.01f);
+                ImGui::DragFloat("Projection zFar", &cameraProp->y, 0.01f);
+
+								ImGui::DragFloat("Projection fov", s_gcw_UIC->g_cnc->Zoom, 0.5f);
 
                 ImGui::Text("\n");
                 ImGui::Text("Please modify the current style in:");
@@ -182,13 +194,12 @@ int main(int, char**)
 
         //view  = s_gcw_UIC->g_cnc->getViewMatrix();
 
-        projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
-				//glm::vec3 cLAt = *cameraPosition + *cameraLookAt;
-        //view = glm::lookAt(cameraPosition, *cameraPosition + *cameraLookAt, cameraHeadsUp);
+        //projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
+
 				view = s_gcw_UIC->g_cnc->processViewMatrix();
-        //projection = glm::perspective(glm::radians(c_projection.angle), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, c_projection.near, c_projection.far);
-        //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
-        //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
+				if (e == 0)
+        		projection = glm::perspective(glm::radians(*s_gcw_UIC->g_cnc->Zoom), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, cameraProp->x, cameraProp->y);
+        //projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
         // get matrix's uniform location and set matrix
 
         g_cube->enableshader();
@@ -211,7 +222,8 @@ int main(int, char**)
         g_cubelamp->lo_shader->setMat4("model", model);
 				g_cubelamp->draw_cube(g_cubelamp);
 
-        //draw_object(lo_rectangle);
+				//g_triangle->draw_triangle(g_triangle);
+
         if(s_gcw_UIC->show_ui == true)
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

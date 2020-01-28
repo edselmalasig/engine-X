@@ -36,9 +36,8 @@ public:
     GLfloat lastX = 400, lastY = 300;
     bool firstMouse = true;
     int t=0;
-    glm::mat4 view;
-    // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 
+		// Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
     // Camera Attributes
     glm::vec3 Position;
     glm::vec3 Front;
@@ -57,8 +56,6 @@ public:
     int display_w=1280;
     int display_h=800;
 
-    //new Camera variables/
-    glm::vec2 oldMousePosition;
     Camera();
 		//Camera(glm::vec3 POSITION, glm::vec3 HEADSUP);
     Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
