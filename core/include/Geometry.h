@@ -170,12 +170,12 @@ public:
   void init_triangle(Geometry *geometry);
   void init_cube(Geometry *geometry);
 	void init_cube_wnml(Geometry *geometry);
-  void initobject(Geometry *geometry);
-  void inittexture(Geometry * geometry, int i, char * texturefpath);
+  void init_object(Geometry *geometry);
+  void init_texture(Geometry * geometry, int i, char * texturefpath);
 
-  void initshader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
+  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
 
-  void enableshader();
+  void enable_shader();
 
   void draw_triangle(Geometry *geometry);
 	void draw_cube(Geometry *geometry);

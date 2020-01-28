@@ -67,7 +67,7 @@ void Geometry::init_cube_wnml(Geometry *geometry)
     //geometry->lo_shader->use();
 }
 
-void Geometry::initobject(Geometry *geometry)
+void Geometry::init_object(Geometry *geometry)
 {
     glGenVertexArrays(1, &geometry->VAO);
     glGenBuffers(1, &geometry->VBO);
@@ -94,7 +94,7 @@ void Geometry::initobject(Geometry *geometry)
 
 }
 
-void Geometry::inittexture(Geometry * geometry, int i, char * texturefpath)
+void Geometry::init_texture(Geometry * geometry, int i, char * texturefpath)
 {
     glGenTextures(1, &this->texture[i]);
     glBindTexture(GL_TEXTURE_2D, this->texture[i]);
@@ -151,7 +151,7 @@ void Geometry::inittexture(Geometry * geometry, int i, char * texturefpath)
     }
 }
 
-void Geometry::initshader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
+void Geometry::init_shader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
 {
     // build and compile our shader program
     // ------------------------------------
@@ -195,7 +195,7 @@ void Geometry::initshader(const char *vertexShaderSource, const char * fragmentS
 
 }
 
-void Geometry::enableshader()
+void Geometry::enable_shader()
 {
   this->lo_shader->use();
 }

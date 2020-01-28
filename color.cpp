@@ -58,7 +58,7 @@ int main(int, char**)
     Geometry * g_cube = new Geometry();
     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
     g_cube->lo_shader = new Shader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs");
-		g_cube->enableshader();
+		g_cube->enable_shader();
     g_cube->init_cube(g_cube);
     //g_cube->inittexture(g_cube, 0, "resources/textures/container.jpg");
     //g_cube->inittexture(g_cube, 1, "resources/textures/awesomeface.png");
@@ -75,7 +75,7 @@ int main(int, char**)
 
 		Geometry * g_cubelamp = new Geometry();
 		g_cubelamp->lo_shader = new Shader("resources/shader/lampshader.vs", "resources/shader/lampshader.fs");
-		g_cubelamp->enableshader();
+		g_cubelamp->enable_shader();
 		g_cubelamp->init_cube_wnml(g_cubelamp);
 
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
@@ -202,7 +202,7 @@ int main(int, char**)
         //projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
         // get matrix's uniform location and set matrix
 
-        g_cube->enableshader();
+        g_cube->enable_shader();
         g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
@@ -212,7 +212,7 @@ int main(int, char**)
         g_cube->lo_shader->setMat4("model", model);
 				g_cube->draw_cube(g_cube);
 
-				g_cubelamp->enableshader();
+				g_cubelamp->enable_shader();
         g_cubelamp->lo_shader->setMat4("projection", projection);
         g_cubelamp->lo_shader->setMat4("view", view);
 
