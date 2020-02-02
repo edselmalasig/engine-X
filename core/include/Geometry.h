@@ -124,58 +124,59 @@ public:
   };
 
   float cube_wnml[216] = {
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
+		//front face
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
+		//back face
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
+		//right face
+    0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		//left face
      0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
      0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
      0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
      0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
      0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
      0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
+		 // bottom face
     -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
      0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
     -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
+		//top face
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
      0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
   };
 
   void init_triangle(Geometry *geometry);
   void init_cube(Geometry *geometry);
 	void init_cube_wnml(Geometry *geometry);
-  void initobject(Geometry *geometry);
-  void inittexture(Geometry * geometry, int i, char * texturefpath);
+  void init_object(Geometry *geometry);
+  void init_texture(Geometry * geometry, int i, char * texturefpath);
 
-  void initshader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
+  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
 
-  void enableshader();
+  void enable_shader();
 
   void draw_triangle(Geometry *geometry);
 	void draw_cube(Geometry *geometry);

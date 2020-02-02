@@ -212,7 +212,7 @@ int main(int, char**)
 				g_cubelamp->draw_cube(g_cubelamp);
 
         //draw_object(lo_rectangle);
-        if(s_gcw_UIC->show_ui == true)
+        if(s_gcw_UIC->s1how_ui == true)
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwMakeContextCurrent(s_gcw_UIC->window);

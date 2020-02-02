@@ -17,10 +17,10 @@
 #include "camera.h"
 
 Camera::Camera(){
-    this->Position = glm::vec3(4.0f, 4.0f, 15.0f);
-    this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    this->Position = glm::vec3(2.0f, 2.0f, 5.0f);
+		this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-    this->Front = glm::vec3(-0.310f, -0.280f, -1.0f);
+    this->Front = glm::vec3(0.0f, 0.0f, -1.0f);
     this->Yaw = YAW;
     this->Pitch = PITCH;
     this->Zoom = new GLfloat(ZOOM);
@@ -172,7 +172,7 @@ void Camera::ProcessMouseScroll(GLfloat yoffset)
 void Camera::computeMatricesFromInputs(){
     //glfwGetCursorPos(window, &xpos, &ypos);
     ViewMatrix = glm::lookAt(this->Position, this->Position + this->Front, this->Up);
-    ProjectionMatrix = glm::perspective(glm::radians(*this->Zoom), (float)display_w / (float)display_h, 0.1f, 100.0f);
+    ProjectionMatrix = glm::perspective(glm::radians(*this->Zoom), (float)display_w / (float)display_h, 0.100f, 100.0f);
 }
 
 // PRIVATE
