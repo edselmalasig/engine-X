@@ -123,54 +123,99 @@ public:
         -0.5f,  0.5f, -0.5f,
   };
 
-  float cube_wnml[216] = {
-		//front face
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 	1.0f,
-		//back face
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, -1.0f,
-		//right face
-    0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		//left face
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 // bottom face
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		//top face
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-  };
+	float cube_wnml_fixed[180] = {
+    // Back face
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+    // Front face
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+    // Left face
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+    // Right face
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+    // Bottom face
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+    // Top face
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // bottom-left
+};
+
+float cube_wnml[216] = {
+-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
 
   void init_triangle(Geometry *geometry);
   void init_cube(Geometry *geometry);
 	void init_cube_wnml(Geometry *geometry);
+	void init_cube_wnml_fixed(Geometry *geometry);
   void init_object(Geometry *geometry);
   void init_texture(Geometry * geometry, int i, char * texturefpath);
 

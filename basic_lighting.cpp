@@ -80,7 +80,7 @@ int main(int, char**)
 		g_cubelamp->init_cube(g_cubelamp);
 
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
-
+		//glEnable(GL_DEPTH_TEST);
 		printf("glfw main loop.\n");
     while (!glfwWindowShouldClose(s_gcw_UIC->window))
     {
@@ -193,6 +193,9 @@ int main(int, char**)
         //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
         //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
         // get matrix's uniform location and set matrix
+
+				//glEnable(GL_CULL_FACE);
+				//glCullFace(GL_FRONT);
 
         g_cube->enable_shader();
         g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
