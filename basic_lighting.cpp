@@ -135,7 +135,7 @@ int main(int, char**)
 
                 ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
                 ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
-                ImGui::DragFloat("Projection zFar", &cameraProp.y, 2.5f);
+                ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
 
 								ImGui::DragFloat("degrees Yaw", &s_gcw_UIC->g_cnc->Yaw, 0.1f);
 								ImGui::DragFloat("degrees Pitch", &s_gcw_UIC->g_cnc->Pitch, 0.1f);
@@ -174,7 +174,11 @@ int main(int, char**)
         glfwGetFramebufferSize(s_gcw_UIC->window, &s_gcw_UIC->display_w, &s_gcw_UIC->display_h);
         glViewport(0, 0, s_gcw_UIC->display_w, s_gcw_UIC->display_h);
         glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
-        glClear(GL_COLOR_BUFFER_BIT);
+				glEnable(GL_DEPTH_TEST);
+
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glEnable(GL_CULL_FACE);
+				glCullFace(GL_BACK);
 
 				s_gcw_UIC->g_cnc->computeMatricesFromInputs();
 
