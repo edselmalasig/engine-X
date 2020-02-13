@@ -67,7 +67,25 @@ void Geometry::init_cube_wnml(Geometry *geometry)
     //geometry->lo_shader->use();
 }
 
-void Geometry::initobject(Geometry *geometry)
+void Geometry::init_cube_wnml_fixed(Geometry *geometry)
+{
+    glGenVertexArrays(1, &geometry->VAO);
+    glBindVertexArray(geometry->VAO);
+    glGenBuffers(1, &geometry->VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, geometry->VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(geometry->cube_wnml), geometry->cube_wnml, GL_STATIC_DRAW);
+
+		//vertex vap
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		//normal data vap
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+    //geometry->lo_shader->use();
+}
+
+void Geometry::init_object(Geometry *geometry)
 {
     glGenVertexArrays(1, &geometry->VAO);
     glGenBuffers(1, &geometry->VBO);
@@ -94,7 +112,7 @@ void Geometry::initobject(Geometry *geometry)
 
 }
 
-void Geometry::inittexture(Geometry * geometry, int i, char * texturefpath)
+void Geometry::init_texture(Geometry * geometry, int i, char * texturefpath)
 {
     glGenTextures(1, &this->texture[i]);
     glBindTexture(GL_TEXTURE_2D, this->texture[i]);
@@ -151,7 +169,7 @@ void Geometry::inittexture(Geometry * geometry, int i, char * texturefpath)
     }
 }
 
-void Geometry::initshader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
+void Geometry::init_shader(const char *vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry)
 {
     // build and compile our shader program
     // ------------------------------------
@@ -195,7 +213,7 @@ void Geometry::initshader(const char *vertexShaderSource, const char * fragmentS
 
 }
 
-void Geometry::enableshader()
+void Geometry::enable_shader()
 {
   this->lo_shader->use();
 }
@@ -231,7 +249,7 @@ void Geometry::draw_object(Geometry *geometry)
 
 void Geometry::draw_cube(Geometry *geometry)
 {
-		geometry->enableshader();
+		geometry->enable_shader();
 		glBindVertexArray(geometry->VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0); // no need to unbind it every time

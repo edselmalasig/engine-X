@@ -24,8 +24,7 @@
 struct coordinates
 {
     glm::vec3 coords;
-    glm::vec3 * view_coords;
-    GLfloat *radians;
+    GLfloat radians;
     float near, far, angle;
 };
 
@@ -33,6 +32,16 @@ int main(int, char**)
 {
     printf("Initializing.\n");
     std::shared_ptr<gcw_UI_Controls>  s_gcw_UIC(gcw_UIC);
+
+		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
+
+		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
+		glm::vec3 * cameraFront = s_gcw_UIC->g_cnc->getFrontVector();
+
+		glm::vec3 * cameraHeadsUp = s_gcw_UIC->g_cnc->getHeadsUpVector();
+
+		glm::vec3 cameraProp( 0.1f, 100.0f, *s_gcw_UIC->g_cnc->Zoom);
+
     init_glfw();
     init_ImGui();
 
@@ -40,29 +49,18 @@ int main(int, char**)
     //---------------------------------------
     // Main loop
     bool show_demo_window = false;
-    coordinates c_model, c_view, c_projection, c_view_pos, c_view_la, c_view_hu;
-
-    c_model.coords.x = 1.0f; c_model.coords.y = 1.0f; c_model.coords.z = 0.0f;
-    c_model.radians = new GLfloat(0.0f);
-
-    c_view_pos.coords.x = 0.0f; c_view_pos.coords.y = 0.0f; c_view_pos.coords.z = 2.0f;
-    c_view_la.coords.x = 0.0f; c_view_la.coords.y = 0.0f; c_view_la.coords.z = 0.0f;
-    c_view_hu.coords.x = 0.0f; c_view_hu.coords.y = 1.0f; c_view_hu.coords.z = 0.0f;
-
-    c_projection.radians = gcw_UIC->g_cnc->Zoom;
-    c_projection.near = 0.1f; c_projection.far = 10.0f;
 
     float clearColor[4];
 
-    clearColor[0]=0.0f; clearColor[1]=0.0f; clearColor[2]=0.0f; clearColor[3]=0.0f;
+    clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
 
 		printf("Initializing shaders and objects.\n");
 
     Geometry * g_cube = new Geometry();
     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-    g_cube->lo_shader = new Shader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs");
-		g_cube->enableshader();
-    g_cube->init_cube(g_cube);
+    g_cube->lo_shader = new Shader("resources/shader/basic_lighting.vs", "resources/shader/basic_lighting.fs");
+		g_cube->enable_shader();
+    g_cube->init_cube_wnml(g_cube);
     //g_cube->inittexture(g_cube, 0, "resources/textures/container.jpg");
     //g_cube->inittexture(g_cube, 1, "resources/textures/awesomeface.png");
     //g_cube->initshader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs", g_cube);
@@ -77,12 +75,12 @@ int main(int, char**)
     //g_cube->lo_shader->setInt("texture2", 1);
 
 		Geometry * g_cubelamp = new Geometry();
-		g_cubelamp->lo_shader = new Shader("resources/shader/lampshader.vs", "resources/shader/lampshader.fs");
-		g_cubelamp->enableshader();
-		g_cubelamp->init_cube_wnml(g_cubelamp);
+		g_cubelamp->lo_shader = new Shader("resources/shader/lamp_bl.vs", "resources/shader/lamp_bl.fs");
+		g_cubelamp->enable_shader();
+		g_cubelamp->init_cube(g_cubelamp);
 
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
-
+		//glEnable(GL_DEPTH_TEST);
 		printf("glfw main loop.\n");
     while (!glfwWindowShouldClose(s_gcw_UIC->window))
     {
@@ -123,23 +121,24 @@ int main(int, char**)
 
                 ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
 
-                ImGui::DragFloat("Model X", &c_model.coords.x, 0.5f);
-                ImGui::DragFloat("Model Y", &c_model.coords.y, 0.5f);
-                ImGui::DragFloat("Model Z", &c_model.coords.z, 0.5f);
+                ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
+                ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
+                ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
 
-                ImGui::InputFloat("Model radians", c_model.radians);
+                ImGui::DragFloat("View Front X", &cameraFront->x, 0.01);
+                ImGui::DragFloat("View Front Y", &cameraFront->y, 0.01);
+                ImGui::DragFloat("View Front Z", &cameraFront->z, 0.01);
 
-                ImGui::DragFloat("View Pos X", &c_view_pos.coords.x, 0.5);
-                ImGui::DragFloat("View Pos Y", &c_view_pos.coords.y, 0.5);
-                ImGui::DragFloat("View Pos Z", &c_view_pos.coords.z, 0.5);
+								ImGui::DragFloat("View Heads Up X", &cameraHeadsUp->x, 0.01);
+                ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
+                ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
 
-                ImGui::DragFloat("View LookAt X", &c_view_la.coords.x, 0.5);
-                ImGui::DragFloat("View LookAt Y", &c_view_la.coords.y, 0.5);
-                ImGui::DragFloat("View LookAt Z", &c_view_la.coords.z, 0.5);
+                ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
+                ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
+                ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
 
-                ImGui::DragFloat("Projection radians", c_projection.radians, 0.5f);
-                ImGui::DragFloat("Projection zNear", &c_projection.near, 0.01f);
-                ImGui::DragFloat("Projection zFar", &c_projection.far, 2.5f);
+								ImGui::DragFloat("degrees Yaw", &s_gcw_UIC->g_cnc->Yaw, 0.1f);
+								ImGui::DragFloat("degrees Pitch", &s_gcw_UIC->g_cnc->Pitch, 0.1f);
 
                 ImGui::Text("\n");
                 ImGui::Text("Please modify the current style in:");
@@ -175,27 +174,38 @@ int main(int, char**)
         glfwGetFramebufferSize(s_gcw_UIC->window, &s_gcw_UIC->display_w, &s_gcw_UIC->display_h);
         glViewport(0, 0, s_gcw_UIC->display_w, s_gcw_UIC->display_h);
         glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
-        glClear(GL_COLOR_BUFFER_BIT);
+				glEnable(GL_DEPTH_TEST);
+
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glEnable(GL_CULL_FACE);
+				glCullFace(GL_BACK);
+
+				s_gcw_UIC->g_cnc->computeMatricesFromInputs();
 
         // create transformations
         glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view          = glm::mat4(1.0f);
         glm::mat4 projection    = glm::mat4(1.0f);
 
-        view  = gcw_UIC->g_cnc->getViewMatrix();
-        projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
+        //view  = s_gcw_UIC->g_cnc->getViewMatrix();
 
-        s_gcw_UIC->g_cnc->computeMatricesFromInputs();
-
-        //view = s_gcw_UIC->g_cnc->camera->getViewMatrix();
-        //projection = glm::perspective(glm::radians(c_projection.angle), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, c_projection.near, c_projection.far);
+        //projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
+				//glm::vec3 cLAt = *cameraPosition + *cameraLookAt;
+        //view = glm::lookAt(cameraPosition, *cameraPosition + *cameraLookAt, cameraHeadsUp);
+				view = s_gcw_UIC->g_cnc->processViewMatrix();
+        projection = glm::perspective(glm::radians(*s_gcw_UIC->g_cnc->Zoom), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, cameraProp.x, cameraProp.y);
         //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
         //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
         // get matrix's uniform location and set matrix
 
-        g_cube->enableshader();
+				//glEnable(GL_CULL_FACE);
+				//glCullFace(GL_FRONT);
+
+        g_cube->enable_shader();
         g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+				g_cube->lo_shader->setVec3("lightPos", cubelampPos);
+				g_cube->lo_shader->setVec3("viewPos", *s_gcw_UIC->g_cnc->getPositionVector());
 
         g_cube->lo_shader->setMat4("projection", projection);
         g_cube->lo_shader->setMat4("view", view);
@@ -203,7 +213,7 @@ int main(int, char**)
         g_cube->lo_shader->setMat4("model", model);
 				g_cube->draw_cube(g_cube);
 
-				g_cubelamp->enableshader();
+				g_cubelamp->enable_shader();
         g_cubelamp->lo_shader->setMat4("projection", projection);
         g_cubelamp->lo_shader->setMat4("view", view);
 
