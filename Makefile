@@ -14,7 +14,7 @@
 #CXX = g++
 CXX = clang++
 
-FREEIMAGE = ../lib/Computer_Graphics/FreeImage
+FREEIMAGE = ../lib/FreeImage
 FREEIMAGE_LIB = ../lib/FreeImage
 FREEIMAGE_EXT = external/FreeImage
 IMGUI = external/imgui
@@ -52,18 +52,20 @@ LIBS = -lGLEW
 
 ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux compilation"
-	FREEIMAGE = /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage
-	FREEIMAGE_LIB =  /home/notadeveloper/Desktop/Experiments_in_Computer_Science/lib/FreeImage/Dist
+	FREEIMAGE = /home/notadeveloper/Desktop/git/lib/FreeImage
+	FREEIMAGE_LIB =  /home/notadeveloper/Desktop/git/lib/FreeImage/Dist
 	EXE = engine-X.out
 	LIBS += -lGL -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus `pkg-config --libs glfw3`
 
-	CXXFLAGS += `pkg-config --cflags glfw3`
+	CXXFLAGS += -DFREEIMAGE_LIB -DGLM_ENABLE_EXPERIMENTAL
 	CXXFLAGS += -I/usr/local/include
+	CXXFLAGS += -I core/ -I core/include/ -I core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
-	CXXFLAGS += -I $(FREEIMAGE)/include
-	CXXFLAGS += -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
-	CXXFLAGS += -Wall -Wformat -DGLM_ENABLE_EXPERIMENTAL -DFREEIMAGE_LIB -g
+	CXXFLAGS += -I /Users/edselmalasig/lib/glm -I/Users/edselmalasig/lib/glfw/include
+	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
+	CXXFLAGS += -I $(FREEIMAGE_EXT)/
+	CXXFLAGS += -Wall -Wformat
 	CFLAGS = $(CXXFLAGS)
 endif
 
@@ -130,6 +132,13 @@ all: $(EXE)
 
 $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+
+	cp $(EXE) ../Applications/engine-X/
+	cp -Rv resources ../Applications/engine-X/
+	cp -Rv docs ../Applications/engine-X/
+
+	echo ========================================================================
+	echo Copying resources and doc files complete.
 
 clean:
 	rm -f $(EXE) $(OBJS)
