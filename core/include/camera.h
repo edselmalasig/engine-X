@@ -54,8 +54,8 @@ public:
     GLfloat * Zoom;
     glm::mat4 ViewMatrix;
     glm::mat4 ProjectionMatrix;
-    int display_w=1280;
-    int display_h=800;
+    int display_w=1920;
+    int display_h=1080;
 
     //new Camera variables/
     glm::vec2 oldMousePosition;

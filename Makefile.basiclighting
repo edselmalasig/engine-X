@@ -58,7 +58,7 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	LIBS += -lGL -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus `pkg-config --libs glfw3`
 
-	CXXFLAGS += -DFREEIMAGE_LIB -DGLM_ENABLE_EXPERIMENTAL
+	CXXFLAGS += -DFREEIMAGE_LIB -DGLM_ENABLE_EXPERIMENTAL -DLINUX
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I core/ -I core/include/ -I core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
@@ -76,7 +76,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
 	LIBS += -lglfw
 
-	CXXFLAGS += -DFREEIMAGE_LIB
+	CXXFLAGS += -DFREEIMAGE_LIB -DMACOS
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I core/ -I core/include/ -I core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/

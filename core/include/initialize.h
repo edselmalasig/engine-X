@@ -59,8 +59,11 @@ public:
 };
 
 //GC_UIC Instance
+#if defined (WIN32)
+gcw_UI_Controls * gcw_UIC = new gcw_UI_Controls();
+#elif defined (LINUX) || defined (MACOS)
 inline gcw_UI_Controls * gcw_UIC = new gcw_UI_Controls();
-
+#endif
 //GLFW Controls
 void init_glfw();
 GLFWkeyfun moveFunc( GLFWwindow * window, int key, int scancode, int action);

@@ -31,8 +31,9 @@ struct coordinates
 int main(int, char**)
 {
     printf("Initializing.\n");
+    #if defined LINUX || MACOS
     std::shared_ptr<gcw_UI_Controls>  s_gcw_UIC(gcw_UIC);
-
+    #endif
 		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
 
 		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
