@@ -20,7 +20,7 @@ FREEIMAGE_EXT = external/FreeImage
 IMGUI = external/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
-SOURCES = basic_lighting.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/initialize.cpp
+SOURCES = basic_lighting.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/gcwuiControls.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
 SOURCES += $(IMGUI)/imgui.cpp $(IMGUI)/imgui_demo.cpp $(IMGUI)/imgui_draw.cpp $(IMGUI)/imgui_widgets.cpp
@@ -65,7 +65,7 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	CXXFLAGS += -I /Users/edselmalasig/lib/glm -I/Users/edselmalasig/lib/glfw/include
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
 	CXXFLAGS += -I $(FREEIMAGE_EXT)/
-	CXXFLAGS += -Wall -Wformat
+	CXXFLAGS += -Wall -Wformat -std=c++11 -g
 	CFLAGS = $(CXXFLAGS)
 endif
 

@@ -31,20 +31,16 @@ struct coordinates
 int main(int, char**)
 {
     printf("Initializing.\n");
-    #if defined LINUX || MACOS
-    std::shared_ptr<gcw_UI_Controls>  s_gcw_UIC(gcw_UIC);
-    #endif
-		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
-
-		glm::vec3 * cameraPosition = s_gcw_UIC->g_cnc->getPositionVector();
-		glm::vec3 * cameraFront = s_gcw_UIC->g_cnc->getFrontVector();
-
-		glm::vec3 * cameraHeadsUp = s_gcw_UIC->g_cnc->getHeadsUpVector();
-
-		glm::vec3 cameraProp( 0.1f, 100.0f, *s_gcw_UIC->g_cnc->Zoom);
 
     init_glfw();
+
     init_ImGui();
+
+		glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
+		glm::vec3 * cameraPosition = gcwui_C->g_cnc->getPositionVector();
+		glm::vec3 * cameraFront = gcwui_C->g_cnc->getFrontVector();
+		glm::vec3 * cameraHeadsUp = gcwui_C->g_cnc->getHeadsUpVector();
+		glm::vec3 cameraProp( 0.1f, 100.0f, *gcwui_C->g_cnc->Zoom);
 
     printf("Starting main loop.\n");
     //---------------------------------------
@@ -83,7 +79,7 @@ int main(int, char**)
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 		//glEnable(GL_DEPTH_TEST);
 		printf("glfw main loop.\n");
-    while (!glfwWindowShouldClose(s_gcw_UIC->window))
+    while (!glfwWindowShouldClose(gcwui_C->window))
     {
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -96,8 +92,8 @@ int main(int, char**)
         // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         GLfloat currentFrame = (GLfloat) glfwGetTime();
-        s_gcw_UIC->g_cnc->deltaTime = currentFrame - s_gcw_UIC->g_cnc->lastFrame;
-        s_gcw_UIC->g_cnc->lastFrame = currentFrame;
+        gcwui_C->g_cnc->deltaTime = currentFrame - gcwui_C->g_cnc->lastFrame;
+        gcwui_C->g_cnc->lastFrame = currentFrame;
 
         glfwPollEvents();
 
@@ -138,8 +134,8 @@ int main(int, char**)
                 ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
                 ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
 
-								ImGui::DragFloat("degrees Yaw", &s_gcw_UIC->g_cnc->Yaw, 0.1f);
-								ImGui::DragFloat("degrees Pitch", &s_gcw_UIC->g_cnc->Pitch, 0.1f);
+								ImGui::DragFloat("degrees Yaw", &gcwui_C->g_cnc->Yaw, 0.1f);
+								ImGui::DragFloat("degrees Pitch", &gcwui_C->g_cnc->Pitch, 0.1f);
 
                 ImGui::Text("\n");
                 ImGui::Text("Please modify the current style in:");
@@ -171,9 +167,9 @@ int main(int, char**)
             ImGui::Render();
         }
 
-        glfwMakeContextCurrent(s_gcw_UIC->window);
-        glfwGetFramebufferSize(s_gcw_UIC->window, &s_gcw_UIC->display_w, &s_gcw_UIC->display_h);
-        glViewport(0, 0, s_gcw_UIC->display_w, s_gcw_UIC->display_h);
+        glfwMakeContextCurrent(gcwui_C->window);
+        glfwGetFramebufferSize(gcwui_C->window, &gcwui_C->display_w, &gcwui_C->display_h);
+        glViewport(0, 0, gcwui_C->display_w, gcwui_C->display_h);
         glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 				glEnable(GL_DEPTH_TEST);
 
@@ -181,22 +177,22 @@ int main(int, char**)
 				glEnable(GL_CULL_FACE);
 				glCullFace(GL_BACK);
 
-				s_gcw_UIC->g_cnc->computeMatricesFromInputs();
+				gcwui_C->g_cnc->computeMatricesFromInputs();
 
         // create transformations
         glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view          = glm::mat4(1.0f);
         glm::mat4 projection    = glm::mat4(1.0f);
 
-        //view  = s_gcw_UIC->g_cnc->getViewMatrix();
+        //view  = gcwui_C->g_cnc->getViewMatrix();
 
-        //projection = s_gcw_UIC->g_cnc->getProjectionMatrix();
+        //projection = gcwui_C->g_cnc->getProjectionMatrix();
 				//glm::vec3 cLAt = *cameraPosition + *cameraLookAt;
         //view = glm::lookAt(cameraPosition, *cameraPosition + *cameraLookAt, cameraHeadsUp);
-				view = s_gcw_UIC->g_cnc->processViewMatrix();
-        projection = glm::perspective(glm::radians(*s_gcw_UIC->g_cnc->Zoom), (float)s_gcw_UIC->display_w / (float)s_gcw_UIC->display_h, cameraProp.x, cameraProp.y);
-        //projection = glm::ortho(0.0f, (float) s_gcw_UIC->display_w, 0.0f, (float) s_gcw_UIC->display_h, 0.1f, 100.0f);
-        //projection = s_gcw_UIC->g_cnc->camera->getProjectionMatrix();
+				view = gcwui_C->g_cnc->processViewMatrix();
+        projection = glm::perspective(glm::radians(*gcwui_C->g_cnc->Zoom), (float)gcwui_C->display_w / (float)gcwui_C->display_h, cameraProp.x, cameraProp.y);
+        //projection = glm::ortho(0.0f, (float) gcwui_C->display_w, 0.0f, (float) gcwui_C->display_h, 0.1f, 100.0f);
+        //projection = gcwui_C->g_cnc->camera->getProjectionMatrix();
         // get matrix's uniform location and set matrix
 
 				//glEnable(GL_CULL_FACE);
@@ -206,7 +202,7 @@ int main(int, char**)
         g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 				g_cube->lo_shader->setVec3("lightPos", cubelampPos);
-				g_cube->lo_shader->setVec3("viewPos", *s_gcw_UIC->g_cnc->getPositionVector());
+				g_cube->lo_shader->setVec3("viewPos", *gcwui_C->g_cnc->getPositionVector());
 
         g_cube->lo_shader->setMat4("projection", projection);
         g_cube->lo_shader->setMat4("view", view);
@@ -225,11 +221,11 @@ int main(int, char**)
 				g_cubelamp->draw_cube(g_cubelamp);
 
         //draw_object(lo_rectangle);
-        if(s_gcw_UIC->show_ui == true)
+        if(gcwui_C->show_ui == true)
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        glfwMakeContextCurrent(s_gcw_UIC->window);
-        glfwSwapBuffers(s_gcw_UIC->window);
+        glfwMakeContextCurrent(gcwui_C->window);
+        glfwSwapBuffers(gcwui_C->window);
     }
 
     // Cleanup
@@ -240,7 +236,7 @@ int main(int, char**)
     //delete_object(lo_rectangle);
     g_cube->delete_object(g_cube);
 
-    glfwDestroyWindow(s_gcw_UIC->window);
+    glfwDestroyWindow(gcwui_C->window);
     glfwTerminate();
 
     return 0;
