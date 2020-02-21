@@ -58,7 +58,7 @@ int main(int, char**)
     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
     g_cube->lo_shader = new Shader("resources/shader/basic_lighting.vs", "resources/shader/basic_lighting.fs");
 		g_cube->enable_shader();
-    g_cube->init_cube_wnml(g_cube);
+    g_cube->init_cube_wnml();
     //g_cube->inittexture(g_cube, 0, "resources/textures/container.jpg");
     //g_cube->inittexture(g_cube, 1, "resources/textures/awesomeface.png");
     //g_cube->initshader("resources/shader/colors_lighting.vs", "resources/shader/colors_lighting.fs", g_cube);
@@ -75,7 +75,7 @@ int main(int, char**)
 		Geometry * g_cubelamp = new Geometry();
 		g_cubelamp->lo_shader = new Shader("resources/shader/lamp_bl.vs", "resources/shader/lamp_bl.fs");
 		g_cubelamp->enable_shader();
-		g_cubelamp->init_cube(g_cubelamp);
+		g_cubelamp->init_cube();
 
     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 		//glEnable(GL_DEPTH_TEST);
@@ -209,7 +209,7 @@ int main(int, char**)
         g_cube->lo_shader->setMat4("view", view);
 				model = glm::mat4(1.0f);
         g_cube->lo_shader->setMat4("model", model);
-				g_cube->draw_cube(g_cube);
+				g_cube->draw_cube();
 
 				g_cubelamp->enable_shader();
         g_cubelamp->lo_shader->setMat4("projection", projection);
@@ -219,7 +219,7 @@ int main(int, char**)
         model = glm::translate(model, cubelampPos);
         model = glm::scale(model, glm::vec3(0.2f));
         g_cubelamp->lo_shader->setMat4("model", model);
-				g_cubelamp->draw_cube(g_cubelamp);
+				g_cubelamp->draw_cube();
 
         //draw_object(lo_rectangle);
         if(gcwui_C->show_ui == true)
@@ -235,8 +235,8 @@ int main(int, char**)
     ImGui::DestroyContext();
 
     //delete_object(lo_rectangle);
-    g_cube->delete_object(g_cube);
-
+    g_cube->delete_object();
+    g_cubelamp->delete_object();
     glfwDestroyWindow(gcwui_C->window);
     glfwTerminate();
 

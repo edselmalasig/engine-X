@@ -261,23 +261,23 @@ float cubey[216] =
 	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f
 };
 
-  void init_triangle(Geometry *geometry);
-  void init_cube(Geometry *geometry);
-	void init_cube_wnml(Geometry *geometry);
-	void init_cube_wnml_fixed(Geometry *geometry);
-  void init_object(Geometry *geometry);
-  void init_texture(Geometry * geometry, int i, char * texturefpath);
+  void init_triangle();
+  void init_cube();
+	void init_cube_wnml();
+	void init_cube_wnml_fixed();
+  void init_object();
+  void init_texture(int i, char * texturefpath);
 
-  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource, Geometry *geometry);
+  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
 
   void enable_shader();
 
-  void draw_triangle(Geometry *geometry);
-	void draw_cube(Geometry *geometry);
-  void draw_object(Geometry *geometry);
+  void draw_triangle();
+	void draw_cube();
+  void draw_object();
 
   void renderTexLayer(int i);
-  void delete_object(Geometry *geometry);
+  void delete_object();
 };
 
 #endif
