@@ -33,6 +33,7 @@
 #include "FreeImage.h"
 #include "fip_ImageOperations.h"
 
+#if defined (MACOS) || defined (LINUX)
 fipImage * convertToGreyScale(fipImage * src){
 
 	// call this ONLY when linking with FreeImage as a static library
@@ -147,30 +148,6 @@ fipImage * subtractPixelColors(fipImage * src, fipImage * input){
     return input;
 }
 
-/**
- Creates a 32-bit transparent image using the black channel of the source image
- @param src Source image
- @return Returns a 32-bit transparent image
- */
-FIBITMAP* CreateAlphaFromLightness(FIBITMAP *src) {
-    // create a 32-bit image from the source
-    FIBITMAP *dst = FreeImage_ConvertTo32Bits(src);
-
-    // create a 8-bit mask
-    FreeImage_Invert(src);
-    FIBITMAP *mask = FreeImage_ConvertTo8Bits(src);
-    FreeImage_Invert(src);
-
-    // insert the mask as an alpha channel
-    FreeImage_SetChannel(dst, mask, FICC_ALPHA);
-
-    // free the mask and return
-    FreeImage_Unload(mask);
-
-    return dst;
-}
-
-
 void printRGBValues(fipImage * src)
 {
     if(src) {
@@ -193,6 +170,30 @@ void printRGBValues(fipImage * src)
             }
         }
     }
+}
+
+#endif
+/**
+ Creates a 32-bit transparent image using the black channel of the source image
+ @param src Source image
+ @return Returns a 32-bit transparent image
+ */
+FIBITMAP* CreateAlphaFromLightness(FIBITMAP *src) {
+    // create a 32-bit image from the source
+    FIBITMAP *dst = FreeImage_ConvertTo32Bits(src);
+
+    // create a 8-bit mask
+    FreeImage_Invert(src);
+    FIBITMAP *mask = FreeImage_ConvertTo8Bits(src);
+    FreeImage_Invert(src);
+
+    // insert the mask as an alpha channel
+    FreeImage_SetChannel(dst, mask, FICC_ALPHA);
+
+    // free the mask and return
+    FreeImage_Unload(mask);
+
+    return dst;
 }
 
 void PrintRGBValues(FIBITMAP * src)

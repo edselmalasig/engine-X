@@ -16,7 +16,6 @@
 #include "initialize.h"
 #include "Geometry.h"
 
-
 #include <stdio.h>
 #include <string.h>
 #include <memory>
@@ -25,7 +24,9 @@ struct coordinates
 {
     glm::vec3 coords;
     GLfloat radians;
-    float near, far, angle;
+    float near;
+    float far;
+    float angle;
 };
 
 int main(int, char**)

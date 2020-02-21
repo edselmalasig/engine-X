@@ -33,12 +33,18 @@
 #include <string>
 #include <iostream>
 #define FREEIMAGE_LIB
-#include "FreeImagePlus.h"
+
 #include "FreeImage.h"
 
+#if defined (MACOS) || defined (LINUX)
+#include "FreeImagePlus.h"
 fipImage * invertPixelColors(fipImage * src);
 
 fipImage * subtractPixelColors(fipImage * src, fipImage * input);
+
+void printRGBValues(fipImage * src);
+#endif
+
 /**
  Creates a 32-bit transparent image using the black channel of the source image
  @param src Source image
@@ -46,7 +52,7 @@ fipImage * subtractPixelColors(fipImage * src, fipImage * input);
  */
 FIBITMAP* CreateAlphaFromLightness(FIBITMAP *src);
 
-void printRGBValues(fipImage * src);
+
 
 void PrintRGBValues(FIBITMAP * src);
 

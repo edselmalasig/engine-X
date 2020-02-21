@@ -1,15 +1,37 @@
 CXX = cl.exe
+
 CFLAGS = /EHsc /D_WIN32 /D__WINDOWS_WASAPI__ /D_WIN32 /DUSLEEP /DMSC_VER /D__OS_WINDOWS__
-CFLAGS = $(CFLAGS) /Fd"Release\vc140.pdb" /Zc:inline /fp:precise /D "_X86_" /D "MSC_VER" /D "__OS_WINDOWS__" /D "_CRT_SECURE_NO_WARNINGS" /D "_WIN32" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /Fp"Release\Virtuoso_Reality.pch"
-CFILES = ./src/*.cpp ./marsyas/*.cpp ../lib-windows/imgui/*.cpp ../lib-windows/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.cpp ../lib-windows/imgui/examples/addons/*.cpp
-INCLUDES = /I ../lib-windows/imgui/ /I ../lib-windows/imgui/examples/addons /I ../lib-windows/imgui/examples/opengl3_example/ /I ../LearnOpenGL/includes/ /I ../lib-windows/glew-2.0.0/include /I ./include/ /I ../lib-windows/freeglut/include/ /I ../lib-windows/glfw-3.2.1/include/ /I ../lib-windows/glm/ /I ../lib-windows/portaudio/include/ /I ../lib-windows/libaudiodecoder/include/ /I ./marsyas/
+CFLAGS = $(CFLAGS) /Fd"Release\vc140.pdb" /Zc:inline /fp:precise /D "_X86_" /D "MSC_VER"
+CFLAGS = $(CFLAGS) /D "__OS_WINDOWS__" /D "_CRT_SECURE_NO_WARNINGS" /D "_WIN32" /D "WIN32"
+CFLAGS = $(CFLAGS) /D "NDEBUG" /D "_CONSOLE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT
+CFLAGS = $(CFLAGS) /DGLM_ENABLE_EXPERIMENTAL /DIMGUI_IMPL_OPENGL_LOADER_GLEW
+CFILES = basic_lighting.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/gcwuiControls.cpp
+CFILES = $(CFILES) external/imgui/imgui_impl/imgui_impl_glfw.cpp external/imgui/imgui_impl/imgui_impl_opengl3.cpp
+CFILES = $(CFILES) external/imgui/addons/imguistyleserializer/imguistyleserializer.cpp
+CFILES = $(CFILES) external/imgui/imgui.cpp external/imgui/imgui_demo.cpp external/imgui/imgui_draw.cpp external/imgui/imgui_widgets.cpp
+CFILES = $(CFILES) external/freeimage/fip_ImageOperations.cpp
+
+OBJFILES = basic_lighting.obj camera.obj fip_ImageOperations.obj gcwuiControls.obj
+OBJFILES = $(OBJFILES) Geometry.obj imgui.obj imgui_demo.obj imgui_draw.obj
+OBJFILES = $(OBJFILES) imgui_impl_glfw.obj imgui_impl_opengl3.obj imgui_widgets.obj
+OBJFILES = $(OBJFILES) imguistyleserializer.obj
+
+INCLUDES = /I ./ /I  core/ /I core/include/ /I core/src/
+INCLUDES = $(INCLUDES) /I external/imgui /I external/imgui/addons /I external/imgui/imgui_impl /I external/imgui/addons/imguistyleserializer/
+INCLUDES = $(INCLUDES) /I ../lib/glm /I ../lib/glfw-3.3.2.bin.WIN64/include /I ../lib/glew-2.1.0/include /I ../lib/glm
+INCLUDES = $(INCLUDES) /I ../lib/FreeImage/include /I ../lib/FreeImage/Dist/x64/
+INCLUDES = $(INCLUDES) /I external/FreeImage
+
 LD = /link
 LDFLAGS = /libpath
-LDLIBS = ole32.lib Shell32.lib Mfplat.lib Mf.lib mfreadwrite.lib mfuuid.lib ../lib-windows/freeglut/build/lib/Release/freeglut.lib ../lib-windows/libaudiodecoder/src/audiodecoder.lib ../lib-windows/glfw-3.2.1/Win32/Release/glfw3dll.lib ../lib-windows/rtaudio/build/Release/rtaudio_static.lib ../lib-windows/glew-2.0.0/lib/Release/Win32/glew32.lib
+LDLIBS = ole32.lib Shell32.lib Mfplat.lib Mf.lib mfreadwrite.lib mfuuid.lib Opengl32.lib
+LDLIBS = $(LDLIBS) ../lib/FreeImage/Dist/x64/FreeImage.lib ../lib/FreeImage/Dist/x64/FreeImageLib.lib
+LDLIBS = $(LDLIBS) ../lib/glew-2.1.0/lib/Release/x64/glew32.lib ../lib/glew-2.1.0/lib/Release/x64/glew32s.lib
+LDLIBS = $(LDLIBS) ../lib/glfw-3.3.2.bin.WIN64/lib-vc2019/glfw3.lib ../lib/glfw-3.3.2.bin.WIN64/lib-vc2019/glfw3dll.lib
 
 all:
-    $(CXX) $(CFLAGS) $(INCLUDES) $(CFILES) $(LD) $(LDFLAGS) $(LDLIBS) /out:VirtuosoReality.exe
+    $(CXX) $(CFLAGS) $(INCLUDES) $(CFILES) $(LD) $(LDFLAGS) $(LDLIBS) /MACHINE:x64 /SUBSYSTEM:CONSOLE
 
 clean:
-	del *.obj *.o VirtuosoReality.exe
+	del *.obj *.o
 .PHONY: all clean
