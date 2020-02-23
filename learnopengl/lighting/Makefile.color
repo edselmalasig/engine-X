@@ -1,26 +1,27 @@
 #
 # Cross Platform Makefile
-# Compatible with MSYS2/MINGW, Ubuntu 14.04.1 and Mac OS X
+# Compatible with Linux and Mac OS X
 #
-# You will need GLFW (http://www.glfw.org):
+# You will need GLFW (http://www.glfw.org), glm (http://www.glm.org), FreeImage
+# and glew.
 # Linux:
-#   apt-get install libglfw-dev
+#   apt-get install libglfw-dev libglm-dev libglew-dev
 # Mac OS X:
-#   brew install glfw
-# MSYS2:
-#   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-glfw
+#   brew install glfw glew glm freeimage
+# MSBUILD:
+#   nmake
 #
 
 #CXX = g++
 CXX = clang++
 EXE = engine-X_basiclighting
-FREEIMAGE = ../lib/Computer_Graphics/FreeImage
-FREEIMAGE_LIB = ../lib/FreeImage
-FREEIMAGE_EXT = external/FreeImage
-IMGUI = external/imgui
+FREEIMAGE = ../../../lib/Computer_Graphics/FreeImage
+FREEIMAGE_LIB = ../../../lib/FreeImage
+FREEIMAGE_EXT = ../../external/FreeImage
+IMGUI = ../../external/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
-SOURCES = basic_lighting.cpp core/src/camera.cpp core/src/Geometry.cpp core/src/gcwuiControls.cpp
+SOURCES = color.cpp ../../core/src/camera.cpp ../../core/src/Geometry.cpp ../../core/src/gcwuiControls.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
 SOURCES += $(IMGUI)/imgui.cpp $(IMGUI)/imgui_demo.cpp $(IMGUI)/imgui_draw.cpp $(IMGUI)/imgui_widgets.cpp
@@ -34,7 +35,7 @@ UNAME_S := $(shell uname -s)
 ##---------------------------------------------------------------------
 
 ## Using OpenGL loader: gl3w [default]
-#SOURCES += ../libs/gl3w/GL/gl3w.c ../../../../Computer_Graphics/FreeImage/src/fip_ImageOperations.cpp
+#SOURCES += ../libs/gl3w/GL/gl3w.c
 #CXXFLAGS = -I../libs/gl3w
 
 ## Using OpenGL loader: glew
@@ -62,8 +63,8 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I core/ -I core/include/ -I core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
-	CXXFLAGS += -I /Users/edselmalasig/lib/glm -I/Users/edselmalasig/lib/glfw/include
-	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
+
+ 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
 	CXXFLAGS += -I $(FREEIMAGE_EXT)/
 	CXXFLAGS += -Wall -Wformat -std=c++11 -g
 	CFLAGS = $(CXXFLAGS)
@@ -78,9 +79,9 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 
 	CXXFLAGS += -DFREEIMAGE_LIB -DMACOS
 	CXXFLAGS += -I/usr/local/include
-	CXXFLAGS += -I core/ -I core/include/ -I core/src/
+	CXXFLAGS += -I ../../core/ -I ../../core/include/ -I ../../core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
-	CXXFLAGS += -I /Users/edselmalasig/lib/glm -I/Users/edselmalasig/lib/glfw/include
+
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
 	CXXFLAGS += -I $(FREEIMAGE_EXT)/
 	CXXFLAGS += -g -Wall -Wformat
@@ -102,7 +103,7 @@ endif
 %.o:%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:core/src/%.cpp
+%.o:../../core/src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(FREEIMAGE)/src/%.cpp

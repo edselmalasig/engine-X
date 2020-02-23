@@ -56,7 +56,7 @@ int main(int, char**)
 		printf("Initializing shaders and objects.\n");
 
     Model nanosuit = Model("resources/model/nanosuit/nanosuit.obj");
-    Shader nanosuitShader = Shader("resources/shader/model_loading.vs", "resources/shader/model_loading.fs");
+    Shader nanosuitShader = Shader("~/Desktop/dev/engine-X/resources/shader/model_loading.vs", "~/Desktop/dev/engine-X/resources/shader/model_loading.fs");
 
     nanosuitShader.use();
     //glEnable(GL_DEPTH_TEST);
