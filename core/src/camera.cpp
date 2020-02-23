@@ -17,7 +17,7 @@
 #include "camera.h"
 
 Camera::Camera(){
-    this->Position = glm::vec3(2.0f, 2.0f, 5.0f);
+    this->Position = glm::vec3(0.0f, 0.0f, 4.5f);
 		this->WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Up = glm::vec3(0.0f, 1.0f, 0.0f);
     this->Front = glm::vec3(0.0f, 0.0f, -1.0f);

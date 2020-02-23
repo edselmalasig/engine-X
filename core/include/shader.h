@@ -30,17 +30,17 @@ public:
          (std::ifstream::failbit | std::ifstream::badbit);
          try{
             // open files
-            std::cout << "Opening file." << std::endl;
+            std::cout << "Opening Shader file." << std::endl;
             vShaderFile.open  (vertexPath);
             fShaderFile.open(fragmentPath);
             std::stringstream vShaderStream, fShaderStream;
 
-            std::cout << "Reading file." << std::endl;
+            std::cout << "Reading Shader file." << std::endl;
             // read file's buffer contents into streams
             vShaderStream << vShaderFile.rdbuf();
             fShaderStream << fShaderFile.rdbuf();
 
-            std::cout << "Closing file." << std::endl;
+            std::cout << "Closing Shader file." << std::endl;
             // close file handlers
             vShaderFile.close();
             fShaderFile.close();

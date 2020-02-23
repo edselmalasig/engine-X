@@ -183,7 +183,7 @@ int main(int, char**)
         nanosuitShader.setMat4("projection", projection);
         nanosuitShader.setMat4("view", view);
 
-        model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, -1.55f, 0.0f));
         model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
         nanosuitShader.setMat4("model", model);
         nanosuit.Draw(nanosuitShader);
