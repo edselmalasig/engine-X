@@ -56,7 +56,7 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
      //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->lo_shader = new Shader("shaders/light_casters.vs", "shaders/light_casters.fs");
+     g_cube->lo_shader = new Shader("shaders/spotlight.vs", "shaders/spotlight.fs");
      g_cube->enable_shader();
      g_cube->init_cube_wntc();
      g_cube->init_texture(0, "textures/container2.png");
@@ -199,7 +199,11 @@ int main(int, char**)
           projection = glm::perspective(glm::radians(*gcwui_C->g_cnc->Zoom), (float)gcwui_C->display_w / (float)gcwui_C->display_h, cameraProp.x, cameraProp.y);
 
           g_cube->enable_shader();
-          g_cube->lo_shader->setVec3("light.position", cubelampPos);
+          g_cube->lo_shader->setVec3("light.position", *gcwui_C->g_cnc->getPositionVector());
+          g_cube->lo_shader->setVec3("light.direction", *gcwui_C->g_cnc->getFrontVector());
+          g_cube->lo_shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+          g_cube->lo_shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+
           g_cube->lo_shader->setVec3("viewPos", *gcwui_C->g_cnc->getPositionVector());
 
           g_cube->lo_shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);

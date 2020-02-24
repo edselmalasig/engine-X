@@ -2,9 +2,8 @@
 out vec4 FragColor;
 struct Material
 {
-     vec3 ambient;
-     vec3 diffuse;
-     vec3 specular;
+     sampler2D diffuse;
+     sampler2D specular;
      float shininess;
 };
 
@@ -14,10 +13,14 @@ vec3 position;
      vec3 ambient;
      vec3 diffuse;
      vec3 specular;
+     float constant;
+     float linear;
+     float quadratic;
 };
 
 in vec3 FragPos;
 in vec3 Normal;
+in vec2 TexCoords;
 
 uniform vec3 viewPos;
 uniform Material material;
@@ -43,9 +46,6 @@ void main(){
      ambient  *= attenuation;
      diffuse   *= attenuation;
      specular *= attenuation;
-
-     vec3 result = ambient + diffuse + specular;
-     FragColor = vec4(result, 1.0);
 
      vec3 result = ambient + diffuse + specular;
      FragColor = vec4(result, 1.0);
