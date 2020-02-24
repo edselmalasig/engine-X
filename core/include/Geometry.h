@@ -33,251 +33,297 @@
 class Geometry
 {
 public:
-  Geometry();
-  Geometry(float verts[]);
-  unsigned int VBO;
-  unsigned int VAO;
-  unsigned int EBO;
-  Shader * lo_shader;
+     Geometry();
+     Geometry(float verts[]);
+     unsigned int VBO;
+     unsigned int VAO;
+     unsigned int EBO;
+     Shader * lo_shader;
 
-  int vertexShader;
-  int fragmentShader;
-  int shaderProgram;
-  unsigned int texture[8];
-  FIBITMAP * textureFileIn;
+     int vertexShader;
+     int fragmentShader;
+     int shaderProgram;
+     unsigned int texture[8];
+     FIBITMAP * textureFileIn;
 
-  float triangle[18] = {
-      // positions         // colors
-       0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-      -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-       0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
+     float triangle[18] = {
+          // positions         // colors
+          0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
+          -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
+          0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
 
-  };
+     };
 
-  float vertices[32] = {
-      // positions          // colors           // texture coords
-       0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-       0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-      -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-      -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
-  };
+     float vertices[32] = {
+          // positions          // colors           // texture coords
+          0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+          0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+          -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+          -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+     };
 
-  unsigned int indices[6] = {
-      0, 1, 3,
-      1, 2, 3
-  };
+     unsigned int indices[6] = {
+          0, 1, 3,
+          1, 2, 3
+     };
 
-  float rectangle[12] = {
-       0.5f,  0.5f, 0.0f,  // top right
-       0.5f, -0.5f, 0.0f,  // bottom right
-      -0.5f, -0.5f, 0.0f,  // bottom left
-      -0.5f,  0.5f, 0.0f   // top left
-  };
+     float rectangle[12] = {
+          0.5f,  0.5f, 0.0f,  // top right
+          0.5f, -0.5f, 0.0f,  // bottom right
+          -0.5f, -0.5f, 0.0f,  // bottom left
+          -0.5f,  0.5f, 0.0f   // top left
+     };
 
-  unsigned int rectangle_ind[6] = {  // note that we start from 0!
-      0, 1, 3,  // first Triangle
-      1, 2, 3   // second Triangle
-  };
+     unsigned int rectangle_ind[6] = {  // note that we start from 0!
+          0, 1, 3,  // first Triangle
+          1, 2, 3   // second Triangle
+     };
 
-  float cube[108] = {
-		//back face
-	 0.5f, 0.5f, -0.5f,
-	 0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f,
-	 0.5f,  0.5f, -0.5f,
-	//front face
-	-0.5f, -0.5f,  0.5f,
-	 0.5f, -0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f,
+     float cube[108] = {
+          //back face
+          0.5f, 0.5f, -0.5f,
+          0.5f, -0.5f, -0.5f,
+          -0.5f, -0.5f, -0.5f,
+          -0.5f, -0.5f, -0.5f,
+          -0.5f,  0.5f, -0.5f,
+          0.5f,  0.5f, -0.5f,
+          //front face
+          -0.5f, -0.5f,  0.5f,
+          0.5f, -0.5f,  0.5f,
+          0.5f,  0.5f,  0.5f,
+          0.5f,  0.5f,  0.5f,
+          -0.5f,  0.5f,  0.5f,
+          -0.5f, -0.5f,  0.5f,
 
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	//left face
-	0.5f, -0.5f, 0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f,  0.5f, -0.5f,
-	0.5f,  0.5f, -0.5f,
-	0.5f,  0.5f,  0.5f,
-	0.5f,  -0.5f,  0.5f,
-	//bottom face
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f,  0.5f,
-	0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f, -0.5f,
-	//top face
-	-0.5f,  0.5f, -0.5f,
-	-0.5f,  0.5f, 0.5f,
-	0.5f,  0.5f,  0.5f,
-	0.5f,  0.5f,  0.5f,
-	0.5f,  0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f,
-  };
+          -0.5f,  0.5f,  0.5f,
+          -0.5f,  0.5f, -0.5f,
+          -0.5f, -0.5f, -0.5f,
+          -0.5f, -0.5f, -0.5f,
+          -0.5f, -0.5f,  0.5f,
+          -0.5f,  0.5f,  0.5f,
+          //left face
+          0.5f, -0.5f, 0.5f,
+          0.5f, -0.5f, -0.5f,
+          0.5f,  0.5f, -0.5f,
+          0.5f,  0.5f, -0.5f,
+          0.5f,  0.5f,  0.5f,
+          0.5f,  -0.5f,  0.5f,
+          //bottom face
+          -0.5f, -0.5f, -0.5f,
+          0.5f, -0.5f, -0.5f,
+          0.5f, -0.5f,  0.5f,
+          0.5f, -0.5f,  0.5f,
+          -0.5f, -0.5f,  0.5f,
+          -0.5f, -0.5f, -0.5f,
+          //top face
+          -0.5f,  0.5f, -0.5f,
+          -0.5f,  0.5f, 0.5f,
+          0.5f,  0.5f,  0.5f,
+          0.5f,  0.5f,  0.5f,
+          0.5f,  0.5f, -0.5f,
+          -0.5f,  0.5f, -0.5f,
+     };
 
-	float cube_wnml_fixed[180] = {
-    // Back face
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
-    // Front face
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
-    // Left face
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
-    // Right face
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
-    // Bottom face
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
-     0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
-    // Top face
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // bottom-left
-};
+     float cubey[216] =
+     {
+          -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          -0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 
-float cube_wnml[216] = {
-	//back face
- 0.5f, 0.5f, -0.5f,  0.0f,  0.0f,  -1.0f,
- 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
--0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
--0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
--0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
- 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+          0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          -0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          -0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 
-//front face
--0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
- 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
- 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
- 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
--0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
--0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
+          0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+          0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+          0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+          0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
+          0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
 
-//right face
--0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
--0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
--0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
--0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
--0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
--0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
-//left face
-0.5f, -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,
-0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-0.5f,  -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-//bottom face
--0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
--0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
--0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-//top face
--0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
--0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
--0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
+          -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+          -0.5f, -0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
+          -0.5f,  0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
+          -0.5f,  0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
+          -0.5f,  0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+          -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
 
-float cubey[216] =
-{
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-	 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-	 0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-	 0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-	-0.5f,  0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+          -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+          0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+          0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+          0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+          -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+          -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
 
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+          -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+          0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+          0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+          0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+          -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+          -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f
+     };
 
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
+     float cube_wnml_fixed[180] = {
+          // Back face
+          -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+          0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+          -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+          // Front face
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+          0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+          0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+          -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+          // Left face
+          -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+          -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+          -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+          // Right face
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+          0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+          0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+          0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+          // Bottom face
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+          0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+          // Top face
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+          -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // bottom-left
+     };
 
-	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, -1.0f, 0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+     float cube_wnml[216] = {
+          //back face
+          0.5f, 0.5f, -0.5f,  0.0f,  0.0f,  -1.0f,
+          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+          0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-	-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-	-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+          //front face
+          -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-	0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
-	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-	-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f
-};
+          //right face
+          -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
+          -0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
+          -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
+          -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
+          -0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
+          -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
+          //left face
+          0.5f, -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,
+          0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+          0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+          0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+          0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+          0.5f,  -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+          //bottom face
+          -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+          0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+          0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+          0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+          //top face
+          -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+          -0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+          0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+     };
 
-  void init_triangle();
-  void init_cube();
-	void init_cube_wnml();
-	void init_cube_wnml_fixed();
-  void init_object();
-  void init_texture(int i, char * texturefpath);
+     float cube_wntc[288] = {
+          // positions          // normals           // texture coords
+          0.5f, 0.5f, -0.5f,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,
+          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+          0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
+          -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  0.0f,  0.0f,
+          0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  1.0f,  0.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  1.0f,  1.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  1.0f,  1.0f,
+          -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  0.0f,  1.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  0.0f,  0.0f,
 
-  void enable_shader();
+          -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+          -0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+          -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+          -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+          -0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+          -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-  void draw_triangle();
-	void draw_cube();
-  void draw_object();
+          0.5f, -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+          0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+          0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+          0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+          0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+          0.5f,  -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-  void renderTexLayer(int i);
-  void delete_object();
+          -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+          0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+          0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+          0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+          -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+          -0.5f,  0.5f, 0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+          0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+     };
+
+     void init_triangle();
+     void init_cube();
+     void init_cube_wntc();
+     void init_cube_wnml();
+     void init_cube_wnml_fixed();
+     void init_object();
+     void init_texture(int i, char * texturefpath);
+
+     void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
+
+     void enable_shader();
+
+     void draw_triangle();
+     void draw_cube();
+     void draw_object();
+
+     void renderTexLayer(int i);
+     void delete_object();
 };
 
 #endif

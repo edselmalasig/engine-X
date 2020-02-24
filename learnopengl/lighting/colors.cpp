@@ -55,12 +55,12 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
 
-     g_cube->lo_shader = new Shader("colors_lighting.vs", "colors_lighting.fs");
+     g_cube->lo_shader = new Shader("shaders/colors_lighting.vs", "shaders/colors_lighting.fs");
      g_cube->enable_shader();
      g_cube->init_cube();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("lampshader.vs", "lampshader.fs");
+     g_cubelamp->lo_shader = new Shader("shaders/lampshader.vs", "shaders/lampshader.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube_wnml();
 
