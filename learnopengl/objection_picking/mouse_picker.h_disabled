@@ -1,0 +1,81 @@
+// mouse picker class
+
+#ifndef MOUSE_PICKER_H
+#define MOUSE_PICKER_H
+
+#include "camera.h"
+#include "initialize.h"
+// Include glfw3.h after our OpenGL definitions
+#include <GLFW/glfw3.h>
+
+
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include "glm/ext.hpp"
+
+class MousePicker
+{
+public:
+     glm::vec3 currentRay;
+     glm::mat4 projectionMatrix;
+     glm::mat4 viewMatrix;
+     Camera camera;
+     double mousePosX, mousePosY;
+
+     MousePicker(Camera cam, glm::mat4 projection){
+          camera = cam;
+          projectionMatrix = projection;
+          viewMatrix = camera.processViewMatrix();
+
+     }
+
+     glm::vec3 getCurrentRay()
+     {
+          return currentRay;
+     }
+
+     void update()
+     {
+          viewMatrix = camera.processViewMatrix();
+          currentRay = calculateMouseRay();
+          std::cout << mousePosX << " " << mousePosY << " :: " << currentRay.x << " " << currentRay.y << " " << currentRay.z << std::endl;
+     }
+
+     glm::vec3 calculateMouseRay()
+     {
+          glfwGetCursorPos(gcwui_C->window, &mousePosX, &mousePosY);
+
+          glm::vec2 normilzedCoordinates = getNormailzedDeviceCoords(mousePosX, mousePosY);
+          glm::vec4 clipCoords  = glm::vec4(normilzedCoordinates.x, normilzedCoordinates.y, -1.0f, 1.0f);
+          glm::vec4 eyeCoords = to_eyeCoords(clipCoords);
+          glm::vec3 worldRay = to_worldCoords(eyeCoords);
+          return worldRay;
+     }
+
+     glm::vec3 to_worldCoords(glm::vec4 eyeCoords)
+     {
+          glm::mat4 invertedView = glm::inverse(viewMatrix);
+          glm::vec4 rayWorld = invertedView * eyeCoords;
+          glm::vec3 mouseRay = glm::vec3(rayWorld.x, rayWorld.y, rayWorld.z);
+          mouseRay = glm::normalize(mouseRay);
+          return mouseRay;
+     }
+
+     glm::vec4 to_eyeCoords(glm::vec4 clipCoords)
+     {
+          glm::mat4 invertedProjection = glm::inverse(projectionMatrix);
+          glm::vec4 eyeCoords = invertedProjection * clipCoords;
+          return glm::vec4(eyeCoords.x, eyeCoords.y, -1.0f, 0.0f);
+     }
+
+     glm::vec2 getNormailzedDeviceCoords(float mouseX, float mouseY)
+     {
+          float x = (2.0f * mouseX) / gcwui_C->display_w - 1;
+          float y = (2.0f * mouseY) / gcwui_C->display_h - 1;
+          return glm::vec2(x, y);
+     }
+};
+
+#endif

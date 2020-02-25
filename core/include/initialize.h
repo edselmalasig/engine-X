@@ -30,11 +30,6 @@
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
-
-
 gcwuiControls * gcwui_C = new gcwuiControls();
 
 static void glfw_error_callback(int error, const char* description)
@@ -241,18 +236,18 @@ void rotateView()
     double xpos, ypos;
     glfwGetCursorPos(gcwui_C->window, &xpos, &ypos);
     //printf("Mouse pos: %f %f\n", xpos, ypos);
-    if(gcwui_C->g_cnc->firstMouse)
+    if(gcwui_C->g_cnc->firstMouseClick)
     {
-        gcwui_C->g_cnc->lastX = xpos;
-        gcwui_C->g_cnc->lastY = ypos;
-        gcwui_C->g_cnc->firstMouse = false;
+        gcwui_C->g_cnc->lastMouseXPosition = xpos;
+        gcwui_C->g_cnc->lastMouseYPosition = ypos;
+        gcwui_C->g_cnc->firstMouseClick = false;
     }
 
-    GLfloat xoffset = xpos - gcwui_C->g_cnc->lastX;
-    GLfloat yoffset = gcwui_C->g_cnc->lastY - ypos;  // Reversed since y-coordinates go from bottom to left
+    GLfloat xoffset = xpos - gcwui_C->g_cnc->lastMouseXPosition;
+    GLfloat yoffset = gcwui_C->g_cnc->lastMouseYPosition - ypos;  // Reversed since y-coordinates go from bottom to left
 
-    gcwui_C->g_cnc->lastX = xpos;
-    gcwui_C->g_cnc->lastY = ypos;
+    gcwui_C->g_cnc->lastMouseXPosition = xpos;
+    gcwui_C->g_cnc->lastMouseYPosition = ypos;
 
     gcwui_C->g_cnc->ProcessMouseMovement(xoffset, yoffset, true);
 }
@@ -262,35 +257,35 @@ void panView()
     double xpos, ypos;
     glfwGetCursorPos(gcwui_C->window, &xpos, &ypos);
     //printf("Mouse pos: %f %f\n", xpos, ypos);
-    if(gcwui_C->g_cnc->firstMouse)
+    if(gcwui_C->g_cnc->firstMouseClick)
     {
-        gcwui_C->g_cnc->lastX = xpos;
-        gcwui_C->g_cnc->lastY = ypos;
-        gcwui_C->g_cnc->firstMouse = false;
+        gcwui_C->g_cnc->lastMouseXPosition = xpos;
+        gcwui_C->g_cnc->lastMouseYPosition = ypos;
+        gcwui_C->g_cnc->firstMouseClick = false;
     }
 
-    //GLfloat xoffset = xpos - gcwui_C->g_cnc->lastX;
-    //GLfloat yoffset = gcwui_C->g_cnc->lastY - ypos;
+    //GLfloat xoffset = xpos - gcwui_C->g_cnc->lastMouseXPosition;
+    //GLfloat yoffset = gcwui_C->g_cnc->lastMouseYPosition - ypos;
 
-    if(xpos > gcwui_C->g_cnc->lastX)
+    if(xpos > gcwui_C->g_cnc->lastMouseXPosition)
     {
         gcwui_C->g_cnc->ProcessKeyboard(LEFT, gcwui_C->g_cnc->deltaTime);
     }
-    else if(xpos < gcwui_C->g_cnc->lastX)
+    else if(xpos < gcwui_C->g_cnc->lastMouseXPosition)
     {
         gcwui_C->g_cnc->ProcessKeyboard(RIGHT, gcwui_C->g_cnc->deltaTime);
     }
 
-    if(ypos > gcwui_C->g_cnc->lastY)
+    if(ypos > gcwui_C->g_cnc->lastMouseYPosition)
     {
         gcwui_C->g_cnc->ProcessKeyboard(DOWNWARD, gcwui_C->g_cnc->deltaTime);
     }
-    else if(ypos < gcwui_C->g_cnc->lastY)
+    else if(ypos < gcwui_C->g_cnc->lastMouseYPosition)
     {
         gcwui_C->g_cnc->ProcessKeyboard(UPWARD, gcwui_C->g_cnc->deltaTime);
     }
-    gcwui_C->g_cnc->lastX = xpos;
-    gcwui_C->g_cnc->lastY = ypos;
+    gcwui_C->g_cnc->lastMouseXPosition = xpos;
+    gcwui_C->g_cnc->lastMouseYPosition = ypos;
 
     //reshapeFunc(gcwui_C->display_w, gcwui_C->display_h);
 
@@ -307,7 +302,7 @@ GLFWmousebuttonfun mouseButtonFunc( GLFWwindow * window, int button, int action,
     if(button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE)
     {
         //printf("MMB Released.\n");
-        gcwui_C->g_cnc->firstMouse = true;
+        gcwui_C->g_cnc->firstMouseClick = true;
     }
 	return (GLFWmousebuttonfun)1;
 

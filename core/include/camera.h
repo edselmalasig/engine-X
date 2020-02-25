@@ -32,12 +32,11 @@ class Camera
 public:
     GLfloat deltaTime = 0.1f;
     GLfloat lastFrame = 0.0f;
-    bool keys[1024];
-    GLfloat lastX = 400, lastY = 300;
-    bool firstMouse = true;
-    int t=0;
-    glm::mat4 view;
-    // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
+
+    GLfloat lastMouseXPosition = 400;
+    GLfloat lastMouseYPosition = 300;
+
+    bool firstMouseClick = true;
 
     // Camera Attributes
     glm::vec3 Position;
