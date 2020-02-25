@@ -5,10 +5,6 @@
 //Use middle mouse button to reorient view
 //Use WASD to walk through scene
 
-/*
-
-*/
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
