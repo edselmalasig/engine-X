@@ -179,16 +179,45 @@ int main(int, char**)
           nanosuitShader.setMat4("model", model);
           nanosuit.Draw(nanosuitShader);
 
-          glm::vec3 v1, v2;
-		Get3DRayUnderMouse(&v1, &v2);
-          bool selectionBool = RaySphereCollision(glm::vec3(0.0f, 0.0f, 0.0f), 0.5f, v1, v2);
+          model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+
+          bool selectionBool = false;
+          /*{
+               glm::vec3 v1, v2;
+               Get3DRayUnderMouse(&v1, &v2);
+               selectionBool = RaySphereCollision(glm::vec3(0.0f, 0.0f, 0.0f), 0.5f, v1, v2);
+          }*/
+
+          {
+               double mousePosX, mousePosY;
+               glfwGetCursorPos(gcwui_C->window, &mousePosX, &mousePosY);
+
+               glm::vec3 ray_origin;
+               glm::vec3 ray_direction;
+
+               ScreenPosToWorldRay(
+                    mousePosX, mousePosY,
+                    gcwui_C->display_w, gcwui_C->display_h,
+                    view, projection,
+                    ray_origin, ray_direction
+               );
+               float intersection_distance;
+               glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
+               glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f);
+               selectionBool = TestRayOBBIntersection(
+                                                       ray_origin,
+                                                       ray_direction,
+                                                       aabb_min,
+                                                       aabb_max,
+                                                       model,
+                                                       intersection_distance
+                                                  );
+          }
 
           if ( selectionBool )
-               std::cout << "nanosuit has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
+          std::cout << "nanosuit has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
           else
-               std::cout << "nothing has been picked. " << std::endl;//mousePosX << " " << mousePosY << std::endl;
-
-
+          std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
 
           //draw_object(lo_rectangle);
           if(gcwui_C->show_ui == true)

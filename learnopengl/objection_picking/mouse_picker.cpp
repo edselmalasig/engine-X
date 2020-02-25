@@ -1,2 +1,0 @@
-
-// mouse picker class
