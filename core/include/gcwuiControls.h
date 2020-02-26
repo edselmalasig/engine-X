@@ -16,7 +16,7 @@ class gcwuiControls
 {
 public:
     gcwuiControls();
-
+    gcwuiControls(Camera &cam);
     //GLFW Variables
     char glsl_version[50];
     int display_w;
@@ -30,7 +30,7 @@ public:
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     //camera and controls
-    Camera * g_cnc;
+    Camera * camera;
     bool isPressing = false;
 
     // mouse interface

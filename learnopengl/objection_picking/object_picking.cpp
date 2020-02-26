@@ -9,11 +9,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imguistyleserializer.h"
-#include "initialize.h"
+#include "engineX.h"
 #include "Geometry.h"
 #include "Model.h"
-
-#include "mouse_picker.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -32,15 +30,20 @@ int main(int, char**)
 {
      printf("Initializing.\n");
 
-     init_glfw();
+     //initialize the Camera class
+     int fbWidth = 1920;
+     int fbHeight = 1080;
+     Camera camera = Camera(fbWidth, fbHeight);
+     EngineX * engineX = new EngineX(&camera);
 
-     init_ImGui();
+     engineX->init_glfw();
+     engineX->init_ImGui();
 
      glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
-     glm::vec3 * cameraPosition = gcwui_C->g_cnc->getPositionVector();
-     glm::vec3 * cameraFront = gcwui_C->g_cnc->getFrontVector();
-     glm::vec3 * cameraHeadsUp = gcwui_C->g_cnc->getHeadsUpVector();
-     glm::vec3 cameraProp( 0.1f, 100.0f, *gcwui_C->g_cnc->Zoom);
+     glm::vec3 * cameraPosition = engineX->camera->getPositionVector();
+     glm::vec3 * cameraFront = engineX->camera->getFrontVector();
+     glm::vec3 * cameraHeadsUp = engineX->camera->getHeadsUpVector();
+     glm::vec3 cameraProp( 0.1f, 100.0f, *engineX->camera->Zoom);
 
      printf("Starting main loop.\n");
      //---------------------------------------
@@ -59,7 +62,7 @@ int main(int, char**)
      nanosuitShader.use();
 
      printf("glfw main loop.\n");
-     while (!glfwWindowShouldClose(gcwui_C->window))
+     while (!glfwWindowShouldClose(engineX->window))
      {
           // Poll and handle events (inputs, window resize, etc.)
           // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -72,8 +75,8 @@ int main(int, char**)
           // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
           // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
           GLfloat currentFrame = (GLfloat) glfwGetTime();
-          gcwui_C->g_cnc->deltaTime = currentFrame - gcwui_C->g_cnc->lastFrame;
-          gcwui_C->g_cnc->lastFrame = currentFrame;
+          engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
+          engineX->camera->lastFrame = currentFrame;
 
           glfwPollEvents();
 
@@ -114,8 +117,8 @@ int main(int, char**)
                     ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
                     ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
 
-                    ImGui::DragFloat("degrees Yaw", &gcwui_C->g_cnc->Yaw, 0.1f);
-                    ImGui::DragFloat("degrees Pitch", &gcwui_C->g_cnc->Pitch, 0.1f);
+                    ImGui::DragFloat("degrees Yaw", &engineX->camera->Yaw, 0.1f);
+                    ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
 
                     ImGui::Text("\n");
                     ImGui::Text("Please modify the current style in:");
@@ -147,9 +150,9 @@ int main(int, char**)
                ImGui::Render();
           }
 
-          glfwMakeContextCurrent(gcwui_C->window);
-          glfwGetFramebufferSize(gcwui_C->window, &gcwui_C->display_w, &gcwui_C->display_h);
-          glViewport(0, 0, gcwui_C->display_w, gcwui_C->display_h);
+          glfwMakeContextCurrent(engineX->window);
+          glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
+          glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
           glEnable(GL_DEPTH_TEST);
 
@@ -157,15 +160,15 @@ int main(int, char**)
           glEnable(GL_CULL_FACE);
           glCullFace(GL_BACK);
 
-          gcwui_C->g_cnc->computeMatricesFromInputs();
+          engineX->camera->computeMatricesFromInputs();
 
           // create transformations
           glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
           glm::mat4 view          = glm::mat4(1.0f);
           glm::mat4 projection    = glm::mat4(1.0f);
 
-          view = gcwui_C->g_cnc->processViewMatrix();
-          projection = glm::perspective(glm::radians(*gcwui_C->g_cnc->Zoom), (float)gcwui_C->display_w / (float)gcwui_C->display_h, cameraProp.x, cameraProp.y);
+          view = engineX->camera->processViewMatrix();
+          projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
           nanosuitShader.setMat4("projection", projection);
           nanosuitShader.setMat4("view", view);
@@ -178,29 +181,33 @@ int main(int, char**)
           model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
           bool selectionBool = false;
-          /*{
+/*
+          {
                glm::vec3 v1, v2;
-               Get3DRayUnderMouse(&v1, &v2);
-               selectionBool = RaySphereCollision(glm::vec3(0.0f, 0.0f, 0.0f), 0.5f, v1, v2);
-          }*/
-
+               engineX->Get3DRayUnderMouse(&v1, &v2);
+               selectionBool = engineX->RaySphereCollision(glm::vec3(0.0f, 0.0f, 0.0f), 0.5f, v1, v2);
+          }
+*/
           {
                double mousePosX, mousePosY;
-               glfwGetCursorPos(gcwui_C->window, &mousePosX, &mousePosY);
+               glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
+               //std::cout << engineX->window_w << " " << engineX->window_h << " " << mousePosX << " " << mousePosY << std::endl;
+               //mousePosX = engineX->window_w + mousePosX - engineX->window_w;
+               //mousePosY = engineX->window_h + mousePosY - engineX->window_h;
 
                glm::vec3 ray_origin;
                glm::vec3 ray_direction;
 
-               ScreenPosToWorldRay(
+               engineX->ScreenPosToWorldRay(
                     mousePosX, mousePosY,
-                    gcwui_C->display_w, gcwui_C->display_h,
+                    1920, 1080,
                     view, projection,
                     ray_origin, ray_direction
                );
                float intersection_distance;
                glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
                glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f);
-               selectionBool = TestRayOBBIntersection(
+               selectionBool = engineX->RayAABBIntersection(
                                                        ray_origin,
                                                        ray_direction,
                                                        aabb_min,
@@ -216,11 +223,11 @@ int main(int, char**)
           std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
 
           //draw_object(lo_rectangle);
-          if(gcwui_C->show_ui == true)
+          if(EngineX::show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-          glfwMakeContextCurrent(gcwui_C->window);
-          glfwSwapBuffers(gcwui_C->window);
+          glfwMakeContextCurrent(engineX->window);
+          glfwSwapBuffers(engineX->window);
      }
 
      // Cleanup
@@ -230,7 +237,7 @@ int main(int, char**)
 
      //delete_object(lo_rectangle);
 
-     glfwDestroyWindow(gcwui_C->window);
+     glfwDestroyWindow(engineX->window);
      glfwTerminate();
 
      return 0;

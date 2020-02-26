@@ -9,7 +9,14 @@
 
 gcwuiControls::gcwuiControls()
 {
-    g_cnc = new Camera();
-    this->display_w = this->g_cnc->display_w;
-    this->display_h = this->g_cnc->display_h;
+     this->camera = new Camera();
+     this->display_w = this->g_cnc->display_w;
+     this->display_h = this->g_cnc->display_h;
+}
+
+gcwuiControls::gcwuiControls(Camera &cam)
+{
+     this->camera = cam;
+     this->display_w = this->g_cnc->display_w;
+     this->display_h = this->g_cnc->display_h;
 }
