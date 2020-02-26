@@ -1,4 +1,4 @@
-#include "engineX.h"
+#include "EngineX.h"
 
 int EngineX::window_w;
 int EngineX::window_h;
@@ -421,7 +421,7 @@ void EngineX::init_glfw()
      // GL 3.0 + GLSL 130
      strcpy(glsl_version ,"#version 330 core");
      glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-     GLFWWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
      //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
      //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
      #endif

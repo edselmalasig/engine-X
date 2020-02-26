@@ -223,7 +223,7 @@ int main(int, char**)
                std::cout << "engine-X[running]" << std::endl;
 
           //draw_object(lo_rectangle);
-          if(show_ui == true)
+          if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
           glfwMakeContextCurrent(engineX->window);
