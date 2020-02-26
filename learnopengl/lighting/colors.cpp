@@ -13,7 +13,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imguistyleserializer.h"
-#include "initialize.h"
+#include "EngineX.h"
 #include "Geometry.h"
 
 
@@ -32,15 +32,21 @@ int main(int, char**)
 {
      printf("Initializing.\n");
 
-     init_glfw();
+     //initialize the Camera class
+     int fbWidth = 1920;
+     int fbHeight = 1080;
+     Camera camera = Camera(fbWidth, fbHeight);
+     EngineX * engineX = new EngineX(&camera);
 
-     init_ImGui();
+     engineX->init_glfw();
+     engineX->init_ImGui();
+
 
      glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
-     glm::vec3 * cameraPosition = gcwui_C->g_cnc->getPositionVector();
-     glm::vec3 * cameraFront = gcwui_C->g_cnc->getFrontVector();
-     glm::vec3 * cameraHeadsUp = gcwui_C->g_cnc->getHeadsUpVector();
-     glm::vec3 cameraProp( 0.1f, 100.0f, *gcwui_C->g_cnc->Zoom);
+     glm::vec3 * cameraPosition = engineX->camera->getPositionVector();
+     glm::vec3 * cameraFront = engineX->camera->getFrontVector();
+     glm::vec3 * cameraHeadsUp = engineX->camera->getHeadsUpVector();
+     glm::vec3 cameraProp( 0.1f, 100.0f, *engineX->camera->Zoom);
 
      printf("Starting main loop.\n");
      //---------------------------------------
@@ -67,7 +73,7 @@ int main(int, char**)
      glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
      printf("glfw main loop.\n");
-     while (!glfwWindowShouldClose(gcwui_C->window))
+     while (!glfwWindowShouldClose(engineX->window))
      {
           // Poll and handle events (inputs, window resize, etc.)
           // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -80,8 +86,8 @@ int main(int, char**)
           // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
           // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
           GLfloat currentFrame = (GLfloat) glfwGetTime();
-          gcwui_C->g_cnc->deltaTime = currentFrame - gcwui_C->g_cnc->lastFrame;
-          gcwui_C->g_cnc->lastFrame = currentFrame;
+          engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
+          engineX->camera->lastFrame = currentFrame;
 
           glfwPollEvents();
 
@@ -152,9 +158,9 @@ int main(int, char**)
                ImGui::Render();
           }
 
-          glfwMakeContextCurrent(gcwui_C->window);
-          glfwGetFramebufferSize(gcwui_C->window, &gcwui_C->display_w, &gcwui_C->display_h);
-          glViewport(0, 0, gcwui_C->display_w, gcwui_C->display_h);
+          glfwMakeContextCurrent(engineX->window);
+          glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
+          glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
           glEnable(GL_DEPTH_TEST);
 
@@ -162,17 +168,17 @@ int main(int, char**)
           glEnable(GL_CULL_FACE);
           glCullFace(GL_BACK);
 
-          gcwui_C->g_cnc->computeMatricesFromInputs();
+          engineX->camera->computeMatricesFromInputs();
 
           // create transformations
           glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
           glm::mat4 view          = glm::mat4(1.0f);
           glm::mat4 projection    = glm::mat4(1.0f);
 
-          //view  = s_gcw_UIC->g_cnc->getViewMatrix();
+          //view  = s_gcw_UIC->camera->getViewMatrix();
 
-          view = gcwui_C->g_cnc->processViewMatrix();
-          projection = glm::perspective(glm::radians(*gcwui_C->g_cnc->Zoom), (float)gcwui_C->display_w / (float)gcwui_C->display_h, cameraProp.x, cameraProp.y);
+          view = engineX->camera->processViewMatrix();
+          projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
           g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
           g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
@@ -192,11 +198,11 @@ int main(int, char**)
           g_cubelamp->lo_shader->setMat4("model", model);
           g_cubelamp->draw_cube();
 
-          if(gcwui_C->show_ui == true)
+          if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-          glfwMakeContextCurrent(gcwui_C->window);
-          glfwSwapBuffers(gcwui_C->window);
+          glfwMakeContextCurrent(engineX->window);
+          glfwSwapBuffers(engineX->window);
      }
 
      // Cleanup
@@ -207,7 +213,7 @@ int main(int, char**)
      //delete_object(lo_rectangle);
      g_cube->delete_object();
 
-     glfwDestroyWindow(gcwui_C->window);
+     glfwDestroyWindow(engineX->window);
      glfwTerminate();
 
      return 0;

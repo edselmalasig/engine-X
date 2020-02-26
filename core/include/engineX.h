@@ -7,7 +7,6 @@
 #include "imguistyleserializer.h"
 
 #include "camera.h"
-#include "gcwuiControls.h"
 
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>

@@ -9,7 +9,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imguistyleserializer.h"
-#include "engineX.h"
+#include "EngineX.h"
 #include "Geometry.h"
 #include "Model.h"
 
@@ -218,12 +218,12 @@ int main(int, char**)
           }
 
           if ( selectionBool )
-          std::cout << "nanosuit has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
+               std::cout << "nanosuit has been picked. " << std::endl;
           else
-          std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
+               std::cout << "engine-X[running]" << std::endl;
 
           //draw_object(lo_rectangle);
-          if(EngineX::show_ui == true)
+          if(show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
           glfwMakeContextCurrent(engineX->window);
