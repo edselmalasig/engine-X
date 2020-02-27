@@ -46,8 +46,8 @@ void EngineX::init_ImGui( )
      // - Read 'misc/fonts/README.txt' for more instructions and details.
      // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
 
-     io.Fonts->AddFontDefault();
-     //io.Fonts->AddFontFromFileTTF("resources/SSFDisplayRegular.ttf", 12.0f);
+     //io.Fonts->AddFontDefault();
+     io.Fonts->AddFontFromFileTTF("resources/SSFDisplayRegular.ttf", 14.0f);
 
      //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
      //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
