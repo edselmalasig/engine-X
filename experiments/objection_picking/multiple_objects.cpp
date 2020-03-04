@@ -224,6 +224,7 @@ int main(int, char**)
           model = glm::mat4(1.0f);
           g_cube->lo_shader->setMat4("model", model);
 
+
           for (unsigned int i = 0; i < 10; i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
@@ -235,33 +236,32 @@ int main(int, char**)
 
                g_cube->renderTexLayer(1);
                g_cube->draw_cube();
-          }
 
-          model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
-          bool selectionBool = false;
-          /*{
-               glm::vec3 v1, v2;
-               engineX->Get3DRayUnderMouse(&v1, &v2);
-               selectionBool = engineX->RaySphereCollision(glm::vec3(0.0f, 0.0f, 0.0f), 0.5f, v1, v2);
-          }*/
+               bool selectionBool = false;
 
-          {
                double mousePosX, mousePosY;
                glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
+/*
+               glm::vec3 v1, v2;
+               engineX->Get3DRayUnderMouse(&v1, &v2);
+               selectionBool = engineX->RaySphereCollision(cubePositions[i], 0.5f, v1, v2);
+*/
 
                glm::vec3 ray_origin;
                glm::vec3 ray_direction;
-
+               /*
                engineX->ScreenPosToWorldRay(
                     mousePosX, mousePosY,
                     engineX->window_w, engineX->window_h,
                     view, projection,
                     ray_origin, ray_direction
                );
+               */
+               engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
                float intersection_distance;
-               glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
-               glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f);
+               glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
+               glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
                selectionBool = engineX->RayAABBIntersection(
                                                        ray_origin,
                                                        ray_direction,
@@ -270,12 +270,16 @@ int main(int, char**)
                                                        model,
                                                        intersection_distance
                                                   );
+
+               if ( selectionBool )
+               std::cout << "container " << i << " has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
+               else
+               std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
           }
 
-          if ( selectionBool )
-          std::cout << "container has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
-          else
-          std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
+
+
+          model = glm::mat4(1.0f);
 
           g_cubelamp->enable_shader();
           g_cubelamp->lo_shader->setMat4("projection", projection);
