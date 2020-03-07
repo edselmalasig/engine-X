@@ -1,0 +1,13 @@
+# ignore source obj
+*.o
+*.a
+*.out
+
+# ignore ini files
+*.ini
+
+# ignore log files
+*.log
+
+#ignore DSSTORE
+.DS_Store

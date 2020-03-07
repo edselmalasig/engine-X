@@ -67,7 +67,7 @@ public:
           1, 2, 3
      };
 
-     float rectangle[12] = {
+     float quadrangle[12] = {
           0.5f,  0.5f, 0.0f,  // top right
           0.5f, -0.5f, 0.0f,  // bottom right
           -0.5f, -0.5f, 0.0f,  // bottom left
