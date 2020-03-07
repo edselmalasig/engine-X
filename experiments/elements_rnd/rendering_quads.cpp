@@ -93,19 +93,13 @@ int main(int, char**)
           glm::vec3(-1.3f,  1.0f, -1.5f)
      };
 
+     // variables for selected objects.
+     std::string selectedType = "container";
+     int selectedIndex = -2;
+
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
      {
-          // Poll and handle events (inputs, window resize, etc.)
-          // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-          // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-          // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-          // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-          // Poll and handle events (inputs, window resize, etc.)
-          // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-          // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-          // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-          // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
           GLfloat currentFrame = (GLfloat) glfwGetTime();
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
@@ -113,6 +107,17 @@ int main(int, char**)
           glfwPollEvents();
 
           {
+               // Poll and handle events (inputs, window resize, etc.)
+               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+               // Poll and handle events (inputs, window resize, etc.)
+               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+
                // Start the Dear ImGui frame
                ImGui_ImplOpenGL3_NewFrame();
                ImGui_ImplGlfw_NewFrame();
@@ -151,6 +156,11 @@ int main(int, char**)
 
                     ImGui::DragFloat("degrees Yaw", &engineX->camera->Yaw, 0.1f);
                     ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
+
+                    if( selectedIndex > -1)
+                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+                    else
+                         ImGui::Text("Selection: none");
 
                     ImGui::Text("\n");
                     ImGui::Text("Please modify the current style in:");
@@ -224,6 +234,7 @@ int main(int, char**)
           model = glm::mat4(1.0f);
           g_cube->lo_shader->setMat4("model", model);
 
+          bool reprint = true;
           for (unsigned int i = 0; i < 10; i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
@@ -240,42 +251,41 @@ int main(int, char**)
 
 
                bool selectionBool = false;
-
                double mousePosX, mousePosY;
-               glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
-/*
-               glm::vec3 v1, v2;
-               engineX->Get3DRayUnderMouse(&v1, &v2);
-               selectionBool = engineX->RaySphereCollision(cubePositions[i], 0.5f, v1, v2);
-*/
+               int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
+               if(mousestate == GLFW_PRESS)
+               {
+                    glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
+                    glm::vec3 ray_origin;
+                    glm::vec3 ray_direction;
 
-               glm::vec3 ray_origin;
-               glm::vec3 ray_direction;
-               /*
-               engineX->ScreenPosToWorldRay(
-                    mousePosX, mousePosY,
-                    engineX->window_w, engineX->window_h,
-                    view, projection,
-                    ray_origin, ray_direction
-               );
-               */
-               engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
-               float intersection_distance;
-               glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
-               glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
-               selectionBool = engineX->RayAABBIntersection(
-                                                       ray_origin,
-                                                       ray_direction,
-                                                       aabb_min,
-                                                       aabb_max,
-                                                       model,
-                                                       intersection_distance
-                                                  );
+                    engineX->ScreenPosToWorldRay(
+                         mousePosX, mousePosY,
+                         fbWidth, fbHeight,
+                         view, projection,
+                         ray_origin, ray_direction
+                    );
 
-               if ( selectionBool )
-               std::cout << "container " << i << " has been picked. " << std::endl;// << mousePosX << " " << mousePosY << std::endl;
-               else
-               std::cout << "engine-X[running]" << std::endl;//mousePosX << " " << mousePosY << std::endl;
+                    //engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
+                    float intersection_distance;
+                    glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
+                    glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
+                    selectionBool = engineX->RayAABBIntersection(
+                                                            ray_origin,
+                                                            ray_direction,
+                                                            aabb_min,
+                                                            aabb_max,
+                                                            model,
+                                                            intersection_distance
+                                                       );
+
+                    if ( selectionBool ){
+                         selectedIndex = i;
+                         selectedType = "container";
+                         //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
+                    }
+               }
+
           }
 
 
@@ -292,7 +302,6 @@ int main(int, char**)
           g_cubelamp->lo_shader->setMat4("model", model);
           g_cubelamp->draw_cube(GL_TRIANGLES);
 
-          //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

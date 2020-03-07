@@ -39,7 +39,7 @@ public:
      static int window_h;
      static GLFWwindow* window;
 
-     //ImGuiIO * io = NULL;
+     // imgui variables
      bool show_demo_window;
      bool show_another_window;
      static bool show_ui;
@@ -74,7 +74,6 @@ public:
      *
      */
      void Get3DRayUnderMouse(glm::vec3* v1, glm::vec3* v2);
-     bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB);
      void ScreenPosToWorldRay(
      	int mouseX, int mouseY,             // Mouse position, in pixels, from bottom-left corner of the window
      	int screenWidth, int screenHeight,  // Window size, in pixels
@@ -91,6 +90,8 @@ public:
      	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
      	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
      );
+     bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB);
+
 };
 
 #endif
