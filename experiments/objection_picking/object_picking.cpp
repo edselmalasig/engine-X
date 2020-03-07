@@ -176,7 +176,7 @@ int main(int, char**)
           model = glm::translate(model, glm::vec3(0.0f, -1.55f, 0.0f));
           model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
           nanosuitShader.setMat4("model", model);
-          nanosuit.Draw(nanosuitShader);
+          nanosuit.Draw(nanosuitShader, GL_TRIANGLES);
 
           model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 

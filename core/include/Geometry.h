@@ -319,7 +319,7 @@ public:
      void enable_shader();
 
      void draw_triangle();
-     void draw_cube();
+     void draw_cube(GLenum mode);
      void draw_object();
 
      void renderTexLayer(int i);

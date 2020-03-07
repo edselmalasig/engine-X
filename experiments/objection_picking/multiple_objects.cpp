@@ -224,7 +224,6 @@ int main(int, char**)
           model = glm::mat4(1.0f);
           g_cube->lo_shader->setMat4("model", model);
 
-
           for (unsigned int i = 0; i < 10; i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
@@ -234,8 +233,10 @@ int main(int, char**)
                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
                g_cube->lo_shader->setMat4("model", model);
 
-               g_cube->renderTexLayer(1);
-               g_cube->draw_cube();
+               //g_cube->renderTexLayer(1);
+               glPointSize(7.0f);
+               g_cube->draw_cube(GL_POINTS);
+               g_cube->draw_cube(GL_TRIANGLES);
 
 
                bool selectionBool = false;
@@ -289,7 +290,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->lo_shader->setMat4("model", model);
-          g_cubelamp->draw_cube();
+          g_cubelamp->draw_cube(GL_TRIANGLES);
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
