@@ -1,13 +1,8 @@
 // dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
 
 //Use middle mouse button to rotate view
 //Use WASD to walk through scene
-
-/*
-
-*/
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -59,14 +54,6 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Model torusObj = Model("models/explodedcube.obj");
-     Shader torusShader = Shader("shaders/torus_shader.vs", "shaders/torus_shader.fs");
-     //torusShader.use();
-     Geometry * cubelight = new Geometry();
-     cubelight->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
-     cubelight->enable_shader();
-     cubelight->init_cube();
-
      glm::vec3 cubelightPos(1.2f, 1.0f, 2.0f);
 
      // variables for selected objects.
@@ -83,30 +70,13 @@ int main(int, char**)
           glfwPollEvents();
 
           {
-               // Poll and handle events (inputs, window resize, etc.)
-               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-               // Poll and handle events (inputs, window resize, etc.)
-               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-
-               // Start the Dear ImGui frame
-               ImGui_ImplOpenGL3_NewFrame();
-               ImGui_ImplGlfw_NewFrame();
-               ImGui::NewFrame();
-
-               // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-
-               //Put this in a new function.
-               if (show_demo_window)
-               ImGui::ShowDemoWindow(&show_demo_window);
-
-               // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
                {
+                    // Start the Dear ImGui frame
+                    ImGui_ImplOpenGL3_NewFrame();
+                    ImGui_ImplGlfw_NewFrame();
+                    ImGui::NewFrame();
+                    if (show_demo_window)
+                    ImGui::ShowDemoWindow(&show_demo_window);
                     static float f = 0.0f;
                     static int counter = 0;
                     ImGui::Begin("Coordinate Controls");
@@ -158,7 +128,7 @@ int main(int, char**)
 
                     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
                     ImGui::End();
-
+/*
                     {
                          const float DISTANCE = 10.0f;
                          static int corner = 0;
@@ -188,11 +158,10 @@ int main(int, char**)
                          }
                          ImGui::End();
                     }
+*/                 
 
+                    ImGui::Render();
                }
-
-               // Rendering
-               ImGui::Render();
           }
 
           glfwMakeContextCurrent(engineX->window);
@@ -217,37 +186,6 @@ int main(int, char**)
 
           model = glm::mat4(1.0f);
 
-          torusShader.use();
-          //torusObj.enable_shader();
-          torusShader.setMat4("projection", projection);
-          torusShader.setMat4("view", view);
-          torusShader.setMat4("model", model);
-
-          glLineWidth(10.0f);
-          glPointSize(10.0f);
-          int rendermode = 0;
-          torusShader.setInt("mode", rendermode);
-          torusShader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
-          torusObj.Draw(torusShader, GL_LINES);
-          torusObj.Draw(torusShader, GL_POINTS);
-          rendermode = 4;
-          torusShader.setInt("mode", rendermode);
-          torusShader.setVec3("objectColor", 0.45f, 0.45f, 0.45f);
-          torusShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-          glm::mat4 scale = glm::scale(model, glm::vec3(0.999f, 0.999f, 0.999f));
-          torusShader.setMat4("model", scale);
-          torusObj.Draw(torusShader, GL_TRIANGLES);
-
-          cubelight->enable_shader();
-          cubelight->lo_shader->setMat4("projection", projection);
-          cubelight->lo_shader->setMat4("view", view);
-
-          model = glm::mat4(1.0f);
-          model = glm::translate(model, cubelightPos);
-          model = glm::scale(model, glm::vec3(0.2f));
-          cubelight->lo_shader->setMat4("model", model);
-          cubelight->draw_cube(GL_TRIANGLES);
-
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -260,8 +198,8 @@ int main(int, char**)
      ImGui_ImplGlfw_Shutdown();
      ImGui::DestroyContext();
 
-     //delete_object;
-     cubelight->delete_object();
+     // garbage collection;
+
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 

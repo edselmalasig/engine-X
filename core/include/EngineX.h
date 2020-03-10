@@ -54,10 +54,12 @@ public:
      double * mousePosY;
 
      EngineX(Camera * cam);
+     ~EngineX();
      void init_glfw();
      void init_ImGui( );
-     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
      void ImGui_Loop();
+
+     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
      void processInput(GLFWwindow *window);
      static void rotateView();
      static void reshapeFunc( int w, int h);
