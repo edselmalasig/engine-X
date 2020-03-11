@@ -67,7 +67,7 @@ public:
           1, 2, 3
      };
 
-     float rectangle[12] = {
+     float quadrangle[12] = {
           0.5f,  0.5f, 0.0f,  // top right
           0.5f, -0.5f, 0.0f,  // bottom right
           -0.5f, -0.5f, 0.0f,  // bottom left
@@ -319,7 +319,7 @@ public:
      void enable_shader();
 
      void draw_triangle();
-     void draw_cube();
+     void draw_cube(GLenum mode);
      void draw_object();
 
      void renderTexLayer(int i);

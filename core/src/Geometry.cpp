@@ -263,13 +263,14 @@ void Geometry::draw_object()
      glBindVertexArray(0);
 }
 
-void Geometry::draw_cube()
+void Geometry::draw_cube(GLenum mode)
 {
      enable_shader();
      glBindVertexArray(VAO);
-     glDrawArrays(GL_TRIANGLES, 0, 36);
+     glDrawArrays(mode, 0, 36);
      glBindVertexArray(0); // no need to unbind it every time
 }
+
 
 void Geometry::renderTexLayer(int i)
 {

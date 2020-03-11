@@ -63,18 +63,19 @@ public:
      Camera(GLfloat posX, GLfloat posY, GLfloat posZ,
           GLfloat upX, GLfloat upY, GLfloat upZ,
           GLfloat yaw, GLfloat pitch);
+     ~Camera();
 
-          glm::mat4 getViewMatrix();
-          glm::mat4 processViewMatrix();
-          glm::mat4 getProjectionMatrix();
-          glm::vec3 * getFrontVector();
-          glm::vec3 * getPositionVector();
-          glm::vec3 * getHeadsUpVector();
+     glm::mat4 getViewMatrix();
+     glm::mat4 processViewMatrix();
+     glm::mat4 getProjectionMatrix();
+     glm::vec3 * getFrontVector();
+     glm::vec3 * getPositionVector();
+     glm::vec3 * getHeadsUpVector();
 
-          void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
-          void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch);
-          void ProcessMouseScroll(GLfloat yoffset);
-          void computeMatricesFromInputs();
+     void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
+     void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch);
+     void ProcessMouseScroll(GLfloat yoffset);
+     void computeMatricesFromInputs();
 
      private:
           void updateCameraVectors();
