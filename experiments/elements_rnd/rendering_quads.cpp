@@ -59,7 +59,9 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Model obj = Model("nanosuit/nanosuit.obj");
+     //Model obj = Model("nanosuit/nanosuit.obj");
+     Model obj = Model("models/cube.obj");
+     std::cout << obj.meshes[0].indices.size() << " " << obj.meshes[0].e_indices.size() << std::endl;
      Shader o_shader = Shader("shaders/torus_shader.vs", "shaders/torus_shader.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
@@ -228,15 +230,15 @@ int main(int, char**)
           int rendermode = 0;
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
-          obj.DrawEdges(o_shader, GL_LINES);
-          obj.DrawPoints(o_shader, GL_POINTS);
+          obj.DrawEdges(o_shader);
+          obj.DrawPoints(o_shader);
           rendermode = 4;
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.45f, 0.45f, 0.45f);
           o_shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-          glm::mat4 scale = glm::scale(model, glm::vec3(0.999f, 0.999f, 0.999f));
+          glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
           o_shader.setMat4("model", scale);
-          obj.Draw(o_shader, GL_TRIANGLES);
+          obj.Draw(o_shader);
 
           cubelight->enable_shader();
           cubelight->lo_shader->setMat4("projection", projection);
