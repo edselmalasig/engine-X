@@ -57,14 +57,18 @@ public:
      vector<unsigned int> indices;
      vector<Texture> textures;
      unsigned int VAO;
+     vector<unsigned int> vn_indices;
+     vector<unsigned int> vt_indices;
+     vector<unsigned int> e_indices;
 
      /* Functions */
      // constructor
-     Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
+     Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, vector<unsigned int> e_indices)
      {
           this->vertices = vertices;
           this->indices = indices;
           this->textures = textures;
+          this->e_indices = e_indices;
           unsigned int VAO;
           // setup mesh
           setupMesh();
@@ -99,27 +103,45 @@ public:
           }
 
           glBindVertexArray(VAO);
-          glDrawElements(mode, indices.size(), GL_UNSIGNED_INT, 0);
+          glDrawElements(mode, e_indices.size(), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
 
           glActiveTexture(GL_TEXTURE0);
      }
 
+     void DrawPoints(Shader shader)
+     {
+          glBindVertexArray(VAO);
+          glDrawElements(GL_POINTS, e_indices.size(), GL_UNSIGNED_INT, 0);
+          glBindVertexArray(0);
+     }
+
+     void DrawEdges(Shader shader)
+     {
+          glBindVertexArray(VAO);
+          glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
+          glBindVertexArray(0);
+     }
+
 private:
      /* Render Data */
-     unsigned int VBO, EBO;
+     unsigned int VBO, EBO, EDGE;
 
      void setupMesh()
      {
           glGenVertexArrays(1, &VAO);
           glGenBuffers(1, &VBO);
           glGenBuffers(1, &EBO);
+          glGenBuffers(1, &EDGE);
 
           glBindVertexArray(VAO);
 
           glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
           glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+          glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EDGE);
+          glBufferData(GL_ELEMENT_ARRAY_BUFFER, e_indices.size() * sizeof(unsigned int), &e_indices[0], GL_STATIC_DRAW);
 
           glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
           glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);

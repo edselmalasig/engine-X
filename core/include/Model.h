@@ -35,18 +35,19 @@ public:
      string directory;
      string file;
      bool gammaCorrection;
-     string * pathstr;
+     string pathstr;
 
      /*  Functions   */
      // constructor, expects a filepath to a 3D model.
      Model(string const &path, bool gamma = false, int method = 0) : gammaCorrection(gamma)
      {
           if(method == 0)
-          loadOBJ(path);
-          else if(method == 1)
+          pathstr = path;
           loadModel(path);
-          if(method == 2)
-          loadModel(path);
+     }
+
+     ~Model(){
+
      }
 
      // draws the model, and thus all its meshes
@@ -56,134 +57,19 @@ public:
           meshes[i].Draw(shader, mode);
      }
 
-private:
-     /*  Functions   */
-     bool loadOBJ(string const &path){
-          // data to fill
-          std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-          std::vector<glm::vec3> temp_vertices;
-	     std::vector<glm::vec2> temp_uvs;
-	     std::vector<glm::vec3> temp_normals;
-          std::vector<Vertex> vertices;
-          std::vector<unsigned int> indices;
-          std::vector<Texture> textures;
-          glm::vec3 vector;
-          Vertex out_vertex;
-
-          ifstream objFile;
-          std::string objLine;
-          std::vector<string> lineInFile;
-
-          //objFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-          try{
-               objFile.open(path);
-               std::stringstream objStream;
-
-               while (std::getline(objFile, objLine)){
-                    std::cout << objLine << std::endl;
-               }
-               objFile.close();
-
-          }catch(std::ifstream::failure e){
-               std::cout << "ERROR : OBJ FILE : FILE_NOT_SUCCESFULLY_READ." << std::endl;
-               return false;
-          }
-
-
-/*
-          while( 1 ){
-
-               char lineHeader[128];
-               // read the first word of the line
-               int res = fscanf(file, "%s", lineHeader);
-               if (res == EOF)
-               break; // EOF = End Of File. Quit the loop.
-
-               // else : parse lineHeader
-
-               if ( strcmp( lineHeader, "v" ) == 0 ){
-                    glm::vec3 vertex;
-                    fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-                    temp_vertices.push_back(vertex);
-               }else if ( strcmp( lineHeader, "vt" ) == 0 ){
-                    glm::vec2 uv;
-                    fscanf(file, "%f %f\n", &uv.x, &uv.y );
-                    uv.y = -uv.y; // Invert V coordinate since we will only use DDS texture, which are inverted. Remove if you want to use TGA or BMP loaders.
-                    temp_uvs.push_back(uv);
-               }else if ( strcmp( lineHeader, "vn" ) == 0 ){
-                    glm::vec3 normal;
-                    fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
-                    temp_normals.push_back(normal);
-               }else if ( strcmp( lineHeader, "f" ) == 0 ){
-                    std::string vertex1, vertex2, vertex3;
-                    unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
-                    int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-
-                    if (matches == 9){
-                         vertexIndices.push_back(vertexIndex[0]);
-                         vertexIndices.push_back(vertexIndex[1]);
-                         vertexIndices.push_back(vertexIndex[2]);
-                         uvIndices    .push_back(uvIndex[0]);
-                         uvIndices    .push_back(uvIndex[1]);
-                         uvIndices    .push_back(uvIndex[2]);
-                         normalIndices.push_back(normalIndex[0]);
-                         normalIndices.push_back(normalIndex[1]);
-                         normalIndices.push_back(normalIndex[2]);
-                    }
-
-                    if (matches != 9){
-                         vertexIndices.push_back(vertexIndex[0]);
-                         vertexIndices.push_back(vertexIndex[1]);
-                         vertexIndices.push_back(vertexIndex[2]);
-                         vertexIndices.push_back(vertexIndex[3]);
-                         uvIndices    .push_back(uvIndex[0]);
-                         uvIndices    .push_back(uvIndex[1]);
-                         uvIndices    .push_back(uvIndex[2]);
-                         uvIndices    .push_back(uvIndex[3]);
-                         normalIndices.push_back(normalIndex[0]);
-                         normalIndices.push_back(normalIndex[1]);
-                         normalIndices.push_back(normalIndex[2]);
-                         normalIndices.push_back(normalIndex[3]);
-                    }
-
-               }else{
-                    // Probably a comment, eat up the rest of the line
-                    char stupidBuffer[1000];
-                    string fileString;
-                    fgets(fileString, 1000, file);
-               }
-
-          }
-
-          // For each vertex of each triangle
-          for( unsigned int i=0; i<vertexIndices.size(); i++ ){
-
-               // Get the indices of its attributes
-               unsigned int vertexIndex = vertexIndices[i];
-               unsigned int uvIndex = uvIndices[i];
-               unsigned int normalIndex = normalIndices[i];
-
-               // Get the attributes thanks to the index
-               glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-               glm::vec2 uv = temp_uvs[ uvIndex-1 ];
-               glm::vec3 normal = temp_normals[ normalIndex-1 ];
-
-               out_vertex.Position = vertex;
-               out_vertex.TexCoords = uv;
-               out_vertex.Normal = normal;
-
-               std::cout << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
-
-               vertices.push_back(out_vertex);
-               indices.push_back(vertexIndices[i]);
-          }
-          fclose(file);
-          std::cout << std::endl;
-          meshes.push_back(Mesh(vertices, indices, textures));
-*/
-          objFile.close();
-          return true;
+     void DrawPoints(Shader shader, GLenum mode)
+     {
+          for(unsigned int i = 0; i < meshes.size(); i++)
+          meshes[i].DrawPoints(shader);
      }
+
+     void DrawEdges(Shader shader, GLenum mode)
+     {
+          for(unsigned int i = 0; i < meshes.size(); i++)
+          meshes[i].DrawPoints(shader);
+     }
+
+private:
 
      // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
      void loadModel(string const &path)
@@ -229,7 +115,11 @@ private:
           // data to fill
           vector<Vertex> vertices;
           vector<unsigned int> indices;
+          vector<unsigned int> vt_indices;
+          vector<unsigned int> vn_indices;
+          vector<unsigned int> e_indices;
           vector<Texture> textures;
+
           std::cout << file << " properties " << std::endl;
           std::cout << "vertices: " << mesh->mNumVertices <<
           " faces: " << mesh->mNumFaces <<
@@ -283,11 +173,151 @@ private:
                for(unsigned int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
                {
                     indices.push_back(mesh->mFaces[i].mIndices[j]);
-                    std::cout << " " << mesh->mFaces[i].mIndices[j];
                }
-               std::cout << std::endl;
-
           }
+
+          ifstream objFile;
+          std::string objLine;
+          std::vector<string> lineinfile;
+
+          //objFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+          try{
+               objFile.open(pathstr);
+               std::stringstream objStream;
+
+               while (std::getline(objFile, objLine)){
+                    if(objLine.at(0) == 'f' || objLine.at(0) == 'F'){
+                         lineinfile.push_back(objLine);
+                    }
+               }
+               objFile.close();
+
+          }catch(std::ifstream::failure e){
+               std::cout << "ERROR : OBJ FILE : FILE_NOT_SUCCESFULLY_READ." << std::endl;
+          }
+
+          int tmp;
+          for(std::vector<string>::iterator it = lineinfile.begin(); it != lineinfile.end(); it++)
+          {
+               //std::cout << *it << std::endl;
+               int spacepos=0, bspos=0, bspcount=0;
+               for(unsigned int i=0; i < it->length(); i++)
+               {
+                    if(it->at(i)=='/')
+                         bspcount++;
+               }
+
+               std::string str;
+               if(bspcount == 6){
+                    spacepos = it->find(" ");
+                    bspos = it->find("/");
+                    str = it->substr(spacepos, bspos-1);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find(" ", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vn_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find(" ", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vn_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    str = it->substr(spacepos+1, it->length());
+                    vn_indices.push_back(stoull(str));
+               }
+               if(bspcount == 8){
+                    spacepos = it->find(" ");
+                    bspos = it->find("/");
+                    str = it->substr(spacepos, bspos-1);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find(" ", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vn_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find(" ", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vn_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find(" ", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vn_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    e_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    bspos = it->find("/", bspos+1);
+                    str = it->substr(spacepos+1, bspos - 1 - spacepos);
+                    vt_indices.push_back(stoull(str));
+
+                    spacepos = bspos;
+                    str = it->substr(spacepos+1, it->length());
+                    vn_indices.push_back(stoull(str));
+               }
+               if(bspcount > 8 || bspcount < 6){
+                    std::cout << "ERROR : BAD MODEL FILE : Wrong indices count." << std::endl;
+               }
+          }
+
           // process materials
           aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
           // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
@@ -311,7 +341,7 @@ private:
           textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
           // return a mesh object created from the extracted mesh data
-          return Mesh(vertices, indices, textures);
+          return Mesh(vertices, indices, textures, e_indices);
      }
 
 
