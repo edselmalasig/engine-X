@@ -186,7 +186,6 @@ private:
                std::cout << "ERROR : OBJ FILE : FILE_NOT_SUCCESFULLY_READ." << std::endl;
           }
 
-          int tmp;
           for(std::vector<string>::iterator it = lineinfile.begin(); it != lineinfile.end(); it++)
           {
                //std::cout << *it << std::endl;
@@ -202,106 +201,120 @@ private:
                     spacepos = it->find(" ");
                     bspos = it->find("/");
                     str = it->substr(spacepos, bspos-1);
-                    e_indices.push_back(stoull(str));
+                    e_indices.push_back(stoull(str)-1);
+                    unsigned int l_ind = stoull(str)-1;
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find(" ", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    e_indices.push_back(stoull(str));
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(0xFFFFFFFE);
+                    e_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find(" ", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    e_indices.push_back(stoull(str));
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(0xFFFFFFFE);
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(l_ind);
+                    e_indices.push_back(0xFFFFFFFE);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     str = it->substr(spacepos+1, it->length());
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
                }
                if(bspcount == 8){
                     spacepos = it->find(" ");
                     bspos = it->find("/");
                     str = it->substr(spacepos, bspos-1);
-                    e_indices.push_back(stoull(str));
-
+                    e_indices.push_back(stoull(str)-1);
+                    unsigned int l_ind = stoull(str)-1;
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find(" ", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    e_indices.push_back(stoull(str));
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(0xFFFFFFFE);
+                    e_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find(" ", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    e_indices.push_back(stoull(str));
-
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(0xFFFFFFFE);
+                    e_indices.push_back(stoull(str)-1);
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find(" ", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    e_indices.push_back(stoull(str));
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(0xFFFFFFFE);
+                    e_indices.push_back(stoull(str)-1);
+                    e_indices.push_back(l_ind);
+                    e_indices.push_back(0xFFFFFFFE);
 
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
-                    vt_indices.push_back(stoull(str));
+                    vt_indices.push_back(stoull(str)-1);
 
                     spacepos = bspos;
                     str = it->substr(spacepos+1, it->length());
-                    vn_indices.push_back(stoull(str));
+                    vn_indices.push_back(stoull(str)-1);
                }
                if(bspcount > 8 || bspcount < 6){
                     std::cout << "ERROR : BAD MODEL FILE : Wrong indices count." << std::endl;

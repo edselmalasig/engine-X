@@ -59,15 +59,122 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     //Model obj = Model("nanosuit/nanosuit.obj");
-     Model obj = Model("models/cube.obj");
-     for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
-          if(obj.meshes[0].indices[i] != 0xFFFFFFFE)
-          std::cout << obj.meshes[0].e_indices.at(i) << " ";
+     float vertices[] = {
+           1.000000, 1.000000, -1.000000,    // 0
+           1.000000, -1.000000, -1.000000,   // 1
+           1.000000, 1.000000, 1.000000,     // 2
+           1.000000, -1.000000, 1.000000,    // 3
+           -1.000000, 1.000000, -1.000000,   // 4
+           -1.000000, -1.000000, -1.000000,  // 5
+           -1.000000, 1.000000, 1.000000,    // 6
+           -1.000000, -1.000000, 1.000000    // 7
+     };
+     /*
+     GLuint indices[] = {  // note that we start from 0!
+          0, 3, 2,  // first Triangle
+          0xFFFFFFFE,
+          2, 1, 0   // second Triangle
+     };
+     */
+     GLuint edges[] = {
 
-     }
-     std::cout << std::endl;
-     Shader o_shader = Shader("shaders/torus_shader.vs", "shaders/torus_shader.fs");
+          0, 4,
+          0xFFFFFFFE,
+          4, 6,
+          0xFFFFFFFE,
+          6, 2,
+          0xFFFFFFFE,
+          2, 0,
+          0xFFFFFFFE,
+          3, 2,
+          0xFFFFFFFE,
+          2, 6,
+          0xFFFFFFFE,
+          6, 7,
+          0xFFFFFFFE,
+          7, 3,
+          0xFFFFFFFE,
+          7, 6,
+          0xFFFFFFFE,
+          6, 4,
+          0xFFFFFFFE,
+          4, 5,
+          0xFFFFFFFE,
+          5, 7,
+          0xFFFFFFFE,
+          5, 1,
+          0xFFFFFFFE,
+          1, 3,
+          0xFFFFFFFE,
+          3, 7,
+          0xFFFFFFFE,
+          7, 5,
+          0xFFFFFFFE,
+          1, 0,
+          0xFFFFFFFE,
+          0, 2,
+          0xFFFFFFFE,
+          2, 3,
+          0xFFFFFFFE,
+          3, 1,
+          0xFFFFFFFE,
+          5, 4,
+          0xFFFFFFFE,
+          4, 0,
+          0xFFFFFFFE,
+          0, 1,
+          0xFFFFFFFE,
+          1, 5
+     };
+
+     GLuint indices[] = {
+          0, 4, 6, 2, 0, 6,
+          3, 2, 6, 7, 3, 6,
+          7, 6, 4, 5, 7, 4,
+          5, 1, 3, 7, 5, 3,
+          1, 0, 2, 3, 1, 2,
+          5, 4, 0, 1, 5, 0
+     };
+     unsigned int VAO_4, VBO_4, EBO_4, VAO_2, VBO_2, EBO_2;
+
+     glGenVertexArrays(1, &VAO_4);
+     glGenBuffers(1, &VBO_4);
+     glGenBuffers(1, &EBO_4);
+
+     glBindVertexArray(VAO_4);
+
+     glBindBuffer(GL_ARRAY_BUFFER, VBO_4);
+
+     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_4);
+     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+     // set the vertex attribute pointers
+     glEnableVertexAttribArray(0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+     glBindVertexArray(0);
+
+     glGenVertexArrays(1, &VAO_2);
+     glGenBuffers(1, &VBO_2);
+     glGenBuffers(1, &EBO_2);
+
+     glBindVertexArray(VAO_2);
+
+     glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+
+     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_2);
+     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(edges), edges, GL_STATIC_DRAW);
+
+     // set the vertex attribute pointers
+     glEnableVertexAttribArray(0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+     glBindVertexArray(0);
+
+
+     Shader o_shader = Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
      cubelight->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
@@ -224,7 +331,11 @@ int main(int, char**)
 
           model = glm::mat4(1.0f);
 
+          glEnable(GL_PRIMITIVE_RESTART);
+          glPrimitiveRestartIndex(0xFFFFFFFE);
+
           o_shader.use();
+          glBindVertexArray(VAO_2);
           //obj.enable_shader();
           o_shader.setMat4("projection", projection);
           o_shader.setMat4("view", view);
@@ -235,15 +346,21 @@ int main(int, char**)
           int rendermode = 0;
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
-          obj.DrawEdges(o_shader);
-          obj.DrawPoints(o_shader);
+
+          glDrawElements(GL_LINES, sizeof(edges)/sizeof(edges[0]), GL_UNSIGNED_INT, 0);
+          glBindVertexArray(0);
+          glDisable(GL_PRIMITIVE_RESTART);
+          //std::cout << sizeof(edges)/sizeof(edges[0]) << std::endl;
           rendermode = 4;
+          o_shader.use();
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.45f, 0.45f, 0.45f);
           o_shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
           o_shader.setMat4("model", scale);
-          obj.Draw(o_shader);
+          glBindVertexArray(VAO_4);
+          glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(indices[0]), GL_UNSIGNED_INT, 0);
+          glBindVertexArray(0);
 
           cubelight->enable_shader();
           cubelight->lo_shader->setMat4("projection", projection);

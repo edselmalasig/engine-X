@@ -89,13 +89,15 @@ public:
     }
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, e_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glActiveTexture(GL_TEXTURE0);
   }
   void DrawEdges(Shader shader)
   {
+       glEnable(GL_PRIMITIVE_RESTART);
+       glPrimitiveRestartIndex(0xFFFFFFFE);
        glBindVertexArray(VAO);
        glDrawElements(GL_LINES, e_indices.size(), GL_UNSIGNED_INT, 0);
        glBindVertexArray(0);
@@ -103,6 +105,8 @@ public:
 
  void DrawPoints(Shader shader)
 {
+     //glEnable(GL_PRIMITIVE_RESTART_INDEX);
+     //glPrimitiveRestartIndex(0xFFFFFFFE);
       glBindVertexArray(VAO);
       glDrawElements(GL_POINTS, e_indices.size(), GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
