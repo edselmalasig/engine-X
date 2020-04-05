@@ -60,7 +60,7 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      //Model obj = Model("nanosuit/nanosuit.obj");
-     Model obj = Model("models/cube.obj");
+     Model obj = Model("models/torus.obj");
      for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
           if(obj.meshes[0].indices[i] != 0xFFFFFFFE)
           std::cout << obj.meshes[0].e_indices.at(i) << " ";
