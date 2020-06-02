@@ -13,12 +13,78 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imguistyleserializer.h"
+#include "ImGuizmo.h"
 #include "EngineX.h"
 #include "Geometry.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <memory>
+
+void EditTransform(const Camera * camera, float * matrix, float * view, float * proj)
+{
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+
+    if (ImGui::IsKeyPressed(90))
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    if (ImGui::IsKeyPressed(69))
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (ImGui::IsKeyPressed(82)) // r Key
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+    if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+    float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+
+    ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
+    ImGui::InputFloat3("Tr", matrixTranslation, 3);
+    ImGui::InputFloat3("Rt", matrixRotation, 3);
+    ImGui::InputFloat3("Sc", matrixScale, 3);
+
+    ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+
+    if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+    {
+        if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+            mCurrentGizmoMode = ImGuizmo::LOCAL;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+            mCurrentGizmoMode = ImGuizmo::WORLD;
+    }
+    static bool useSnap(false);
+    if (ImGui::IsKeyPressed(83))
+        useSnap = !useSnap;
+    ImGui::Checkbox("", &useSnap);
+    ImGui::SameLine();
+    /*
+    vec_t snap;
+    switch (mCurrentGizmoOperation)
+    {
+        case ImGuizmo::TRANSLATE:
+            snap = config.mSnapTranslation;
+            ImGui::InputFloat3("Snap", &snap.x);
+            break;
+        case ImGuizmo::ROTATE:
+            snap = config.mSnapRotation;
+            ImGui::InputFloat("Angle Snap", &snap.x);
+            break;
+        case ImGuizmo::SCALE:
+            snap = config.mSnapScale;
+            ImGui::InputFloat("Scale Snap", &snap.x);
+            break;
+    }
+     */
+
+    ImGuiIO& io = ImGui::GetIO();
+    ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+    ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
+}
 
 struct coordinates
 {
@@ -122,7 +188,7 @@ int main(int, char**)
                ImGui_ImplOpenGL3_NewFrame();
                ImGui_ImplGlfw_NewFrame();
                ImGui::NewFrame();
-
+               ImGuizmo::BeginFrame();
                // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 
                //Put this in a new function.
@@ -187,7 +253,7 @@ int main(int, char**)
                     ImGui::End();
 
                }
-               
+
                {
                     const float DISTANCE = 10.0f;
                     static int corner = 0;
@@ -273,12 +339,6 @@ int main(int, char**)
                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
                g_cube->lo_shader->setMat4("model", model);
 
-               //g_cube->renderTexLayer(1);
-               glPointSize(7.0f);
-               g_cube->draw_cube(GL_POINTS);
-               g_cube->draw_cube(GL_TRIANGLES);
-
-
                bool selectionBool = false;
                double mousePosX, mousePosY;
                int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
@@ -311,13 +371,17 @@ int main(int, char**)
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "container";
+                         //EditTransform(engineX->camera, (float *) glm::value_ptr(model))
                          //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
                     }
+
+                    //g_cube->renderTexLayer(1);
+                    glPointSize(7.0f);
+                    g_cube->draw_cube(GL_POINTS);
+                    g_cube->draw_cube(GL_TRIANGLES);
                }
 
           }
-
-
 
           model = glm::mat4(1.0f);
 

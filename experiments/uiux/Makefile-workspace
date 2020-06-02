@@ -15,7 +15,7 @@
 #CXX = g++
 CXX = clang++
 EXE = engine-X
-FREEIMAGE = ../../../lib/Computer_Graphics/FreeImage
+FREEIMAGE = ../../../lib/FreeImage
 FREEIMAGE_LIB = ../../../lib/FreeImage
 FREEIMAGE_EXT = ../../external/FreeImage
 IMGUI = ../../../lib/imgui-1.75.0
@@ -99,7 +99,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 endif
 
 ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
-   ECHO_MESSAGE = "Windows"
+   ECHO_MESSAGE = "Windows"z
    LIBS = -lglfw3 -lgdi32 -lopengl32 -limm32
 
    CXXFLAGS += -I../ -I../../ `pkg-config --cflags glfw3`

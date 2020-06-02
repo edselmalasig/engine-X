@@ -15,17 +15,21 @@
 #CXX = g++
 CXX = clang++
 EXE = engine-X
-FREEIMAGE = ../../../lib/Computer_Graphics/FreeImage
+FREEIMAGE = ../../../lib/FreeImage
 FREEIMAGE_LIB = ../../../lib/FreeImage
 FREEIMAGE_EXT = ../../external/FreeImage
 IMGUI = ../../../lib/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
+IMGUIZMO = ../../../lib/ImGuizmo
+
 SOURCES = multiple_objects.cpp ../../core/src/camera.cpp ../../core/src/Geometry.cpp ../../core/src/EngineX.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
 SOURCES += $(IMGUI)/imgui.cpp $(IMGUI)/imgui_demo.cpp $(IMGUI)/imgui_draw.cpp $(IMGUI)/imgui_widgets.cpp
 SOURCES += $(FREEIMAGE_EXT)/fip_ImageOperations.cpp
+SOURCES += $(IMGUIZMO)/ImCurveEdit.cpp $(IMGUIZMO)/ImGradient.cpp $(IMGUIZMO)/ImGuizmo.cpp
+SOURCES += $(IMGUIZMO)/ImSequencer.cpp
 
 OBJS =  $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
@@ -81,10 +85,10 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I ../../core/ -I ../../core/include/ -I ../../core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
-
+	CXXFLAGS += -I$(IMGUIZMO)
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
 	CXXFLAGS += -I $(FREEIMAGE_EXT)/
-	CXXFLAGS += -g -Wall -Wformat
+	CXXFLAGS += -g -Wall -Wformat -std=c++11
 	CFLAGS = $(CXXFLAGS)
 endif
 
@@ -116,6 +120,9 @@ endif
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(IMGUI)/imgui_impl/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.o:$(IMGUIZMO)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 #%.o:../libs/gl3w/GL/%.c
