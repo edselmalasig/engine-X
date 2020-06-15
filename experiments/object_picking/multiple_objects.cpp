@@ -267,9 +267,9 @@ int main(int, char**)
                          ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
                     }
                     ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-                    if (ImGui::Begin("Example: Simple overlay", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+                    if (ImGui::Begin("Information", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
                     {
-                         ImGui::Text("Simple overlay\n" "in the corner of the screen.\n" "(right-click to change position)");
+                         ImGui::Text("engine-X overlay\n" "in the corner of the screen.\n");
                          ImGui::Separator();
                          if (ImGui::IsMousePosValid())
                          ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
