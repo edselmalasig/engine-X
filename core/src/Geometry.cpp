@@ -5,7 +5,7 @@
 
 Geometry::Geometry()
 {
-
+     model = glm::mat4(1.0f);
 }
 
 Geometry::Geometry(float verts[])

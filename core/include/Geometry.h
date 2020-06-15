@@ -7,6 +7,7 @@
 #include "shader.h"
 #include "fip_ImageOperations.h"
 #include <string.h>
+#include "glm/glm.hpp"
 // About OpenGL function loaders: modern OpenGL doesn't have a standard header file and requires individual function pointers to be loaded manually.
 // Helper libraries are often used for this purpose! Here we are supporting a few common ones: gl3w, glew, glad.
 // You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
@@ -45,6 +46,8 @@ public:
      int shaderProgram;
      unsigned int texture[8];
      FIBITMAP * textureFileIn;
+
+     glm::mat4 model;
 
      float triangle[18] = {
           // positions         // colors
