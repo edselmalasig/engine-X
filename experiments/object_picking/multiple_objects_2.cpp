@@ -162,6 +162,12 @@ int main(int, char**)
           g_cube[i]->model = glm::rotate(g_cube[i]->model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
           g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
      }
+
+     std::cout << g_cube[9]->model[0][0] << " " << g_cube[9]->model[0][1] << " " << g_cube[9]->model[0][2] << " " << g_cube[9]->model[0][3] << std::endl;
+     std::cout << g_cube[9]->model[1][0] << " " << g_cube[9]->model[1][1] << " " << g_cube[9]->model[1][2] << " " << g_cube[9]->model[1][3] <<std::endl;
+     std::cout << g_cube[9]->model[2][0] << " " << g_cube[9]->model[2][1] << " " << g_cube[9]->model[2][2] << " " << g_cube[9]->model[2][3] << std::endl;
+     std::cout << g_cube[9]->model[3][0] << " " << g_cube[9]->model[3][1] << " " << g_cube[9]->model[3][2] << " " << g_cube[9]->model[3][3] << std::endl;
+
      Geometry * g_cubelamp = new Geometry();
      g_cubelamp->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
      g_cubelamp->enable_shader();
@@ -367,13 +373,12 @@ int main(int, char**)
                     float intersection_distance;
                     glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
                     glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
-                    selectionBool = engineX->RayAABBIntersection(
+                    glm::vec3 sC = glm::vec3(g_cube[i]->model[3][0], g_cube[i]->model[3][1], g_cube[i]->model[3][2]);
+                    selectionBool = engineX->RayHitSphere(
+                         sC,
+                         0.5f,
                          ray_origin,
-                         ray_direction,
-                         aabb_min,
-                         aabb_max,
-                         g_cube[i]->model,
-                         intersection_distance
+                         ray_direction
                     );
 
                     if ( selectionBool ){

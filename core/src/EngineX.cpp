@@ -571,6 +571,23 @@ bool EngineX::RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, g
      return glm::distance(vSphereCenter, vClosestPoint) <= fSphereRadius;
 }
 
+bool EngineX::RayHitSphere(glm::vec3 center, float radius, glm::vec3 ray_origin, glm::vec3 ray_direction)
+{
+     #include <math.h>
+     glm::vec3 oc = ray_origin - center;
+     float a = glm::dot(ray_direction, ray_direction);
+     float b = 2.0 * glm::dot(oc, ray_direction);
+     float c = glm::dot(oc,oc) - radius*radius;
+     float discriminant = b*b - 4*a*c;
+     if(discriminant < 0){
+          return false;
+     }
+     else{
+          float res = (-b - sqrt(discriminant)) / (2.0*a);
+          return true;
+     }
+}
+
 void EngineX::ScreenPosToWorldRay(
      int mousePosX, int mousePosY,             // Mouse position, in pixels, from bottom-left corner of the window
      int screenWidth, int screenHeight,  // window size, in pixels
