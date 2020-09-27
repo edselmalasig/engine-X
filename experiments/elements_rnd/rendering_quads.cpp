@@ -60,13 +60,25 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      //Model obj = Model("nanosuit/nanosuit.obj");
-     Model obj = Model("models/torus.obj");
+     Model obj = Model("models/cube.obj");
+
+     for(unsigned int i = 0; i < obj.meshes[0].vertices.size(); i++){
+          std::cout << obj.meshes[0].vertices.at(i).Position.x << " " << obj.meshes[0].vertices.at(i).Position.y << " " << obj.meshes[0].vertices.at(i).Position.z;
+          std::cout << endl;
+     }
+/*
      for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
-          if(obj.meshes[0].indices[i] != 0xFFFFFFFE)
           std::cout << obj.meshes[0].e_indices.at(i) << " ";
 
      }
      std::cout << std::endl;
+*/
+     for(unsigned int i = 0; i < obj.meshes[0].indices.size(); i++){
+          std::cout << obj.meshes[0].indices.at(i) << " ";
+
+     }
+     std::cout << std::endl;
+
      Shader o_shader = Shader("shaders/torus_shader.vs", "shaders/torus_shader.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
@@ -236,7 +248,7 @@ int main(int, char**)
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
           obj.DrawEdges(o_shader);
-          obj.DrawPoints(o_shader);
+
           rendermode = 4;
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.45f, 0.45f, 0.45f);

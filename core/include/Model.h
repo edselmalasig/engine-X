@@ -69,7 +69,7 @@ private:
      {
           // read file via ASSIMP
           Assimp::Importer importer;
-          const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+          const aiScene* scene = importer.ReadFile(path, aiProcessPreset_TargetRealtime_MaxQuality | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
           // check for errors
           if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
           {
@@ -124,10 +124,13 @@ private:
                Vertex vertex;
                glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
                // positions
+
                vector.x = mesh->mVertices[i].x;
                vector.y = mesh->mVertices[i].y;
                vector.z = mesh->mVertices[i].z;
                vertex.Position = vector;
+               std::cout << vector.x <<  " " << vector.y << " " << vector.z;
+               std::cout << endl;
                // normals
                vector.x = mesh->mNormals[i].x;
                vector.y = mesh->mNormals[i].y;
@@ -156,6 +159,7 @@ private:
                vector.z = mesh->mBitangents[i].z;
                vertex.Bitangent = vector;
                vertices.push_back(vertex);
+
           }
           // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
           for(unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -163,7 +167,8 @@ private:
                aiFace face = mesh->mFaces[i];
                // retrieve all indices of the face and store them in the indices vector
                for(unsigned int j = 0; j < face.mNumIndices; j++)
-               indices.push_back(face.mIndices[j]);
+               i;
+               //indices.push_back(face.mIndices[j]);
           }
 
           ifstream objFile;
@@ -254,6 +259,9 @@ private:
                     bspos = it->find("/");
                     str = it->substr(spacepos, bspos-1);
                     e_indices.push_back(stoull(str)-1);
+
+                    indices.push_back(stoull(str)-1);
+
                     unsigned int l_ind = stoull(str)-1;
                     spacepos = bspos;
                     bspos = it->find("/", bspos+1);
@@ -269,6 +277,9 @@ private:
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
                     e_indices.push_back(stoull(str)-1);
+
+                    indices.push_back(stoull(str)-1);
+
                     e_indices.push_back(0xFFFFFFFE);
                     e_indices.push_back(stoull(str)-1);
 
@@ -286,6 +297,9 @@ private:
                     bspos = it->find("/", bspos+1);
                     str = it->substr(spacepos+1, bspos - 1 - spacepos);
                     e_indices.push_back(stoull(str)-1);
+                    unsigned int l_ind2 = stoull(str) - 1;
+                    indices.push_back(stoull(str)-1);
+
                     e_indices.push_back(0xFFFFFFFE);
                     e_indices.push_back(stoull(str)-1);
                     spacepos = bspos;
@@ -305,6 +319,9 @@ private:
                     e_indices.push_back(0xFFFFFFFE);
                     e_indices.push_back(stoull(str)-1);
                     e_indices.push_back(l_ind);
+                    indices.push_back(stoull(str)-1);
+                    indices.push_back(l_ind);
+                    indices.push_back(l_ind2);
                     e_indices.push_back(0xFFFFFFFE);
 
                     spacepos = bspos;

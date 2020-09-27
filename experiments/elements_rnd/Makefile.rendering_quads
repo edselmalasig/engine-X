@@ -12,8 +12,8 @@
 #   nmake
 #
 
-#CXX = g++
-CXX = clang++
+CXX = g++
+#CXX = clang++
 EXE = engine-X
 FREEIMAGE = ../../../lib/Computer_Graphics/FreeImage
 FREEIMAGE_LIB = ../../../lib/FreeImage
@@ -77,7 +77,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
 	LIBS += -lglfw -lassimp
 
-	CXXFLAGS += -DFREEIMAGE_LIB -DMACOS
+	CXXFLAGS += -DFREEIMAGE_LIB -DMACOS -g
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I ../../core/ -I ../../core/include/ -I ../../core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
