@@ -61,11 +61,12 @@ int main(int, char**)
 
      //Model obj = Model("nanosuit/nanosuit.obj");
      Model obj = Model("models/cube.obj");
-
+/*
      for(unsigned int i = 0; i < obj.meshes[0].vertices.size(); i++){
           std::cout << obj.meshes[0].vertices.at(i).Position.x << " " << obj.meshes[0].vertices.at(i).Position.y << " " << obj.meshes[0].vertices.at(i).Position.z;
           std::cout << endl;
      }
+     */
 /*
      for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
           std::cout << obj.meshes[0].e_indices.at(i) << " ";
