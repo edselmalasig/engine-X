@@ -19,6 +19,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "stdio.h"
+#include <stdlib.h>
 
 using namespace std;
 
@@ -117,20 +119,19 @@ private:
           std::cout << "vertices: " << mesh->mNumVertices <<
           " faces: " << mesh->mNumFaces <<
           std::endl;
-
+          bool t=false;
           // Walk through each of the mesh's vertices
           for(unsigned int i = 0; i < mesh->mNumVertices; i++)
           {
                Vertex vertex;
                glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-               // positions
 
+               // positions
                vector.x = mesh->mVertices[i].x;
                vector.y = mesh->mVertices[i].y;
                vector.z = mesh->mVertices[i].z;
                vertex.Position = vector;
-               std::cout << vector.x <<  " " << vector.y << " " << vector.z;
-               std::cout << endl;
+               //std::cout << i << " " << vector.x << " " << vector.y << " " << vector.z << std::endl;
                // normals
                vector.x = mesh->mNormals[i].x;
                vector.y = mesh->mNormals[i].y;
@@ -167,13 +168,12 @@ private:
                aiFace face = mesh->mFaces[i];
                // retrieve all indices of the face and store them in the indices vector
                for(unsigned int j = 0; j < face.mNumIndices; j++)
-               i;
-               //indices.push_back(face.mIndices[j]);
+                    indices.push_back(face.mIndices[j]);
           }
 
           ifstream objFile;
           std::string objLine;
-          std::vector<string> lineinfile;
+          std::vector<string> lineinfile, vlineinfile;
 
           //objFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
           try{
@@ -185,23 +185,58 @@ private:
                          lineinfile.push_back(objLine);
                     }
                }
+
                objFile.close();
 
           }catch(std::ifstream::failure e){
                std::cout << "ERROR : OBJ FILE : FILE_NOT_SUCCESFULLY_READ." << std::endl;
           }
 
+          try{
+               objFile.open(pathstr);
+               std::stringstream objStream;
+               char line[180];
+               glm::vec3 temp;
+               while (std::getline(objFile, objLine)){
+                    if(objLine.at(0) == 'v'){
+                         vlineinfile.push_back(objLine);
+                              std::cout << objLine << std::endl;
+
+                    }
+               }
+               objFile.close();
+
+          }catch(std::ifstream::failure e){
+               std::cout << "ERROR : OBJ FILE : FILE_NOT_SUCCESFULLY_READ." << std::endl;
+          }
+
+           int bspcount=0;
+          for(std::vector<string>::iterator it = vlineinfile.begin(); it != vlineinfile.end(); it++)
+          {
+               int spacepos=0, bspos=0;
+               std::string str;
+
+               for(unsigned int i=0; i < it->length(); i++)
+               {
+                    if(it->at(i)=='v' && it->at(i+1)==' ')
+                         std::cout << it->substr(it->find(" ")+1, it->find(" ")+2 << std::endl;;
+
+               }
+          }
+
           for(std::vector<string>::iterator it = lineinfile.begin(); it != lineinfile.end(); it++)
           {
                //std::cout << *it << std::endl;
-               int spacepos=0, bspos=0, bspcount=0;
+               int spacepos=0, bspos=0;
+               bspcount=0;
+               std::string str;
+
                for(unsigned int i=0; i < it->length(); i++)
                {
                     if(it->at(i)=='/')
                     bspcount++;
                }
 
-               std::string str;
                if(bspcount == 6){
                     spacepos = it->find(" ");
                     bspos = it->find("/");

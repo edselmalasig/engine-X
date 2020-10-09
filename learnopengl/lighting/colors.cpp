@@ -187,7 +187,7 @@ int main(int, char**)
           g_cube->lo_shader->setMat4("view", view);
           model = glm::mat4(1.0f);
           g_cube->lo_shader->setMat4("model", model);
-          g_cube->draw_cube();
+          g_cube->draw_cube(GL_TRIANGLES);
 
           g_cubelamp->lo_shader->setMat4("projection", projection);
           g_cubelamp->lo_shader->setMat4("view", view);
@@ -196,7 +196,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->lo_shader->setMat4("model", model);
-          g_cubelamp->draw_cube();
+          g_cubelamp->draw_cube(GL_TRIANGLES);
 
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

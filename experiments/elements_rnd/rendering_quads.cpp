@@ -66,19 +66,20 @@ int main(int, char**)
           std::cout << obj.meshes[0].vertices.at(i).Position.x << " " << obj.meshes[0].vertices.at(i).Position.y << " " << obj.meshes[0].vertices.at(i).Position.z;
           std::cout << endl;
      }
-     */
+*/
 /*
      for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
           std::cout << obj.meshes[0].e_indices.at(i) << " ";
 
      }
      std::cout << std::endl;
-*/
+
      for(unsigned int i = 0; i < obj.meshes[0].indices.size(); i++){
           std::cout << obj.meshes[0].indices.at(i) << " ";
 
      }
      std::cout << std::endl;
+*/
 
      Shader o_shader = Shader("shaders/torus_shader.vs", "shaders/torus_shader.fs");
      //o_shader.use();
