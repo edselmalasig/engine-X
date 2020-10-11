@@ -225,7 +225,7 @@ int main(int, char**)
                g_cube->lo_shader->setMat4("model", model);
 
                g_cube->renderTexLayer(1);
-               g_cube->draw_cube(GL_TRIANGLES);
+               g_cube->draw_cube();
           }
 
           g_cubelamp->enable_shader();
@@ -236,7 +236,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->lo_shader->setMat4("model", model);
-          g_cubelamp->draw_cube(GL_TRIANGLES);
+          g_cubelamp->draw_cube();
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
