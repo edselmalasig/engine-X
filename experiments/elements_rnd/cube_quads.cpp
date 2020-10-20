@@ -341,8 +341,8 @@ int main(int, char**)
           o_shader.setMat4("view", view);
           o_shader.setMat4("model", model);
 
-          glLineWidth(10.0f);
-          glPointSize(10.0f);
+          glLineWidth(1.1f);
+          glPointSize(1.1f);
           int rendermode = 0;
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
@@ -356,7 +356,7 @@ int main(int, char**)
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.45f, 0.45f, 0.45f);
           o_shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-          glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
+          glm::mat4 scale = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
           o_shader.setMat4("model", scale);
           glBindVertexArray(VAO_4);
           glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(indices[0]), GL_UNSIGNED_INT, 0);
