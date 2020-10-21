@@ -59,7 +59,7 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     float vertices[] = {
+     float cube_vertices[] = {
            1.000000, 1.000000, -1.000000,    // 0
            1.000000, -1.000000, -1.000000,   // 1
            1.000000, 1.000000, 1.000000,     // 2
@@ -76,7 +76,7 @@ int main(int, char**)
           2, 1, 0   // second Triangle
      };
      */
-     GLuint edges[] = {
+     GLuint cube_quads_edges[] = {
 
           0, 4,
           0xFFFFFFFE,
@@ -127,7 +127,7 @@ int main(int, char**)
           1, 5
      };
 
-     GLuint indices[] = {
+     GLuint cube_quads_indices[] = {
           0, 4, 6, 2, 0, 6,
           3, 2, 6, 7, 3, 6,
           7, 6, 4, 5, 7, 4,
@@ -145,10 +145,10 @@ int main(int, char**)
 
      glBindBuffer(GL_ARRAY_BUFFER, VBO_4);
 
-     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+     glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
 
      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_4);
-     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_quads_indices), cube_quads_indices, GL_STATIC_DRAW);
 
      // set the vertex attribute pointers
      glEnableVertexAttribArray(0);
@@ -163,10 +163,10 @@ int main(int, char**)
 
      glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
 
-     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+     glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
 
      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_2);
-     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(edges), edges, GL_STATIC_DRAW);
+     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_quads_edges), cube_quads_edges, GL_STATIC_DRAW);
 
      // set the vertex attribute pointers
      glEnableVertexAttribArray(0);
@@ -347,7 +347,7 @@ int main(int, char**)
           o_shader.setInt("mode", rendermode);
           o_shader.setVec3("objectColor", 0.0f, 0.0f, 1.0f);
 
-          glDrawElements(GL_LINES, sizeof(edges)/sizeof(edges[0]), GL_UNSIGNED_INT, 0);
+          glDrawElements(GL_LINES, sizeof(cube_quads_edges)/sizeof(cube_quads_edges[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
           glDisable(GL_PRIMITIVE_RESTART);
           //std::cout << sizeof(edges)/sizeof(edges[0]) << std::endl;
@@ -359,7 +359,7 @@ int main(int, char**)
           glm::mat4 scale = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
           o_shader.setMat4("model", scale);
           glBindVertexArray(VAO_4);
-          glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(indices[0]), GL_UNSIGNED_INT, 0);
+          glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
 
           cubelight->enable_shader();
