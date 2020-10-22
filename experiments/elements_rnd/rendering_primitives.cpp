@@ -66,7 +66,7 @@ int main(int, char**)
      cube.prim_shader = new Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
      cube.init_object();
      cube.init_edges();
-     
+     /*
      for(int i=0; i < cube.vertexList.size(); i++)
      {
        std::cout << cube.vertexList[i].Position.x << " " << cube.vertexList[i].Position.y << " " << cube.vertexList[i].Position.z << std::endl;
@@ -85,7 +85,7 @@ int main(int, char**)
      {
        std::cout << i+1 << " " << cube.primEdges[i] << std::endl;
      }
-
+     */
      Geometry * cubelight = new Geometry();
      cubelight->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
      cubelight->enable_shader();
@@ -260,7 +260,7 @@ int main(int, char**)
           cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
           cube.prim_shader->setMat4("model", scale);
-          //cube.draw_object();
+          cube.draw_object();
 
           cubelight->enable_shader();
           cubelight->lo_shader->setMat4("projection", projection);
