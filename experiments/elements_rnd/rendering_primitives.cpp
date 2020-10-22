@@ -62,19 +62,29 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Primitive cube(cube_quads_vertices, cube_quads_indices);
+     Primitive cube(cube_quads_vertices, cube_quads_indices, cube_quads_edges);
      cube.prim_shader = new Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
      cube.init_object();
-
+     cube.init_edges();
+     
      for(int i=0; i < cube.vertexList.size(); i++)
      {
        std::cout << cube.vertexList[i].Position.x << " " << cube.vertexList[i].Position.y << " " << cube.vertexList[i].Position.z << std::endl;
+
+     }
+     for(int i=0; i < 24; i+=3)
+     {
+       std::cout << cube.debug_data[i] << " " << cube.debug_data[i+1] << " " << cube.debug_data[i+2] << std::endl;
      }
      for(int i=0; i < cube.faceIndices.size(); i++)
      {
        std::cout <<cube.faceIndices[i] << " ";
      }
      std::cout << std::endl;
+     for(int i=0; i < 71; i++)
+     {
+       std::cout << i+1 << " " << cube.primEdges[i] << std::endl;
+     }
 
      Geometry * cubelight = new Geometry();
      cubelight->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
@@ -237,11 +247,12 @@ int main(int, char**)
           cube.prim_shader->setMat4("view", view);
           cube.prim_shader->setMat4("model", model);
 
-          glLineWidth(10.0f);
-          glPointSize(10.0f);
+          glLineWidth(1.1f);
+          glPointSize(1.1f);
           int rendermode = 0;
-          //cube.prim_shader->setInt("mode", rendermode);
-          //cube.prim_shader->setVec3("objectColor", 0.0f, 0.0f, 1.0f);
+          cube.prim_shader->setInt("mode", rendermode);
+          cube.prim_shader->setVec3("objectColor", 0.0f, 0.0f, 1.0f);
+          cube.draw_edges();
 
           rendermode = 4;
           cube.prim_shader->setInt("mode", rendermode);
@@ -249,7 +260,7 @@ int main(int, char**)
           cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
           cube.prim_shader->setMat4("model", scale);
-          cube.draw_object();
+          //cube.draw_object();
 
           cubelight->enable_shader();
           cubelight->lo_shader->setMat4("projection", projection);

@@ -43,9 +43,9 @@ Primitive::Primitive(float data[], GLuint indices[])
   }
 }
 
-Primitive::Primitive(float data[], unsigned int indices[], float color[])
+Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
 {
-  for(unsigned int i=0; i < sizeof(data)/sizeof(data[0]); i+=3)
+  for(unsigned int i=0; i < 24; i+=3)
   {
     vertex.Position.x = data[i];
     vertex.Position.y = data[i+1];
@@ -53,9 +53,19 @@ Primitive::Primitive(float data[], unsigned int indices[], float color[])
 
     vertexList.push_back(vertex);
   }
-  for(unsigned int i=0; i < sizeof(indices)/sizeof(indices[0]); i++)
+
+  for(unsigned int i=0; i < 24; i++)
+  {
+    debug_data[i] = data[i];
+  }
+
+  for(unsigned int i=0; i < 36; i++)
   {
     faceIndices.push_back(indices[i]);
+  }
+  for(unsigned int i=0; i < (71); i++)
+  {
+    primEdges[i] = edges[i];
   }
 }
 
@@ -148,6 +158,27 @@ void Primitive::init_object()
   glBindVertexArray(0);
 }
 
+void Primitive::init_edges()
+{
+  glGenVertexArrays(1, &eVAO);
+  glGenBuffers(1, &eVBO);
+  glGenBuffers(1, &eEBO);
+
+  // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+  glBindVertexArray(eVAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, eVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(debug_data), debug_data, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eEBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(primEdges), primEdges, GL_STATIC_DRAW);
+
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+
+  glBindVertexArray(0);
+}
+
 void Primitive::init_object_texture(Primitive * Primitive, int i, char * texturefpath)
 {
   glGenTextures(1, &this->texture[i]);
@@ -227,6 +258,20 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
       glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
       glDrawElements(GL_TRIANGLES, faceIndices.size(), GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
+    }
+
+    void Primitive::draw_edges()
+    {
+      prim_shader->use();
+      glEnable(GL_PRIMITIVE_RESTART);
+      glPrimitiveRestartIndex(0xFFFFFFFE);
+      glLineWidth(1.1f);
+      glPointSize(1.1f);
+      glBindVertexArray(eVAO);
+      glDrawElements(GL_LINES, sizeof(primEdges)/sizeof(primEdges[0]), GL_UNSIGNED_INT, 0);
+      glBindVertexArray(0);
+      glDisable(GL_PRIMITIVE_RESTART);
+
     }
 
     void Primitive::delete_object()

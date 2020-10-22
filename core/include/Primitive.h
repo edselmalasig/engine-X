@@ -63,18 +63,25 @@ public:
   Primitive();
   Primitive(float data[]);
   Primitive(float data[], GLuint indices[]);
-  Primitive(float data[], unsigned int indices[], float color[]);
+  Primitive(float data[], unsigned int indices[], GLuint edges[]);
 
+  float debug_data[24];
   Vertex vertex;
   Edge edge;
 
   std::vector<Vertex> vertexList;
   std::vector<Edge> edgeList;
   std::vector<unsigned int> faceIndices;
+  unsigned int primEdges[71];
 
   unsigned int VBO;
   unsigned int VAO;
   unsigned int EBO;
+
+  unsigned int eVBO;
+  unsigned int eVAO;
+  unsigned int eEBO;
+
   Shader * prim_shader;
 
   int vertexShader;
@@ -88,7 +95,9 @@ public:
   void renderTexLayer(int i);
 
   void init_object();
+  void init_edges();
   void draw_object();
+  void draw_edges();
   void delete_object();
 
   void init_triangle();
