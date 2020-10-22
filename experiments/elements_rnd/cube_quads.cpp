@@ -135,19 +135,19 @@ int main(int, char**)
           1, 0, 2, 3, 1, 2,
           5, 4, 0, 1, 5, 0
      };
-     unsigned int VAO_4, VBO_4, EBO_4, VAO_2, VBO_2, EBO_2;
+     unsigned int VAO, VBO, EBO, VAO_2, VBO_2, EBO_2;
 
-     glGenVertexArrays(1, &VAO_4);
-     glGenBuffers(1, &VBO_4);
-     glGenBuffers(1, &EBO_4);
+     glGenVertexArrays(1, &VAO);
+     glGenBuffers(1, &VBO);
+     glGenBuffers(1, &EBO);
 
-     glBindVertexArray(VAO_4);
+     glBindVertexArray(VAO);
 
-     glBindBuffer(GL_ARRAY_BUFFER, VBO_4);
+     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
      glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
 
-     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_4);
+     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_quads_indices), cube_quads_indices, GL_STATIC_DRAW);
 
      // set the vertex attribute pointers
@@ -358,7 +358,7 @@ int main(int, char**)
           o_shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           glm::mat4 scale = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
           o_shader.setMat4("model", scale);
-          glBindVertexArray(VAO_4);
+          glBindVertexArray(VAO);
           glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
 
