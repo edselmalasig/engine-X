@@ -56,8 +56,8 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Model nanosuit = Model("nanosuit/backpack.obj");
-     Shader nanosuitShader = Shader("shaders/model_loading.vs", "shaders/model_loading.fs");
+     Model nanosuit = Model("../res/nanosuit/backpack.obj");
+     Shader nanosuitShader = Shader("../res/shaders/model_loading.vs", "../res/shaders/model_loading.fs");
 
      nanosuitShader.use();
 

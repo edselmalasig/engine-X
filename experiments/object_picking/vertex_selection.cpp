@@ -129,12 +129,12 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      Primitive cube(cube_quads_vertices, cube_quads_indices, cube_quads_edges);
-     cube.prim_shader = new Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
+     cube.prim_shader = new Shader("../shaders/cube_quads.vs", "../shaders/cube_quads.fs");
      cube.init_object();
      cube.init_edges();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
+     g_cubelamp->lo_shader = new Shader("../shaders/light_materials.vs", "../shaders/light_materials.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube();
 

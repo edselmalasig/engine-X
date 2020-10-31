@@ -126,11 +126,11 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
      //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->lo_shader = new Shader("shaders/spotlight.vs", "shaders/spotlight.fs");
+     g_cube->lo_shader = new Shader("../res/shaders/spotlight.vs", "../res/shaders/spotlight.fs");
      g_cube->enable_shader();
      g_cube->init_cube_wntc();
-     g_cube->init_texture(0, "textures/container2.png");
-     g_cube->init_texture(1, "textures/container2_specular.png");
+     g_cube->init_texture(0, "../res/textures/container2.png");
+     g_cube->init_texture(1, "../res/textures/container2_specular.png");
      g_cube->lo_shader->setInt("material.diffuse", 0);
      g_cube->lo_shader->setInt("material.specular", 1);
 
@@ -139,7 +139,7 @@ int main(int, char**)
      g_cube->lo_shader->setInt("material.specular", 1);
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
+     g_cubelamp->lo_shader = new Shader("../res/shaders/light_materials.vs", "../res/shaders/light_materials.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube();
 
@@ -374,12 +374,11 @@ int main(int, char**)
                          //EditTransform(engineX->camera, (float *) glm::value_ptr(model))
                          //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
                     }
-
-                    //g_cube->renderTexLayer(1);
-                    glPointSize(7.0f);
-                    g_cube->draw_cube(GL_POINTS);
-                    g_cube->draw_cube(GL_TRIANGLES);
                }
+               g_cube->renderTexLayer(1);
+               glPointSize(7.0f);
+               g_cube->draw_cube(GL_POINTS);
+               g_cube->draw_cube(GL_TRIANGLES);
 
           }
 

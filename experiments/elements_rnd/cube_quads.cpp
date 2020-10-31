@@ -174,10 +174,10 @@ int main(int, char**)
      glBindVertexArray(0);
 
 
-     Shader o_shader = Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
+     Shader o_shader = Shader("../res/shaders/cube_quads.vs", "../res/shaders/cube_quads.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
-     cubelight->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
+     cubelight->lo_shader = new Shader("../res/shaders/light_materials.vs", "../res/shaders/light_materials.fs");
      cubelight->enable_shader();
      cubelight->init_cube();
 
