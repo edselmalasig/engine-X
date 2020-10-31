@@ -54,11 +54,6 @@ Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
     vertexList.push_back(vertex);
   }
 
-  for(unsigned int i=0; i < 24; i++)
-  {
-    debug_data[i] = data[i];
-  }
-
   for(unsigned int i=0; i < 36; i++)
   {
     faceIndices.push_back(indices[i]);
@@ -156,6 +151,17 @@ void Primitive::init_object()
   glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
 
   glBindVertexArray(0);
+}
+
+//should i use glBufferSubData
+
+void Primitive::update_object_buffer()
+{
+  //glBindVertexArray(VAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
+  //glBufferSubData(GL_ARRAY_BUFFER, vertexList.size()*sizeof(Vertex), sizeof(Vertex), &vertexList[0]);
 }
 
 void Primitive::init_edges()

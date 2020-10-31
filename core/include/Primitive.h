@@ -46,6 +46,7 @@ private:
       // bitangent
       glm::vec3 Bitangent;
       int ID;
+      glm::mat4 model = glm::mat4(1.0f);
   };
 
   struct Edge{
@@ -65,7 +66,6 @@ public:
   Primitive(float data[], GLuint indices[]);
   Primitive(float data[], unsigned int indices[], GLuint edges[]);
 
-  float debug_data[24];
   Vertex vertex;
   Edge edge;
 
@@ -96,14 +96,13 @@ public:
 
   void init_object();
   void init_edges();
+  void update_object_buffer();
   void draw_object();
   void draw_edges();
   void delete_object();
 
   void init_triangle();
   void draw_triangle();
-
-
 
 };
 

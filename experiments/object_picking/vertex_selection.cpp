@@ -16,6 +16,8 @@
 #include "ImGuizmo.h"
 #include "EngineX.h"
 #include "Geometry.h"
+#include "Primitive.h"
+#include "PrimitiveData.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -126,47 +128,10 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Geometry * g_cube[10];
-     // positions all containers
-     glm::vec3 cubePositions[] = {
-          glm::vec3( 0.0f,  0.0f,  0.0f),
-          glm::vec3( 2.0f,  5.0f, -15.0f),
-          glm::vec3(-1.5f, -2.2f, -2.5f),
-          glm::vec3(-3.8f, -2.0f, -12.3f),
-          glm::vec3( 2.4f, -0.4f, -3.5f),
-          glm::vec3(-1.7f,  3.0f, -7.5f),
-          glm::vec3( 1.3f, -2.0f, -2.5f),
-          glm::vec3( 1.5f,  2.0f, -2.5f),
-          glm::vec3( 1.5f,  0.2f, -1.5f),
-          glm::vec3(-1.3f,  1.0f, -1.5f)
-     };
-
-     for(unsigned int i = 0; i < 10; i++)
-     {
-          g_cube[i] = new Geometry();
-          //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-          g_cube[i]->lo_shader = new Shader("shaders/spotlight.vs", "shaders/spotlight.fs");
-          g_cube[i]->enable_shader();
-          g_cube[i]->init_cube_wntc();
-          g_cube[i]->init_texture(0, "textures/container2.png");
-          g_cube[i]->init_texture(1, "textures/container2_specular.png");
-          g_cube[i]->lo_shader->setInt("material.diffuse", 0);
-          g_cube[i]->lo_shader->setInt("material.specular", 1);
-
-          g_cube[i]->lo_shader->use();
-          g_cube[i]->lo_shader->setInt("material.diffuse", 0);
-          g_cube[i]->lo_shader->setInt("material.specular", 1);
-
-          g_cube[i]->model = glm::translate(g_cube[i]->model, cubePositions[i]);
-          float angle = 20.0f * i;
-          g_cube[i]->model = glm::rotate(g_cube[i]->model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-          g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
-     }
-
-     std::cout << g_cube[9]->model[0][0] << " " << g_cube[9]->model[0][1] << " " << g_cube[9]->model[0][2] << " " << g_cube[9]->model[0][3] << std::endl;
-     std::cout << g_cube[9]->model[1][0] << " " << g_cube[9]->model[1][1] << " " << g_cube[9]->model[1][2] << " " << g_cube[9]->model[1][3] <<std::endl;
-     std::cout << g_cube[9]->model[2][0] << " " << g_cube[9]->model[2][1] << " " << g_cube[9]->model[2][2] << " " << g_cube[9]->model[2][3] << std::endl;
-     std::cout << g_cube[9]->model[3][0] << " " << g_cube[9]->model[3][1] << " " << g_cube[9]->model[3][2] << " " << g_cube[9]->model[3][3] << std::endl;
+     Primitive cube(cube_quads_vertices, cube_quads_indices, cube_quads_edges);
+     cube.prim_shader = new Shader("shaders/cube_quads.vs", "shaders/cube_quads.fs");
+     cube.init_object();
+     cube.init_edges();
 
      Geometry * g_cubelamp = new Geometry();
      g_cubelamp->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
@@ -175,10 +140,8 @@ int main(int, char**)
 
      glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
-
-
      // variables for selected objects.
-     std::string selectedType = "container";
+     std::string selectedType = "vertexID";
      int selectedIndex = -2;
 
      printf("glfw main loop.\n");
@@ -300,8 +263,7 @@ int main(int, char**)
                     }
                     ImGui::End();
                }
-               // Rendering
-               //ImGui::Render();
+
           }
 
           glfwMakeContextCurrent(engineX->window);
@@ -323,36 +285,12 @@ int main(int, char**)
 
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
-          for(unsigned int i = 0; i < 10; i++)
-          {
-               g_cube[i]->enable_shader();
-               g_cube[i]->lo_shader->setVec3("light.position", *engineX->camera->getPositionVector());
-               g_cube[i]->lo_shader->setVec3("light.direction", *engineX->camera->getFrontVector());
-               g_cube[i]->lo_shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-               g_cube[i]->lo_shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
-
-               g_cube[i]->lo_shader->setVec3("viewPos", *engineX->camera->getPositionVector());
-
-               g_cube[i]->lo_shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-               g_cube[i]->lo_shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-               g_cube[i]->lo_shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-               g_cube[i]->lo_shader->setFloat("light.constant", 1.0f);
-               g_cube[i]->lo_shader->setFloat("light.linear", 0.09f);
-               g_cube[i]->lo_shader->setFloat("light.quadratic", 0.032f);
-
-               g_cube[i]->lo_shader->setFloat("material.shininess", 32.0f);
-
-               g_cube[i]->lo_shader->setMat4("projection", projection);
-               g_cube[i]->lo_shader->setMat4("view", view);
-
-               g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
-          }
           bool reprint = true;
 
-          for (unsigned int i = 0; i < 10; i++)
+          for (unsigned int i = 0; i < cube.vertexList.size(); i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
-               //glm::mat4 model = glm::mat4(1.0f);
+
                bool selectionBool = false;
                double mousePosX, mousePosY;
                int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
@@ -372,7 +310,11 @@ int main(int, char**)
                     //engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
                     float intersection_distance;
 
-                    glm::vec3 sC = glm::vec3(g_cube[i]->model[3][0], g_cube[i]->model[3][1], g_cube[i]->model[3][2]);
+                    glm::vec3 sC = cube.vertexList[i].Position;
+                    // copy Vertex Position to Vertex Model matrix.
+                    cube.vertexList[i].model[3][0] = cube.vertexList[i].Position.x;
+                    cube.vertexList[i].model[3][1] = cube.vertexList[i].Position.y;
+                    cube.vertexList[i].model[3][2] = cube.vertexList[i].Position.z;
                     selectionBool = engineX->RayHitSphere(
                          sC,
                          0.5f,
@@ -382,30 +324,38 @@ int main(int, char**)
 
                     if ( selectionBool ){
                          selectedIndex = i;
-                         selectedType = "container";
+                         selectedType = "vertex";
                     }
                }
           }
 
+
           //ImGui::NewFrame();
           ImGuizmo::BeginFrame();
-          if(selectedIndex > -1)
-          EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[selectedIndex]->model),
-               (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
-          //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
+          if(selectedIndex > -1){
+              EditTransform(engineX->camera, (float *) glm::value_ptr(cube.vertexList[selectedIndex].model),
+                      (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
+                      // Update vertex position with vertex model matrix;
+                      glm::vec3 posUp = glm::vec3(cube.vertexList[selectedIndex].model[3][0], cube.vertexList[selectedIndex].model[3][1], cube.vertexList[selectedIndex].model[3][2]);
+                      cube.vertexList[selectedIndex].Position = glm::vec3(posUp);
+
+                      cube.update_object_buffer();
+          }
+
           ImGuizmo::Enable(true);
           ImGui::Render();
 
-          for(unsigned int i = 0; i < 10; i++)
-          {
+          cube.prim_shader->use();
+          cube.prim_shader->setMat4("projection", projection);
+          cube.prim_shader->setMat4("view", view);
+          cube.prim_shader->setMat4("model", model);
+          glPointSize(1.1f);
+          int rendermode = 0;
+          cube.prim_shader->setInt("mode", rendermode);
+          cube.prim_shader->setVec3("objectColor", 0.45f, 0.45f, 0.45f);
+          cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-               //g_cube->renderTexLayer(1);
-               glPointSize(7.0f);
-               g_cube[i]->draw_cube(GL_POINTS);
-               g_cube[i]->draw_cube(GL_TRIANGLES);
-
-
-          }
+          cube.draw_object();
 
           model = glm::mat4(1.0f);
 
