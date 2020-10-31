@@ -58,9 +58,20 @@ Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
   {
     faceIndices.push_back(indices[i]);
   }
-  for(unsigned int i=0; i < (71); i++)
+  for(unsigned int i=0, j=0; i < (71); i++, j++)
   {
+    // edges array with primitive restart data
     primEdges[i] = edges[i];
+
+    // for edgeList vertices
+    j=i;
+    if(i%2 != 0)
+    {
+      Edge e;
+      e.vs = vertexList[j++].Position;
+      e.ve = vertexList[j].Position;
+      edgeList.push_back(e);
+    }
   }
 }
 
@@ -153,15 +164,17 @@ void Primitive::init_object()
   glBindVertexArray(0);
 }
 
-//should i use glBufferSubData
+// should i use glBufferSubData
 
 void Primitive::update_object_buffer()
 {
-  //glBindVertexArray(VAO);
-
+  glBindVertexArray(VAO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
   //glBufferSubData(GL_ARRAY_BUFFER, vertexList.size()*sizeof(Vertex), sizeof(Vertex), &vertexList[0]);
+  glBindVertexArray(eVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, eVBO);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
 }
 
 void Primitive::init_edges()

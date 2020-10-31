@@ -31,33 +31,41 @@
 
 #include <vector>
 
+struct VertexP {
+    // position
+    glm::vec3 Position;
+    // normal
+    glm::vec3 Normal;
+    // texCoords
+    glm::vec2 TexCoords;
+    // tangent
+    glm::vec3 Tangent;
+    // bitangent
+    glm::vec3 Bitangent;
+    // vertexID
+    int ID;
+    // vertex model matrix
+    glm::mat4 model = glm::mat4(1.0f);
+};
+
+struct Edge{
+  // start vertex
+  glm::vec3 vs;
+  // end vertex
+  glm::vec3 ve;
+  // edgeID
+  int ID;
+  // edge model matrix
+  glm::mat4 model = glm::mat4(1.0f);
+};
+
+struct Face{
+  struct Edge edge1, edge2, edge3, edge4;
+};
 class Primitive
 {
 private:
-  struct Vertex {
-      // position
-      glm::vec3 Position;
-      // normal
-      glm::vec3 Normal;
-      // texCoords
-      glm::vec2 TexCoords;
-      // tangent
-      glm::vec3 Tangent;
-      // bitangent
-      glm::vec3 Bitangent;
-      int ID;
-      glm::mat4 model = glm::mat4(1.0f);
-  };
 
-  struct Edge{
-    Vertex vs;
-    Vertex ve;
-    int ID;
-  };
-
-  struct Face{
-    struct Edge edge1, edge2, edge3, edge4;
-  };
 
 
 public:
@@ -66,10 +74,10 @@ public:
   Primitive(float data[], GLuint indices[]);
   Primitive(float data[], unsigned int indices[], GLuint edges[]);
 
-  Vertex vertex;
+  VertexP vertex;
   Edge edge;
 
-  std::vector<Vertex> vertexList;
+  std::vector<VertexP> vertexList;
   std::vector<Edge> edgeList;
   std::vector<unsigned int> faceIndices;
   unsigned int primEdges[71];

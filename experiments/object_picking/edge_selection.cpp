@@ -287,7 +287,7 @@ int main(int, char**)
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
           bool reprint = true;
 
-          for (unsigned int i = 0; i < cube.vertexList.size(); i++)
+          for (unsigned int i = 0; i < cube.edgeList.size(); i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
 
@@ -307,32 +307,28 @@ int main(int, char**)
                          ray_origin, ray_direction
                     );
 
-                    //engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
-                    float intersection_distance;
-
-                    glm::vec3 sC = cube.vertexList[i].Position;
-                    // copy Vertex Position to Vertex Model matrix.
-                    cube.vertexList[i].model[3][0] = cube.vertexList[i].Position.x;
-                    cube.vertexList[i].model[3][1] = cube.vertexList[i].Position.y;
-                    cube.vertexList[i].model[3][2] = cube.vertexList[i].Position.z;
-                    selectionBool = engineX->RayHitSphere(
-                         sC,
-                         0.5f,
+                    Edge e = cube.edgeList[i];
+                    selectionBool = engineX->RayHitLineSegment(
                          ray_origin,
-                         ray_direction
+                         ray_direction,
+                         e,
+                         0.7f,
+                         0.1f
                     );
 
                     if ( selectionBool ){
                          selectedIndex = i;
-                         selectedType = "vertex";
+                         selectedType = "edge";
+                         std::cout << "edge selected" << " " << std::endl;
                     }
                }
+
           }
 
 
           //ImGui::NewFrame();
           ImGuizmo::BeginFrame();
-          if(selectedIndex > -1){
+          if(selectedIndex > 200000000){
               EditTransform(engineX->camera, (float *) glm::value_ptr(cube.vertexList[selectedIndex].model),
                       (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
                       // Update vertex position with vertex model matrix;
@@ -346,15 +342,22 @@ int main(int, char**)
           ImGui::Render();
 
           cube.prim_shader->use();
+          //obj.enable_shader();
           cube.prim_shader->setMat4("projection", projection);
           cube.prim_shader->setMat4("view", view);
           cube.prim_shader->setMat4("model", model);
+
+          glLineWidth(1.1f);
           glPointSize(1.1f);
           int rendermode = 0;
           cube.prim_shader->setInt("mode", rendermode);
+          cube.prim_shader->setVec3("objectColor", 0.0f, 0.0f, 1.0f);
+          cube.draw_edges();
+
+          rendermode = 4;
+          cube.prim_shader->setInt("mode", rendermode);
           cube.prim_shader->setVec3("objectColor", 0.45f, 0.45f, 0.45f);
           cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-
           cube.draw_object();
 
           model = glm::mat4(1.0f);

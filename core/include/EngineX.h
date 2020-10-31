@@ -7,6 +7,7 @@
 #include "imguistyleserializer.h"
 
 #include "camera.h"
+#include "Primitive.h"
 
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
@@ -94,6 +95,7 @@ public:
      );
      bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB);
      bool RayHitSphere(glm::vec3 center, float radius, glm::vec3 ray_origin, glm::vec3 ray_direction);
+     bool RayHitLineSegment(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float coPlanarThreshold, float lengthErrorThreshold);
 
 };
 
