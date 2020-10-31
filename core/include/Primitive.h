@@ -51,7 +51,7 @@ private:
 
   struct Edge{
     Vertex vs;
-    Vertex vf;
+    Vertex ve;
     int ID;
   };
 
