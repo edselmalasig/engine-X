@@ -96,7 +96,8 @@ public:
      bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB);
      bool RayHitSphere(glm::vec3 center, float radius, glm::vec3 ray_origin, glm::vec3 ray_direction);
      bool RayHitLineSegment(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float coPlanarThreshold, float lengthErrorThreshold);
-
+     bool RayHitCapsule(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float ra);
+     bool RayHitCylinder(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float ra);
 };
 
 #endif

@@ -766,17 +766,48 @@ bool EngineX::RayHitLineSegment(glm::vec3 ray_origin, glm::vec3 ray_direction, E
   #include <math.h>
   glm::vec3 m = glm::cross(dc, db);
   glm::vec3 n = glm::cross(da, db);
-  std::cout << "dot: " << glm::dot(dc,n) << " " << std::endl;
-  if(abs( glm::dot( dc, n ) >= coPlanarThreshold))
+  std::cout << "abs: " << abs( glm::dot( glm::cross(da, db), dc )) << " " << std::endl;
+  if(abs( glm::dot( glm::cross(da, db), dc )) != 0)
     return false;
 
 
-  float s = glm::dot(m, n)/glm::length2(n);
+  float s = glm::dot(glm::cross(dc,db), glm::cross(da,db))/glm::l2Norm(glm::cross(da,db));
   std::cout << "s: " << s << std::endl;
   if( s >= 0.0f && s <= 1.0f){
     glm::vec3 intersection = ray_origin + (s * da);
-    //if( (glm::distance2(intersection, e.vs) + glm::distance2(intersection, e.ve)) <= (glm::distance2(e.ve,e.vs)+lengthErrorThreshold))
+    //std::cout << "s: " << s << std::endl;
+    //if( (glm::length(intersection - e.vs)*glm::length(intersection - e.vs) + (glm::length(intersection - e.ve)*glm::length(intersection - e.ve)) <= (glm::length(e.ve - e.vs)*(glm::length(e.ve - e.vs))+lengthErrorThreshold)))
     return true;
   }else
   return false;
+}
+
+bool EngineX::RayHitCapsule(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float ra){
+
+  glm::vec3 ca = e.ve - e.vs;
+  glm::vec3 oc = ray_origin - e.vs;
+
+  float caca = glm::dot(ca,ca);
+  float card = glm::dot(ca, ray_direction);
+  float caoc = glm::dot(ca, oc);
+
+  float a = caca - (card*card);
+  float b = caca * glm::dot(oc, ray_direction) - (caoc*card);
+  float c = (caca*glm::dot(oc,oc)) - (caoc*caoc) - (ra*ra*caca);
+  float h = (b*b) - (a*c);
+  //std::cout << "h: " << h << std::endl;
+  if(h < 0.0f) return false;
+    #include <math.h>
+    h = sqrt(h);
+
+    float t = (-b-(h)) / a;
+    float y = caoc + t * card;
+    if(y>0.0f && y < caca)
+      return true;
+
+    t = (((y<0.0f)?0.0:caca)- caoc)/card;
+    if(abs(b+a*t)<h)
+      return true;
+
+    return false;
 }

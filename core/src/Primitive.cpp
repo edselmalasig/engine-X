@@ -58,19 +58,25 @@ Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
   {
     faceIndices.push_back(indices[i]);
   }
-  for(unsigned int i=0, j=0; i < (71); i++, j++)
+  for(int i=0, j=0; i < (72); i++, j++)
   {
     // edges array with primitive restart data
     primEdges[i] = edges[i];
-
+}
     // for edgeList vertices
-    j=i;
-    if(i%2 != 0)
+  for(int i=0; i < 72; i++){
+    if(i%3 == 2)
     {
+      i++;
+      continue;
+    }else {
       Edge e;
-      e.vs = vertexList[j++].Position;
-      e.ve = vertexList[j].Position;
+      e.vs = vertexList[i].Position;
+      e.ve = vertexList[i+1].Position;
       edgeList.push_back(e);
+      std::cout << i << " " << std::endl;
+      std::cout << i+1 << " " << std::endl;
+      i+=2;
     }
   }
 }
@@ -129,7 +135,7 @@ void Primitive::init_object()
   glBindVertexArray(VAO);
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(VertexP), &vertexList[0], GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, faceIndices.size() * sizeof(unsigned int), &faceIndices[0], GL_STATIC_DRAW);
@@ -147,19 +153,19 @@ void Primitive::init_object()
   // set the vertex attribute pointers
   // vertex Positions
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)0);
   // vertex normals
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)offsetof(VertexP, Normal));
   // vertex texture coords
   glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)offsetof(VertexP, TexCoords));
   // vertex tangent
   glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+  glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)offsetof(VertexP, Tangent));
   // vertex bitangent
   glEnableVertexAttribArray(4);
-  glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+  glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)offsetof(VertexP, Bitangent));
 
   glBindVertexArray(0);
 }
@@ -170,11 +176,11 @@ void Primitive::update_object_buffer()
 {
   glBindVertexArray(VAO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
-  //glBufferSubData(GL_ARRAY_BUFFER, vertexList.size()*sizeof(Vertex), sizeof(Vertex), &vertexList[0]);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(VertexP), &vertexList[0], GL_STATIC_DRAW);
+  //glBufferSubData(GL_ARRAY_BUFFER, vertexList.size()*sizeof(VertexP), sizeof(VertexP), &vertexList[0]);
   glBindVertexArray(eVAO);
   glBindBuffer(GL_ARRAY_BUFFER, eVBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(VertexP), &vertexList[0], GL_STATIC_DRAW);
 }
 
 void Primitive::init_edges()
@@ -187,13 +193,13 @@ void Primitive::init_edges()
   glBindVertexArray(eVAO);
 
   glBindBuffer(GL_ARRAY_BUFFER, eVBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(Vertex), &vertexList[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(VertexP), &vertexList[0], GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eEBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(primEdges), primEdges, GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexP), (void*)0);
 
   glBindVertexArray(0);
 }

@@ -313,13 +313,13 @@ int main(int, char**)
                          ray_direction,
                          e,
                          0.7f,
-                         0.1f
+                         0.01f
                     );
 
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "edge";
-                         std::cout << "edge selected" << " " << std::endl;
+                         std::cout << "edge selected" << ": " << i << " "<< cube.edgeList.size() <<std::endl;
                     }
                }
 
@@ -358,7 +358,7 @@ int main(int, char**)
           cube.prim_shader->setInt("mode", rendermode);
           cube.prim_shader->setVec3("objectColor", 0.45f, 0.45f, 0.45f);
           cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-          cube.draw_object();
+          //cube.draw_object();
 
           model = glm::mat4(1.0f);
 
