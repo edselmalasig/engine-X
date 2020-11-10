@@ -247,19 +247,19 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
         GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
         glGenerateMipmap(GL_TEXTURE_2D);
-      }
-      if(format == FIF_PNG)
-      {
+    }
+    if(format == FIF_PNG)
+    {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
           GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
           glGenerateMipmap(GL_TEXTURE_2D);
-        }
-      }
-      else
-      {
-        std::cout << "Failed to load texture" << std::endl;
-      }
     }
+  }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+}
 
     void Primitive::renderTexLayer(int i)
     {

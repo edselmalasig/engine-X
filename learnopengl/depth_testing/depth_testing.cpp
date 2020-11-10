@@ -16,6 +16,7 @@
 #include "EngineX.h"
 #include "Geometry.h"
 #include "Model.h"
+#include "texture.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -53,16 +54,106 @@ int main(int, char**)
      // Main loop
      bool show_demo_window = false;
 
-     float clearColor[4];
-
-     clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
+     float clearColor[] = { 0.35f, 0.35f, 0.35f, 0.0f };
 
      printf("Initializing shaders and objects.\n");
+     float cubeVertices[] = {
+         // positions          // texture Coords
+         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-     Model nanosuit = Model("nanosuit/nanosuit.obj");
-     Shader nanosuitShader = Shader("model_loading.vs", "model_loading.fs");
+         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+          0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+          0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-     nanosuitShader.use();
+         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+     };
+     float planeVertices[] = {
+         // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
+          5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+         -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+
+          5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+          5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+     };
+
+     unsigned int cubeVAO, cubeVBO;
+
+     glGenVertexArrays(1, &cubeVAO);
+     glGenBuffers(1, &cubeVBO);
+
+     glBindVertexArray(cubeVAO);
+     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+
+     glEnableVertexAttribArray(0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*) 0);
+     glEnableVertexAttribArray(1);
+     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3*sizeof(float)));
+     glBindVertexArray(0);
+
+     unsigned int planeVAO, planeVBO;
+     glGenVertexArrays(1, &planeVAO);
+     glGenBuffers(1, &planeVBO);
+
+     glBindVertexArray(planeVAO);
+     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+     glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
+     glEnableVertexAttribArray(0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*) 0);
+     glEnableVertexAttribArray(1);
+     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3 * sizeof(float)));
+     glBindVertexArray(0);
+     FIBITMAP * texture1;
+     FIBITMAP * texture2;
+
+     unsigned int cubeTexture;
+     loadTexture("../textures/container2.png", texture1, cubeTexture);
+
+     unsigned int floorTexture;
+     loadTexture("../textures/metal.png", texture2, floorTexture);
+
+     Shader shader("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
+     shader.use();
+     shader.setInt("texture1", 0);
+     Shader shader2("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
+     shader2.use();
+     shader2.setInt("texture1", 0);
      //glEnable(GL_DEPTH_TEST);
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
@@ -158,10 +249,9 @@ int main(int, char**)
           glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
           glEnable(GL_DEPTH_TEST);
-
+          glDepthMask(GL_FALSE);
+          glDepthFunc(GL_ALWAYS);
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-          glEnable(GL_CULL_FACE);
-          glCullFace(GL_BACK);
 
           engineX->camera->computeMatricesFromInputs();
 
@@ -184,14 +274,26 @@ int main(int, char**)
           //glEnable(GL_CULL_FACE);
           //glCullFace(GL_FRONT);
 
-          nanosuitShader.setMat4("projection", projection);
-          nanosuitShader.setMat4("view", view);
-
-          model = glm::translate(model, glm::vec3(0.0f, -1.55f, 0.0f));
-          model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-          nanosuitShader.setMat4("model", model);
-          nanosuit.Draw(nanosuitShader);
-
+          shader.use();
+          shader.setMat4("view", view);
+          shader.setMat4("projection", projection);
+          // cubes
+          glBindVertexArray(cubeVAO);
+          glActiveTexture(GL_TEXTURE0);
+          glBindTexture(GL_TEXTURE_2D, cubeTexture);
+          model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+          shader.setMat4("model", model);
+          glDrawArrays(GL_TRIANGLES, 0, 36);
+          model = glm::mat4(1.0f);
+          model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+          shader.setMat4("model", model);
+          glDrawArrays(GL_TRIANGLES, 0, 36);
+          // floor
+          glBindVertexArray(planeVAO);
+          glBindTexture(GL_TEXTURE_2D, floorTexture);
+          shader2.setMat4("model", glm::mat4(1.0f));
+          glDrawArrays(GL_TRIANGLES, 0, 6);
+          glBindVertexArray(0);
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
