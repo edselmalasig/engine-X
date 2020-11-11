@@ -3,6 +3,12 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
+#include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
@@ -21,9 +27,11 @@
 #include <iostream>
 #include <map>
 #include <vector>
+
 using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
+unsigned int STB_TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
 class Model
 {
@@ -171,133 +179,154 @@ private:
     }
 
 
-         // checks all material textures of a given type and loads the textures if they're not loaded yet.
-         // the required info is returned as a Texture struct.
-         vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
-         {
-              vector<Texture> textures;
-              for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-              {
-                   aiString str;
-                   mat->GetTexture(type, i, &str);
-                   // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-                   bool skip = false;
-                   for(unsigned int j = 0; j < textures_loaded.size(); j++)
-                   {
-                        if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-                        {
-                             textures.push_back(textures_loaded[j]);
-                             skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-                             break;
-                        }
-                   }
-                   if(!skip)
-                   {   // if texture hasn't been loaded already, load it
-                   Texture texture;
-                   texture.id = TextureFromFile(str.C_Str(), this->directory);
-                   texture.type = typeName;
-                   texture.path = str.C_Str();
-                   textures.push_back(texture);
-                   textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-              }
-         }
-         return textures;
-    }
-    };
-
-
-    unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
+    vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
     {
-         string filename = string(path);
-         filename = directory + '/' + filename;
+        vector<Texture> textures;
+        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+        {
+            aiString str;
+            mat->GetTexture(type, i, &str);
+            // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+            bool skip = false;
+            for (unsigned int j = 0; j < textures_loaded.size(); j++)
+            {
+                if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    break;
+                }
+            }
+            if (!skip)
+            {   // if texture hasn't been loaded already, load it
+                Texture texture;
+                texture.id = STB_TextureFromFile(str.C_Str(), this->directory);
+                texture.type = typeName;
+                texture.path = str.C_Str();
+                textures.push_back(texture);
+                textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+            }
+        }
+        return textures;
+    }
+};
 
-         unsigned int textureID;
-         FIBITMAP * textureFileIn;
 
-         // call this ONLY when linking with FreeImage as a static library
-         #ifdef FREEIMAGE_LIB
-         FreeImage_Initialise();
-         #endif // FREEIMAGE_LIB
+unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
+{
+    string filename = string(path);
+    filename = directory + '/' + filename;
 
-         // initialize your own FreeImage error handler
+        unsigned int textureID;
+        FIBITMAP * textureFileIn;
 
-         //FreeImage_SetOutputMessage(FreeImageErrorHandler);
+        FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(),0);
+        // Load the source image
+        textureFileIn = FreeImage_Load(format, filename.c_str(), 0);
+        int texture_w = FreeImage_GetWidth(textureFileIn);
+        int texture_h = FreeImage_GetHeight(textureFileIn);
+        int nrChannels;
 
-         // print version & copyright infos
+        BYTE * bits;
+        bits = FreeImage_GetBits(textureFileIn);
+        if(textureFileIn)
+        {
+            glGenTextures(1, &textureID);
+            glBindTexture(GL_TEXTURE_2D, textureID);
 
-         printf("FreeImage version : %s", FreeImage_GetVersion());
-         printf("\n");
-         printf(FreeImage_GetCopyrightMessage());
-         printf("\n");
-         FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(),0);
-         // Load the source image
-         textureFileIn = FreeImage_Load(format, filename.c_str(), 0);
-         int texture_w = FreeImage_GetWidth(textureFileIn);
-         int texture_h = FreeImage_GetHeight(textureFileIn);
-         int nrChannels;
+            if(format == FIF_JPEG)
+            {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
+                    GL_BGR, GL_UNSIGNED_BYTE, bits);
+                    glGenerateMipmap(GL_TEXTURE_2D);
+                }
+                if(format == FIF_PNG)
+                {
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
+                            GL_RGBA, GL_UNSIGNED_BYTE, bits);
+                            glGenerateMipmap(GL_TEXTURE_2D);
+                    }
 
-         BYTE * bits;
-         bits = FreeImage_GetBits(textureFileIn);
-         if(textureFileIn)
-         {
-              glGenTextures(1, &textureID);
-              glBindTexture(GL_TEXTURE_2D, textureID);
+                    //texture wrapping parameters
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-              if(format == FIF_JPEG)
-              {
-                   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
-                        GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
-                        glGenerateMipmap(GL_TEXTURE_2D);
-                   }
-                   if(format == FIF_PNG)
-                   {
-                        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
-                             GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
-                             glGenerateMipmap(GL_TEXTURE_2D);
-                        }
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                }
+                else
+                {
+                    std::cout << "Failed to load texture" << std::endl;
+                }
+                /*
+                unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+                if (data)
+                {
+                GLenum format;
+                if (nrComponents == 1)
+                format = GL_RED;
+                else if (nrComponents == 3)
+                format = GL_RGB;
+                else if (nrComponents == 4)
+                format = GL_RGBA;
 
-                        //texture wrapping parameters
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                glBindTexture(GL_TEXTURE_2D, textureID);
+                glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+                glGenerateMipmap(GL_TEXTURE_2D);
 
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                   }
-                   else
-                   {
-                        std::cout << "Failed to load texture" << std::endl;
-                   }
-                   /*
-                   unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-                   if (data)
-                   {
-                   GLenum format;
-                   if (nrComponents == 1)
-                   format = GL_RED;
-                   else if (nrComponents == 3)
-                   format = GL_RGB;
-                   else if (nrComponents == 4)
-                   format = GL_RGBA;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-                   glBindTexture(GL_TEXTURE_2D, textureID);
-                   glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-                   glGenerateMipmap(GL_TEXTURE_2D);
+                stbi_image_free(data);
+            }
+            else
+            {
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
 
-                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        */
 
-                   stbi_image_free(data);
-              }
-              else
-              {
-              std::cout << "Texture failed to load at path: " << path << std::endl;
-              stbi_image_free(data);
-         }
+        return textureID;
+}
+    unsigned int STB_TextureFromFile(const char* path, const string& directory, bool gamma) {
+        string filename = string(path);
+        filename = directory + '/' + filename;
 
-         */
+        unsigned int textureID;
+        glGenTextures(1, &textureID);
 
-         return textureID;
+        int width, height, nrComponents;
+        unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+        if (data)
+        {
+            GLenum format;
+            if (nrComponents == 1)
+                format = GL_RED;
+            else if (nrComponents == 3)
+                format = GL_RGB;
+            else if (nrComponents == 4)
+                format = GL_RGBA;
+
+            glBindTexture(GL_TEXTURE_2D, textureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
+
+        return textureID;
     }
     #endif

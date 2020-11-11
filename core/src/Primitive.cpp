@@ -1,3 +1,5 @@
+
+
 #include "Primitive.h"
 #include <stdio.h>
 #include <iostream>
@@ -245,13 +247,13 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
     if(format == FIF_JPEG)
     {
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
-        GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+        GL_RGB, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     if(format == FIF_PNG)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
-          GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+          GL_RGBA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
           glGenerateMipmap(GL_TEXTURE_2D);
     }
   }

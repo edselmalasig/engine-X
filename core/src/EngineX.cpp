@@ -90,6 +90,22 @@ void EngineX::init_glfw()
   glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, 1);
   glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 
+  // call this ONLY when linking with FreeImage as a static library
+    #ifdef FREEIMAGE_LIB
+  FreeImage_Initialise();
+    #endif // FREEIMAGE_LIB
+
+  // initialize your own FreeImage error handler
+
+  //FreeImage_SetOutputMessage(FreeImageErrorHandler);
+
+  // print version & copyright infos
+
+  printf("FreeImage version : %s", FreeImage_GetVersion());
+  printf("\n");
+  printf(FreeImage_GetCopyrightMessage());
+  printf("\n");
+
 }
 
 void EngineX::init_ImGui( )
