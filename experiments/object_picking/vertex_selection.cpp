@@ -315,7 +315,7 @@ int main(int, char**)
                     cube.vertexList[i].model[3][0] = cube.vertexList[i].Position.x;
                     cube.vertexList[i].model[3][1] = cube.vertexList[i].Position.y;
                     cube.vertexList[i].model[3][2] = cube.vertexList[i].Position.z;
-                    selectionBool = engineX->RayHitSphere(
+                    selectionBool = engineX->RaySphereCollide(
                          sC,
                          0.5f,
                          ray_origin,

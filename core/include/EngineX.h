@@ -93,6 +93,9 @@ public:
      	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
      	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
      );
+     bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1);
+     bool RaySphereCollide(glm::vec3 center, float radius, glm::vec3 orig, glm::vec3 dir);
+
      bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB);
      bool RayHitSphere(glm::vec3 center, float radius, glm::vec3 ray_origin, glm::vec3 ray_direction);
      bool RayHitLineSegment(glm::vec3 ray_origin, glm::vec3 ray_direction, Edge e, float coPlanarThreshold, float lengthErrorThreshold);
