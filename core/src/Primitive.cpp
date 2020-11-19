@@ -64,22 +64,23 @@ Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
   {
     // edges array with primitive restart data
     primEdges[i] = edges[i];
-}
+  }
+
+  for(unsigned int i = 0; i < 8; i++)
+  {
+    //std::cout << i << " " << vertexList[i].Position.x << " " << vertexList[i].Position.y
+      //      << " " << vertexList[i].Position.z << std::endl;
+  }
     // for edgeList vertices
-  for(int i=0; i < 72; i++){
-    if(i%3 == 2)
-    {
-      i++;
-      continue;
-    }else {
+  for(int i=0; i < 36-1; i++){
+
       Edge e;
-      e.vs = vertexList[i].Position;
-      e.ve = vertexList[i+1].Position;
+      e.vs = vertexList[faceIndices[i]].Position;
+      e.ve = vertexList[faceIndices[i+1]].Position;
       edgeList.push_back(e);
-      std::cout << i << " " << std::endl;
-      std::cout << i+1 << " " << std::endl;
-      i+=2;
-    }
+      std::cout << i << " " << e.vs.x << " " << e.vs.y << " " << e.vs.z << std::endl;
+      std::cout << i+1 << " " << e.ve.x << " " << e.ve.y << " " << e.ve.z << std::endl;
+
   }
 }
 

@@ -299,7 +299,6 @@ int main(int, char**)
                     glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
                     glm::vec3 ray_origin;
                     glm::vec3 ray_direction;
-
                     engineX->ScreenPosToWorldRay(
                          mousePosX, mousePosY,
                          fbWidth, fbHeight,
@@ -308,18 +307,18 @@ int main(int, char**)
                     );
 
                     Edge e = cube.edgeList[i];
-                    selectionBool = engineX->RayHitLineSegment(
+                    glm::vec3 sC = (e.vs + e.ve)/2;
+                    selectionBool = engineX->RaySphereCollide(
+                         sC,
+                         0.2F,
                          ray_origin,
-                         ray_direction,
-                         e,
-                         0.7f,
-                         0.01f
+                         ray_direction
                     );
 
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "edge";
-                         std::cout << "edge selected" << ": " << i << " "<< cube.edgeList.size() <<std::endl;
+                         std::cout << "edge selected" << ": " << i << " "<< cube.edgeList.size() << " " << sC.x << " " << sC.y << " " << sC.z << std::endl;
                     }
                }
 
@@ -328,7 +327,7 @@ int main(int, char**)
 
           //ImGui::NewFrame();
           ImGuizmo::BeginFrame();
-          if(selectedIndex > 200000000){
+          if(selectedIndex > -1){
               EditTransform(engineX->camera, (float *) glm::value_ptr(cube.vertexList[selectedIndex].model),
                       (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
                       // Update vertex position with vertex model matrix;
