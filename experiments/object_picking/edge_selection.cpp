@@ -310,7 +310,7 @@ int main(int, char**)
                     glm::vec3 sC = (e.vs + e.ve)/2;
                     selectionBool = engineX->RaySphereCollide(
                          sC,
-                         0.2F,
+                         0.3F,
                          ray_origin,
                          ray_direction
                     );

@@ -327,7 +327,7 @@ int main(int, char**)
 
                 if ( selectionBool ){
                     selectedIndex = i;
-                    selection.push_back(i);
+                    selection.push_back(selectedIndex);
                     selectedType = "vertex";
                 }
             }
@@ -355,7 +355,7 @@ int main(int, char**)
 
         //ImGui::NewFrame();
         ImGuizmo::BeginFrame();
-        if(selection.size() > 0){
+        if(selectedIndex > -1){
             EditTransform(engineX->camera, (float *) glm::value_ptr(cube.vertexList[selectedIndex].model),
             (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
             // Update vertex position with vertex model matrix;
