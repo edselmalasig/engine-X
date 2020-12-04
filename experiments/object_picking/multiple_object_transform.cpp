@@ -348,11 +348,12 @@ int main(int, char**)
                glm::mat4 rotate = glm::mat4(1.0f);
                glm::mat4 translate = glm::mat4(1.0f);
 
+               //transform model matrix with translate x rotate
                translate = glm::translate(translate, cubePositions[i]);
                float angle = 20.0f * i;
                rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-               //transform model matrix with translate x rotate
+
                model = translate * rotate;
                g_cube->lo_shader->setMat4("model", model);
 

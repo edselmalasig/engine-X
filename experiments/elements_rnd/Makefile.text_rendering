@@ -78,7 +78,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	LIBS += -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 	#LIBS += -L/usr/local/lib -lglfw
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
-	LIBS += -lglfw -lassimp
+	LIBS += -lglfw -lassimp -lfreetype
 
 	CXXFLAGS += -DFREEIMAGE_LIB -DMACOS
 	CXXFLAGS += -I/usr/local/include
@@ -86,7 +86,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
 
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
-	CXXFLAGS += -I $(FREEIMAGE_EXT)/
+	CXXFLAGS += -I $(FREEIMAGE_EXT)/ -I $(STB) -I $(FREETYPE)
 	CXXFLAGS += -g -Wall -Wformat
 	CFLAGS = $(CXXFLAGS)
 endif
