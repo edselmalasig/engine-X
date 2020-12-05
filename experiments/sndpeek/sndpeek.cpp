@@ -452,14 +452,14 @@ void usage()
 // name: main( )
 // desc: entry point
 //-----------------------------------------------------------------------------
-#ifdef __USE_GLFW__
+//#ifdef __USE_GLFW__
 int main( int argc, char ** argv )
-#elif __USE_GLFW__ == 0
+//#elif __USE_GLFW__ == 0
 //Use GLUT
-int main( int argc, char ** argv )
-#else
-int initialize_engine-X( int argc, char ** argv )
-#endif
+//int main( int argc, char ** argv )
+//#else
+//int initialize_sndpeek( int argc, char ** argv )
+//#endif
 {
      // remember command line
      GLboolean set_play = FALSE;
@@ -701,7 +701,7 @@ int initialize_engine-X( int argc, char ** argv )
 
      // print usage
      help();
-     
+
      float clearColor[4];
      clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
 
@@ -766,6 +766,7 @@ int initialize_engine-X( int argc, char ** argv )
      }
 
      return 0;
+
 
 
 }
@@ -1046,53 +1047,54 @@ bool initialize_audio( )
                }
           }
 
-          // make the transform window
-          hanning( g_window, g_buffer_size );
+     // make the transform window
+     hanning( g_window, g_buffer_size );
 
-          // initialize
-          if( g_wf_delay )
-          {
-               g_waveforms = new SAMPLE *[g_wf_delay];
-               for( int i = 0; i < g_wf_delay; i++ )
-               {
-                    // allocate memory (stereo)
-                    g_waveforms[i] = new SAMPLE[g_buffer_size * 2];
-                    // zero it
-                    memset( g_waveforms[i], 0, g_buffer_size * 2 * sizeof(SAMPLE) );
-               }
-          }
-
-          return true;
-
-
-     }
-
-
-
-     //-----------------------------------------------------------------------------
-     // Name: initialize_analysis( )
-     // Desc: sets initial audio analysis parameters
-     //-----------------------------------------------------------------------------
-     void initialize_analysis( )
+     // initialize
+     if( g_wf_delay )
      {
-          // spectral centroid
-          g_centroid = new Centroid( SND_MARSYAS_SIZE );
-          // down sampler
-          g_down_sampler = new DownSampler( g_buffer_size, 2 );
-          // flux
-          g_flux = new Flux( SND_MARSYAS_SIZE );
-          // lpc
-          g_lpc = new LPC( SND_MARSYAS_SIZE );
-          g_lpc->init();
-          // mfcc
-          g_mfcc = new MFCC( SND_MARSYAS_SIZE, 0 );
-          g_mfcc->init();
-          // rms
-          g_rms = new RMS( SND_MARSYAS_SIZE );
-          // rolloff
-          g_rolloff = new Rolloff( SND_MARSYAS_SIZE, 0.5f );
-          g_rolloff2 = new Rolloff( SND_MARSYAS_SIZE, 0.8f );
+          g_waveforms = new SAMPLE *[g_wf_delay];
+          for( int i = 0; i < g_wf_delay; i++ )
+          {
+               // allocate memory (stereo)
+               g_waveforms[i] = new SAMPLE[g_buffer_size * 2];
+               // zero it
+               memset( g_waveforms[i], 0, g_buffer_size * 2 * sizeof(SAMPLE) );
+          }
      }
+
+     return true;
+
+
+
+}
+
+
+
+//-----------------------------------------------------------------------------
+// Name: initialize_analysis( )
+// Desc: sets initial audio analysis parameters
+//-----------------------------------------------------------------------------
+void initialize_analysis( )
+{
+     // spectral centroid
+     g_centroid = new Centroid( SND_MARSYAS_SIZE );
+     // down sampler
+     g_down_sampler = new DownSampler( g_buffer_size, 2 );
+     // flux
+     g_flux = new Flux( SND_MARSYAS_SIZE );
+     // lpc
+     g_lpc = new LPC( SND_MARSYAS_SIZE );
+     g_lpc->init();
+     // mfcc
+     g_mfcc = new MFCC( SND_MARSYAS_SIZE, 0 );
+     g_mfcc->init();
+     // rms
+     g_rms = new RMS( SND_MARSYAS_SIZE );
+     // rolloff
+     g_rolloff = new Rolloff( SND_MARSYAS_SIZE, 0.5f );
+     g_rolloff2 = new Rolloff( SND_MARSYAS_SIZE, 0.8f );
+}
 
 
 
@@ -1101,503 +1103,249 @@ bool initialize_audio( )
      // Name: initialize_graphics( )
      // Desc: sets initial OpenGL states and initializes any application data
      //-----------------------------------------------------------------------------
-     void initialize_graphics()
+void initialize_graphics()
+{
+     // set the GL clear color - use when the color buffer is cleared
+     glClearColor( 0.0f, 0.0f,0.0f, 1.0f );
+     // set the shading model to 'smooth'
+     glShadeModel( GL_SMOOTH );
+     // enable depth
+     glEnable( GL_DEPTH_TEST );
+     // set the front faces of polygons
+     glFrontFace( GL_CCW );
+     // set fill mode
+     glPolygonMode( GL_FRONT_AND_BACK, g_fillmode );
+     // enable lighting
+     glEnable( GL_LIGHTING );
+     // enable lighting for front
+     glLightModeli( GL_FRONT_AND_BACK, GL_TRUE );
+     // material have diffuse and ambient lighting
+     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+     // enable color
+     glEnable( GL_COLOR_MATERIAL );
+
+     // enable light 0
+     glEnable( GL_LIGHT0 );
+
+     // setup and enable light 1
+     glLightfv( GL_LIGHT1, GL_AMBIENT, g_light1_ambient );
+     glLightfv( GL_LIGHT1, GL_DIFFUSE, g_light1_diffuse );
+     glLightfv( GL_LIGHT1, GL_SPECULAR, g_light1_specular );
+     glEnable( GL_LIGHT1 );
+
+     // blend? (Jeff's contribution)
+     // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+     // glEnable( GL_BLEND );
+
+     // initialize
+     g_spectrums = new Pt2D *[g_depth];
+     for( int i = 0; i < g_depth; i++ )
      {
-          // set the GL clear color - use when the color buffer is cleared
-          glClearColor( 0.0f, 0.0f,0.0f, 1.0f );
-          // set the shading model to 'smooth'
-          glShadeModel( GL_SMOOTH );
-          // enable depth
-          glEnable( GL_DEPTH_TEST );
-          // set the front faces of polygons
-          glFrontFace( GL_CCW );
-          // set fill mode
-          glPolygonMode( GL_FRONT_AND_BACK, g_fillmode );
-          // enable lighting
-          glEnable( GL_LIGHTING );
-          // enable lighting for front
-          glLightModeli( GL_FRONT_AND_BACK, GL_TRUE );
-          // material have diffuse and ambient lighting
-          glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
-          // enable color
-          glEnable( GL_COLOR_MATERIAL );
-
-          // enable light 0
-          glEnable( GL_LIGHT0 );
-
-          // setup and enable light 1
-          glLightfv( GL_LIGHT1, GL_AMBIENT, g_light1_ambient );
-          glLightfv( GL_LIGHT1, GL_DIFFUSE, g_light1_diffuse );
-          glLightfv( GL_LIGHT1, GL_SPECULAR, g_light1_specular );
-          glEnable( GL_LIGHT1 );
-
-          // blend? (Jeff's contribution)
-          // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-          // glEnable( GL_BLEND );
-
-          // initialize
-          g_spectrums = new Pt2D *[g_depth];
-          for( int i = 0; i < g_depth; i++ )
-          {
-               g_spectrums[i] = new Pt2D[SND_FFT_SIZE];
-               memset( g_spectrums[i], 0, sizeof(Pt2D)*SND_FFT_SIZE );
-          }
-          g_draw = new GLboolean[g_depth];
-          memset( g_draw, 0, sizeof(GLboolean)*g_depth );
-
-          // compute log spacing
-          g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
+          g_spectrums[i] = new Pt2D[SND_FFT_SIZE];
+          memset( g_spectrums[i], 0, sizeof(Pt2D)*SND_FFT_SIZE );
      }
+     g_draw = new GLboolean[g_depth];
+     memset( g_draw, 0, sizeof(GLboolean)*g_depth );
 
-     #ifdef __USE_GLFW__
-     void reshapeFunc( int w, int h )
+     // compute log spacing
+     g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
+
+
+}
+
+#ifdef __USE_GLFW__
+void reshapeFunc( int w, int h )
+{
+     glViewport( 0, 0, w, h );
+
+     // set the position of the lights
+     glLightfv( GL_LIGHT0, GL_POSITION, g_light0_pos );
+     glLightfv( GL_LIGHT1, GL_POSITION, g_light1_pos );
+}
+
+void keyboardFunc( GLFWwindow * window, int key, int scancode, int action)
+{
+     printf("Edit mode.\n");
+     if(action == GLFW_PRESS)
      {
-          glViewport( 0, 0, w, h );
-
-          // set the position of the lights
-          glLightfv( GL_LIGHT0, GL_POSITION, g_light0_pos );
-          glLightfv( GL_LIGHT1, GL_POSITION, g_light1_pos );
-     }
-
-     void keyboardFunc( GLFWwindow * window, int key, int scancode, int action)
-     {
-          printf("Edit mode.\n");
-          if(action == GLFW_PRESS)
-          {
-               switch( key ){
-                    default:
-                    case GLFW_KEY_J:
-                    g_z += g_dz;
-                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
-                    break;
-                    case GLFW_KEY_K:
-                    g_z -= g_dz;
-                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
-                    break;
-                    case GLFW_KEY_U:
-                    g_space *= 1.02f;
-                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
-                    break;
-                    case GLFW_KEY_I:
-                    g_space *= .98f;
-                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
-                    break;
-                    case GLFW_KEY_1:
-                    g_waveform = !g_waveform;
-                    fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_3:
-                    case GLFW_KEY_F:
-                    g_wutrfall = !g_wutrfall;
-                    fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_O:
-                    g_usedb = !g_usedb;
-                    fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_4:
-                    g_draw_features = !g_draw_features;
-                    fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_Q:
-                    exit( 0 );
-                    break;
-                    case GLFW_KEY_Z:
-                    g_time_scale *= .99f;
-                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
-                    break;
-                    case GLFW_KEY_RIGHT:
-                    g_time_scale *= 1.01f;
-                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
-                    break;
-                    case GLFW_KEY_UP:
-                    g_freq_scale *= .99f;
-                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
-                    break;
-                    case GLFW_KEY_EQUAL:
-                    g_freq_scale *= 1.01f;
-                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
-                    break;
-
-                    case GLFW_KEY_B:
-                    if( g_time_view > 1 )
-                    g_time_view--;
-
-                    fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
-                    fprintf( stderr, g_time_view == 1 ? " - (MAX)\n" : "\n" );
-                    break;
-                    case GLFW_KEY_C:
-                    if( g_time_view < 32 )
-                    g_time_view++;
-
-                    fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
-                    fprintf( stderr, g_time_view == 32 ? " - (MIN)\n" : "\n" );
-                    break;
-                    case GLFW_KEY_LEFT_BRACKET:
-                    g_eye_y -= g_inc_val_kb;
-                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
-                    break;
-                    case GLFW_KEY_RIGHT_BRACKET:
-                    g_eye_y += g_inc_val_kb;
-                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
-                    break;
-                    case GLFW_KEY_H:
-                    help();
-                    break;
-                    case GLFW_KEY_X:
-                    {
-                         if( !g_fullscreen )
-                         {
-                              g_last_width = g_width;
-                              g_last_height = g_height;
-                              //glutFullScreen();
-                         }
-                         else
-                         //glutReshapeWindow( g_last_width, g_last_height );
-
-                         g_fullscreen = !g_fullscreen;
-                         //fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
-                    }
-                    break;
-                    case GLFW_KEY_M:
-                    g_mute = !g_mute;
-                    fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_N:
-                    if( g_sf )
-                    {
-                         g_restart = TRUE;
-                         fprintf( stderr, "[engine-X]: restarting file...\n" );
-                    }
-                    break;
-                    case GLFW_KEY_2:
-                    g_lissajous = !g_lissajous;
-                    fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_L:
-                    g_lissajous_scale *= .95f;
-                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
-                    break;
-                    case GLFW_KEY_INSERT:
-                    g_lissajous_scale *= 1.05f;
-                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
-                    break;
-                    case GLFW_KEY_Y:
-                    g_delay -= 10;
-                    if( g_delay < 0 )
-                    g_delay = 0;
-                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
-                    break;
-                    case GLFW_KEY_KP_DIVIDE:
-                    g_delay += 10;
-                    if( g_delay > g_buffer_size )
-                    g_delay = g_buffer_size;
-                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
-                    break;
-                    case GLFW_KEY_SEMICOLON:
-                    case 'f':
-                    g_freeze = g_pause = !g_pause;
-                    fprintf( stderr, "[engine-X]: free(ze)!\n" );
-                    break;
-                    case GLFW_KEY_5:
-                    g_log_factor *= .98; //.99985;
-                    g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
-                    break;
-                    case GLFW_KEY_6:
-                    g_log_factor /= .98; //.99985;
-                    g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
-                    break;
-                    case GLFW_KEY_7:
-                    g_rainbow = !g_rainbow;
-                    fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_8:
-                    g_show_time = !g_show_time;
-                    fprintf( stderr, "[engine-X]: show time:%s\n", g_show_time ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_0:
-                    g_backwards = !g_backwards;
-                    fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
-                    break;
-                    case GLFW_KEY_COMMA:
-                    g_freq_lineWidth -= 1;
-                    if( g_freq_lineWidth < 1 ) g_freq_lineWidth = 1;
-                    fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
-                    break;
-                    case GLFW_KEY_MINUS:
-                    g_freq_lineWidth += 1;
-                    if( g_freq_lineWidth > 4 ) g_freq_lineWidth = 4;
-                    fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
-                    break;
-                    case GLFW_KEY_SLASH:
-                    g_wave_lineWidth -= 1;
-                    if( g_wave_lineWidth < 1 ) g_wave_lineWidth = 1;
-                    fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
-                    break;
-                    case GLFW_KEY_PERIOD:
-                    g_wave_lineWidth += 1;
-                    if( g_wave_lineWidth > 4 ) g_wave_lineWidth = 4;
-                    fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
-                    break;
-                    case GLFW_KEY_P:
-                    fprintf( stderr, "----------------------------------------------------\n" );
-                    fprintf( stderr, " current engine-X settings...\n" );
-                    fprintf( stderr, "----------------------------------------------------\n" );
-                    fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
-                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
-                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
-                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
-                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
-                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
-                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
-                    fprintf( stderr, "[engine-X]: dzpos:%f\n", g_dz );
-                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
-                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
-                    fprintf( stderr, "[engine-X]: depth:%i\n", g_depth );
-                    fprintf( stderr, "[engine-X]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
-                    fprintf( stderr, "[engine-X]: rotatem:%f\n", g_inc_val_mouse );
-                    fprintf( stderr, "[engine-X]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
-                    fprintf( stderr, "[engine-X]: begintime:%f (seconds)\n", g_begintime );
-                    fprintf( stderr, "[engine-X]: ds:%i\n", g_ds );
-                    fprintf( stderr, "----------------------------------------------------\n" );
-                    break;
-
-                    reshapeFunc(g_width, g_height);
-               }
-          }
-     }
-     #endif
-
-     #ifdef __USE_GLUT__
-     //-----------------------------------------------------------------------------
-     // Name: reshapeFunc( )
-     // Desc: called when window size changes
-     //-----------------------------------------------------------------------------
-     void reshapeFunc( int w, int h )
-     {
-          // save the new window size
-          g_width = w; g_height = h;
-          // map the view port to the client area
-          glViewport( 0, 0, w, h );
-          // set the matrix mode to project
-          glMatrixMode( GL_PROJECTION );
-          // load the identity matrix
-          glLoadIdentity( );
-          // create the viewing frustum
-          gluPerspective( 45.0, (GLfloat) w / (GLfloat) h, 1.0, 300.0 );
-          // set the matrix mode to modelview
-          glMatrixMode( GL_MODELVIEW );
-          // load the identity matrix
-          glLoadIdentity( );
-          // position the view point
-          gluLookAt( 0.0f, 3.5f * sin( g_eye_y ), 3.5f * cos( g_eye_y ),
-          0.0f, 0.0f, 0.0f,
-          0.0f, ( cos( g_eye_y ) < 0 ? -1.0f : 1.0f ), 0.0f );
-
-          // set the position of the lights
-          glLightfv( GL_LIGHT0, GL_POSITION, g_light0_pos );
-          glLightfv( GL_LIGHT1, GL_POSITION, g_light1_pos );
-     }
-
-
-
-
-     //-----------------------------------------------------------------------------
-     // Name: keyboardFunc( )
-     // Desc: key event
-     //-----------------------------------------------------------------------------
-     void keyboardFunc( unsigned char key, int x, int y )
-     {
-          switch( key )
-          {
-               case 'j':
+          switch( key ){
+               default:
+               case GLFW_KEY_J:
                g_z += g_dz;
                fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                break;
-               case 'k':
+               case GLFW_KEY_K:
                g_z -= g_dz;
                fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                break;
-               case 'u':
+               case GLFW_KEY_U:
                g_space *= 1.02f;
                fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                break;
-               case 'i':
+               case GLFW_KEY_I:
                g_space *= .98f;
                fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                break;
-               case '1':
+               case GLFW_KEY_1:
                g_waveform = !g_waveform;
                fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
                break;
-               case '3':
-               case 'w':
+               case GLFW_KEY_3:
+               case GLFW_KEY_F:
                g_wutrfall = !g_wutrfall;
                fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
                break;
-               case 'd':
+               case GLFW_KEY_O:
                g_usedb = !g_usedb;
                fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
                break;
-               case '4':
+               case GLFW_KEY_4:
                g_draw_features = !g_draw_features;
                fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
                break;
-               case 'q':
+               case GLFW_KEY_Q:
                exit( 0 );
                break;
-               case '_':
+               case GLFW_KEY_Z:
                g_time_scale *= .99f;
                fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                break;
-               case '+':
+               case GLFW_KEY_RIGHT:
                g_time_scale *= 1.01f;
                fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                break;
-               case '-':
+               case GLFW_KEY_UP:
                g_freq_scale *= .99f;
                fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                break;
-               case '=':
+               case GLFW_KEY_EQUAL:
                g_freq_scale *= 1.01f;
                fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                break;
 
-               case 'V':
+               case GLFW_KEY_B:
                if( g_time_view > 1 )
                g_time_view--;
 
                fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                fprintf( stderr, g_time_view == 1 ? " - (MAX)\n" : "\n" );
                break;
-               case 'C':
+               case GLFW_KEY_C:
                if( g_time_view < 32 )
                g_time_view++;
 
                fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                fprintf( stderr, g_time_view == 32 ? " - (MIN)\n" : "\n" );
                break;
-               case '[':
+               case GLFW_KEY_LEFT_BRACKET:
                g_eye_y -= g_inc_val_kb;
                fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                break;
-               case ']':
+               case GLFW_KEY_RIGHT_BRACKET:
                g_eye_y += g_inc_val_kb;
                fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                break;
-               case 'h':
+               case GLFW_KEY_H:
                help();
                break;
-               case 's':
+               case GLFW_KEY_X:
                {
                     if( !g_fullscreen )
                     {
                          g_last_width = g_width;
                          g_last_height = g_height;
-                         glutFullScreen();
+                         //glutFullScreen();
                     }
                     else
-                    glutReshapeWindow( g_last_width, g_last_height );
+                    //glutReshapeWindow( g_last_width, g_last_height );
 
                     g_fullscreen = !g_fullscreen;
-                    fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+                    //fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
                }
                break;
-               case 'm':
+               case GLFW_KEY_M:
                g_mute = !g_mute;
                fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
                break;
-               case 'x':
+               case GLFW_KEY_N:
                if( g_sf )
                {
                     g_restart = TRUE;
                     fprintf( stderr, "[engine-X]: restarting file...\n" );
                }
                break;
-               case '2':
+               case GLFW_KEY_2:
                g_lissajous = !g_lissajous;
                fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
                break;
-               case 'l':
+               case GLFW_KEY_L:
                g_lissajous_scale *= .95f;
                fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                break;
-               case 'L':
+               case GLFW_KEY_INSERT:
                g_lissajous_scale *= 1.05f;
                fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                break;
-               case 'y':
+               case GLFW_KEY_Y:
                g_delay -= 10;
                if( g_delay < 0 )
                g_delay = 0;
                fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                break;
-               case 'Y':
+               case GLFW_KEY_KP_DIVIDE:
                g_delay += 10;
                if( g_delay > g_buffer_size )
                g_delay = g_buffer_size;
                fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                break;
-               case 'z':
+               case GLFW_KEY_SEMICOLON:
                case 'f':
                g_freeze = g_pause = !g_pause;
                fprintf( stderr, "[engine-X]: free(ze)!\n" );
                break;
-               case 'v':
+               case GLFW_KEY_5:
                g_log_factor *= .98; //.99985;
                g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
                fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                break;
-               case 'c':
+               case GLFW_KEY_6:
                g_log_factor /= .98; //.99985;
                g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
                fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                break;
-               case 'r':
+               case GLFW_KEY_7:
                g_rainbow = !g_rainbow;
                fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
                break;
-               case 't':
+               case GLFW_KEY_8:
                g_show_time = !g_show_time;
                fprintf( stderr, "[engine-X]: show time:%s\n", g_show_time ? "ON" : "OFF" );
                break;
-               case 'b':
+               case GLFW_KEY_0:
                g_backwards = !g_backwards;
                fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
                break;
-               case ',':
+               case GLFW_KEY_COMMA:
                g_freq_lineWidth -= 1;
                if( g_freq_lineWidth < 1 ) g_freq_lineWidth = 1;
                fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                break;
-               case '.':
+               case GLFW_KEY_MINUS:
                g_freq_lineWidth += 1;
                if( g_freq_lineWidth > 4 ) g_freq_lineWidth = 4;
                fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                break;
-               case '<':
+               case GLFW_KEY_SLASH:
                g_wave_lineWidth -= 1;
                if( g_wave_lineWidth < 1 ) g_wave_lineWidth = 1;
                fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                break;
-               case '>':
+               case GLFW_KEY_PERIOD:
                g_wave_lineWidth += 1;
                if( g_wave_lineWidth > 4 ) g_wave_lineWidth = 4;
                fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                break;
-               case 'p':
+               case GLFW_KEY_P:
                fprintf( stderr, "----------------------------------------------------\n" );
                fprintf( stderr, " current engine-X settings...\n" );
                fprintf( stderr, "----------------------------------------------------\n" );
@@ -1629,151 +1377,407 @@ bool initialize_audio( )
                fprintf( stderr, "[engine-X]: ds:%i\n", g_ds );
                fprintf( stderr, "----------------------------------------------------\n" );
                break;
-          }
 
-          // do a reshape since g_eye_y might have changed
-          reshapeFunc( g_width, g_height );
-          glutPostRedisplay( );
+               reshapeFunc(g_width, g_height);
+          }
+     }
+}
+#endif
+
+#ifdef __USE_GLUT__
+//-----------------------------------------------------------------------------
+// Name: reshapeFunc( )
+// Desc: called when window size changes
+//-----------------------------------------------------------------------------
+void reshapeFunc( int w, int h )
+{
+     // save the new window size
+     g_width = w; g_height = h;
+     // map the view port to the client area
+     glViewport( 0, 0, w, h );
+     // set the matrix mode to project
+     glMatrixMode( GL_PROJECTION );
+     // load the identity matrix
+     glLoadIdentity( );
+     // create the viewing frustum
+     gluPerspective( 45.0, (GLfloat) w / (GLfloat) h, 1.0, 300.0 );
+     // set the matrix mode to modelview
+     glMatrixMode( GL_MODELVIEW );
+     // load the identity matrix
+     glLoadIdentity( );
+     // position the view point
+     gluLookAt( 0.0f, 3.5f * sin( g_eye_y ), 3.5f * cos( g_eye_y ),
+     0.0f, 0.0f, 0.0f,
+     0.0f, ( cos( g_eye_y ) < 0 ? -1.0f : 1.0f ), 0.0f );
+
+     // set the position of the lights
+     glLightfv( GL_LIGHT0, GL_POSITION, g_light0_pos );
+     glLightfv( GL_LIGHT1, GL_POSITION, g_light1_pos );
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// Name: keyboardFunc( )
+// Desc: key event
+//-----------------------------------------------------------------------------
+void keyboardFunc( unsigned char key, int x, int y )
+{
+     switch( key )
+     {
+          case 'j':
+          g_z += g_dz;
+          fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
+          break;
+          case 'k':
+          g_z -= g_dz;
+          fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
+          break;
+          case 'u':
+          g_space *= 1.02f;
+          fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
+          break;
+          case 'i':
+          g_space *= .98f;
+          fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
+          break;
+          case '1':
+          g_waveform = !g_waveform;
+          fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+          break;
+          case '3':
+          case 'w':
+          g_wutrfall = !g_wutrfall;
+          fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+          break;
+          case 'd':
+          g_usedb = !g_usedb;
+          fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+          break;
+          case '4':
+          g_draw_features = !g_draw_features;
+          fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+          break;
+          case 'q':
+          exit( 0 );
+          break;
+          case '_':
+          g_time_scale *= .99f;
+          fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
+          break;
+          case '+':
+          g_time_scale *= 1.01f;
+          fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
+          break;
+          case '-':
+          g_freq_scale *= .99f;
+          fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
+          break;
+          case '=':
+          g_freq_scale *= 1.01f;
+          fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
+          break;
+
+          case 'V':
+          if( g_time_view > 1 )
+          g_time_view--;
+
+          fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
+          fprintf( stderr, g_time_view == 1 ? " - (MAX)\n" : "\n" );
+          break;
+          case 'C':
+          if( g_time_view < 32 )
+          g_time_view++;
+
+          fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
+          fprintf( stderr, g_time_view == 32 ? " - (MIN)\n" : "\n" );
+          break;
+          case '[':
+          g_eye_y -= g_inc_val_kb;
+          fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
+          break;
+          case ']':
+          g_eye_y += g_inc_val_kb;
+          fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
+          break;
+          case 'h':
+          help();
+          break;
+          case 's':
+          {
+               if( !g_fullscreen )
+               {
+                    g_last_width = g_width;
+                    g_last_height = g_height;
+                    glutFullScreen();
+               }
+               else
+               glutReshapeWindow( g_last_width, g_last_height );
+
+               g_fullscreen = !g_fullscreen;
+               fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+          }
+          break;
+          case 'm':
+          g_mute = !g_mute;
+          fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
+          break;
+          case 'x':
+          if( g_sf )
+          {
+               g_restart = TRUE;
+               fprintf( stderr, "[engine-X]: restarting file...\n" );
+          }
+          break;
+          case '2':
+          g_lissajous = !g_lissajous;
+          fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+          break;
+          case 'l':
+          g_lissajous_scale *= .95f;
+          fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
+          break;
+          case 'L':
+          g_lissajous_scale *= 1.05f;
+          fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
+          break;
+          case 'y':
+          g_delay -= 10;
+          if( g_delay < 0 )
+          g_delay = 0;
+          fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
+          break;
+          case 'Y':
+          g_delay += 10;
+          if( g_delay > g_buffer_size )
+          g_delay = g_buffer_size;
+          fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
+          break;
+          case 'z':
+          case 'f':
+          g_freeze = g_pause = !g_pause;
+          fprintf( stderr, "[engine-X]: free(ze)!\n" );
+          break;
+          case 'v':
+          g_log_factor *= .98; //.99985;
+          g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
+          fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
+          break;
+          case 'c':
+          g_log_factor /= .98; //.99985;
+          g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
+          fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
+          break;
+          case 'r':
+          g_rainbow = !g_rainbow;
+          fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+          break;
+          case 't':
+          g_show_time = !g_show_time;
+          fprintf( stderr, "[engine-X]: show time:%s\n", g_show_time ? "ON" : "OFF" );
+          break;
+          case 'b':
+          g_backwards = !g_backwards;
+          fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+          break;
+          case ',':
+          g_freq_lineWidth -= 1;
+          if( g_freq_lineWidth < 1 ) g_freq_lineWidth = 1;
+          fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
+          break;
+          case '.':
+          g_freq_lineWidth += 1;
+          if( g_freq_lineWidth > 4 ) g_freq_lineWidth = 4;
+          fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
+          break;
+          case '<':
+          g_wave_lineWidth -= 1;
+          if( g_wave_lineWidth < 1 ) g_wave_lineWidth = 1;
+          fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
+          break;
+          case '>':
+          g_wave_lineWidth += 1;
+          if( g_wave_lineWidth > 4 ) g_wave_lineWidth = 4;
+          fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
+          break;
+          case 'p':
+          fprintf( stderr, "----------------------------------------------------\n" );
+          fprintf( stderr, " current engine-X settings...\n" );
+          fprintf( stderr, "----------------------------------------------------\n" );
+          fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
+          fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
+          fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
+          fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
+          fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
+          fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
+          fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
+          fprintf( stderr, "[engine-X]: dzpos:%f\n", g_dz );
+          fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
+          fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
+          fprintf( stderr, "[engine-X]: depth:%i\n", g_depth );
+          fprintf( stderr, "[engine-X]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
+          fprintf( stderr, "[engine-X]: rotatem:%f\n", g_inc_val_mouse );
+          fprintf( stderr, "[engine-X]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
+          fprintf( stderr, "[engine-X]: begintime:%f (seconds)\n", g_begintime );
+          fprintf( stderr, "[engine-X]: ds:%i\n", g_ds );
+          fprintf( stderr, "----------------------------------------------------\n" );
+          break;
      }
 
+     // do a reshape since g_eye_y might have changed
+     reshapeFunc( g_width, g_height );
+     glutPostRedisplay( );
+}
 
 
 
-     //-----------------------------------------------------------------------------
-     // Name: mouseFunc( )
-     // Desc: handles mouse stuff
-     //-----------------------------------------------------------------------------
-     void mouseFunc( int button, int state, int x, int y )
+
+//-----------------------------------------------------------------------------
+// Name: mouseFunc( )
+// Desc: handles mouse stuff
+//-----------------------------------------------------------------------------
+void mouseFunc( int button, int state, int x, int y )
+{
+     if( button == GLUT_LEFT_BUTTON )
      {
-          if( button == GLUT_LEFT_BUTTON )
-          {
-               // rotate
-               if( state == GLUT_DOWN )
-               g_inc -= g_inc_val_mouse;
-               else
-               g_inc += g_inc_val_mouse;
-          }
-          else if ( button == GLUT_RIGHT_BUTTON )
-          {
-               if( state == GLUT_DOWN )
-               g_inc += g_inc_val_mouse;
-               else
-               g_inc -= g_inc_val_mouse;
-          }
+          // rotate
+          if( state == GLUT_DOWN )
+          g_inc -= g_inc_val_mouse;
           else
-          g_inc = 0.0f;
+          g_inc += g_inc_val_mouse;
+     }
+     else if ( button == GLUT_RIGHT_BUTTON )
+     {
+          if( state == GLUT_DOWN )
+          g_inc += g_inc_val_mouse;
+          else
+          g_inc -= g_inc_val_mouse;
+     }
+     else
+     g_inc = 0.0f;
 
-          glutPostRedisplay( );
+     glutPostRedisplay( );
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// Name: idleFunc( )
+// Desc: callback from GLUT
+//-----------------------------------------------------------------------------
+void idleFunc( )
+{
+     // render the scene
+     glutPostRedisplay( );
+}
+
+//-----------------------------------------------------------------------------
+// name: draw_string()
+// desc: ...
+//-----------------------------------------------------------------------------
+void draw_string( GLfloat x, GLfloat y, GLfloat z, const char * str, GLfloat scale = 1.0f )
+{
+     GLint len = (GLint)strlen( str ), i;
+
+     glPushMatrix();
+     glTranslatef( x, y, z );
+     glScalef( .001f * scale, .001f * scale, .001f * scale );
+
+     for( i = 0; i < len; i++ )
+     glutStrokeCharacter( GLUT_STROKE_ROMAN, str[i] );
+
+     glPopMatrix();
+}
+#endif
+
+
+
+//-----------------------------------------------------------------------------
+// name: ...
+// desc: ...
+//-----------------------------------------------------------------------------
+void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
+{
+     float x, y;
+     SAMPLE * buffer;
+
+     // 1 or 2 channels only for now
+     assert( channels >= 1 && channels <= 2 );
+
+     // mono
+     if( channels == 1 )
+     {
+          buffer = g_cur_buffer;
+          // convert to mono
+          for( int m = 0; m < len; m++)
+          {
+               buffer[m] = stereobuffer[m*2] + stereobuffer[m*2+1];
+               buffer[m] /= 2.0f;
+          }
+     }
+     else
+     {
+          buffer = stereobuffer;
      }
 
+     // back to default line width
+     glLineWidth( 1.0f );
 
-
-
-     //-----------------------------------------------------------------------------
-     // Name: idleFunc( )
-     // Desc: callback from GLUT
-     //-----------------------------------------------------------------------------
-     void idleFunc( )
+     // color
+     glColor3f( 1.0f, 1.0f, .5f );
+     // save current matrix state
+     glPushMatrix();
+     // translate
+     glTranslatef( 1.2f, 0.0f, 0.0f );
+     // draw it
+     glBegin( GL_LINE_STRIP );
+     for( int i = 0; i < len * channels; i += channels )
      {
-          // render the scene
-          glutPostRedisplay( );
-     }
-
-     //-----------------------------------------------------------------------------
-     // name: draw_string()
-     // desc: ...
-     //-----------------------------------------------------------------------------
-     void draw_string( GLfloat x, GLfloat y, GLfloat z, const char * str, GLfloat scale = 1.0f )
-     {
-          GLint len = (GLint)strlen( str ), i;
-
-          glPushMatrix();
-          glTranslatef( x, y, z );
-          glScalef( .001f * scale, .001f * scale, .001f * scale );
-
-          for( i = 0; i < len; i++ )
-          glutStrokeCharacter( GLUT_STROKE_ROMAN, str[i] );
-
-          glPopMatrix();
-     }
-     #endif
-
-
-
-     //-----------------------------------------------------------------------------
-     // name: ...
-     // desc: ...
-     //-----------------------------------------------------------------------------
-     void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
-     {
-          float x, y;
-          SAMPLE * buffer;
-
-          // 1 or 2 channels only for now
-          assert( channels >= 1 && channels <= 2 );
-
-          // mono
+          x = buffer[i] * g_lissajous_scale;
           if( channels == 1 )
           {
-               buffer = g_cur_buffer;
-               // convert to mono
-               for( int m = 0; m < len; m++)
-               {
-                    buffer[m] = stereobuffer[m*2] + stereobuffer[m*2+1];
-                    buffer[m] /= 2.0f;
-               }
+               // delay
+               y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
+               y *= g_lissajous_scale;
           }
           else
           {
-               buffer = stereobuffer;
+               y = buffer[i + channels-1] * g_lissajous_scale;
           }
 
-          // back to default line width
-          glLineWidth( 1.0f );
-
-          // color
-          glColor3f( 1.0f, 1.0f, .5f );
-          // save current matrix state
-          glPushMatrix();
-          // translate
-          glTranslatef( 1.2f, 0.0f, 0.0f );
-          // draw it
-          glBegin( GL_LINE_STRIP );
-          for( int i = 0; i < len * channels; i += channels )
-          {
-               x = buffer[i] * g_lissajous_scale;
-               if( channels == 1 )
-               {
-                    // delay
-                    y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
-                    y *= g_lissajous_scale;
-               }
-               else
-               {
-                    y = buffer[i + channels-1] * g_lissajous_scale;
-               }
-
-               glVertex3f( x, y, 0.0f );
-               // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
-          }
-          glEnd();
-          // restore matrix state
-          glPopMatrix();
-
-          // hmm...
-          if( channels == 1 )
-          memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
+          glVertex3f( x, y, 0.0f );
+          // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
      }
+     glEnd();
+     // restore matrix state
+     glPopMatrix();
+
+     // hmm...
+     if( channels == 1 )
+     memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
+}
 
 
 
 
-     //-----------------------------------------------------------------------------
-     // Name: map_log_spacing( )
-     // Desc: ...
-     //-----------------------------------------------------------------------------
-     inline double map_log_spacing( double ratio, double power )
-     {
+//-----------------------------------------------------------------------------
+// Name: map_log_spacing( )
+// Desc: ...
+//-----------------------------------------------------------------------------
+inline double map_log_spacing( double ratio, double power )
+{
           // compute location
           return ::pow(ratio, power) * g_fft_size/g_freq_view;
      }
@@ -1781,36 +1785,36 @@ bool initialize_audio( )
 
 
 
-     //-----------------------------------------------------------------------------
-     // Name: compute_log_spacing( )
-     // Desc: ...
-     //-----------------------------------------------------------------------------
-     double compute_log_spacing( int fft_size, double power )
+//-----------------------------------------------------------------------------
+// Name: compute_log_spacing( )
+// Desc: ...
+//-----------------------------------------------------------------------------
+double compute_log_spacing( int fft_size, double power )
+{
+     int maxbin = fft_size; // for future in case we want to draw smaller range
+     // int minbin = 0; // what about adding this one?
+
+     for(int i = 0; i < fft_size; i++)
      {
-          int maxbin = fft_size; // for future in case we want to draw smaller range
-          // int minbin = 0; // what about adding this one?
-
-          for(int i = 0; i < fft_size; i++)
-          {
-               // compute location
-               g_log_positions[i] = map_log_spacing( (double)i/fft_size, power );
-               // normalize, 1 if maxbin == fft_size
-               g_log_positions[i] /= pow((double)maxbin/fft_size, power);
-          }
-
-          return 1/::log(fft_size);
+          // compute location
+          g_log_positions[i] = map_log_spacing( (double)i/fft_size, power );
+          // normalize, 1 if maxbin == fft_size
+          g_log_positions[i] /= pow((double)maxbin/fft_size, power);
      }
 
+     return 1/::log(fft_size);
+}
 
 
 
-     //-----------------------------------------------------------------------------
-     // Name: displayFunc( )
-     // Desc: callback function invoked to draw the client area
-     //-----------------------------------------------------------------------------
-     void displayFunc( )
-     {
-          // static variables to keep across function calls
+
+//-----------------------------------------------------------------------------
+// Name: displayFunc( )
+// Desc: callback function invoked to draw the client area
+//-----------------------------------------------------------------------------
+void displayFunc( )
+{
+     // static variables to keep across function calls
           static const int LP = 4;
           static long int count = 0;
           static char str[1024];
@@ -2163,7 +2167,7 @@ bool initialize_audio( )
                sprintf( str, "%.0f", fsec );
                //draw_string( -1.7f, 1.1f, -.2f, str, .4f );
           }
-/*
+          /*
           // pause?
           if( g_pause )
           draw_string( 0.95f, 1.1f, -.2f, "paused... (press f to resume)", .4f );
@@ -2171,14 +2175,14 @@ bool initialize_audio( )
           // mute?
           if( g_mute )
           draw_string( 0.95f, 1.05f, -.2f, "muted... (press m to unmute)", .4f );
-*/
+          */
           // restore matrix state
           glPopMatrix( );
 
           // flush gl commands
           glFlush( );
           // swap the buffers
-//          glutSwapBuffers( );
+          //          glutSwapBuffers( );
 
           // maintain count from render
           g_buffer_count_b++;
@@ -2190,77 +2194,77 @@ bool initialize_audio( )
 
 
 
-     //-----------------------------------------------------------------------------
-     // Name: extract_buffer( )
-     // Desc: extract one buffer
-     //-----------------------------------------------------------------------------
-     void extract_buffer( )
+//-----------------------------------------------------------------------------
+// Name: extract_buffer( )
+// Desc: extract one buffer
+//-----------------------------------------------------------------------------
+void extract_buffer( )
+{
+     // static stuff
+     static fvec raw(g_buffer_size), in(SND_MARSYAS_SIZE),
+     centroid(1), flux(1), lpc(g_lpc->outSize()), mfcc(13), rms(1), rolloff(1),
+     rolloff2(1);
+
+     // local
+     SAMPLE buffer[SND_BUFFER_SIZE], * ptr = in.getData();
+     GLint i;
+
+     // wait for reading
+     while( !g_ready )
+     usleep( 1000 );
+
+     // get data
+     if( !g_filename )
      {
-          // static stuff
-          static fvec raw(g_buffer_size), in(SND_MARSYAS_SIZE),
-          centroid(1), flux(1), lpc(g_lpc->outSize()), mfcc(13), rms(1), rolloff(1),
-          rolloff2(1);
-
-          // local
-          SAMPLE buffer[SND_BUFFER_SIZE], * ptr = in.getData();
-          GLint i;
-
-          // wait for reading
-          while( !g_ready )
-          usleep( 1000 );
-
-          // get data
-          if( !g_filename )
-          {
-               g_mutex.lock();
-               memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
-               g_ready = FALSE;
-               g_mutex.unlock();
-          }
-          else
-          {
-               memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
-               g_ready = FALSE;
-          }
-
-          // apply the window
-          apply_window( (float*)buffer, g_window, g_buffer_size );
-
-          // take the forward fft, leaving fftsize/2 complex values
-          rfft( (float *)buffer, g_buffer_size/2, FFT_FORWARD );
-          // cast to complex
-          complex * cbuf = (complex *)buffer;
-
-          // get magnitude spectrum
-          for( i = 0; i < g_buffer_size/2; i++ )
-          ptr[i] = cmp_abs( cbuf[i] );
-
-          // centroid
-          g_centroid->process( in, centroid );
-          // flux
-          g_flux->process( in, flux );
-          // lpc
-          g_lpc->process( in, lpc );
-          // mfcc
-          g_mfcc->process( in, mfcc );
-          // rms
-          g_rms->process( in, rms );
-          // rolloff
-          g_rolloff->process( in, rolloff );
-          g_rolloff2->process( in, rolloff2 );
-
-          // print to console
-          if( g_stdout )
-          {
-               fprintf( stdout, "%.2f  %.2f  %.8f  %.2f  %.2f  ", centroid(0), flux(0), rms(0), rolloff(0), rolloff2(0) );
-               fprintf( stdout, "%.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f %.2f %.2f  ",
-               mfcc(0), mfcc(1), mfcc(2), mfcc(3), mfcc(4), mfcc(5), mfcc(6),
-               mfcc(7), mfcc(8), mfcc(9), mfcc(10), mfcc(11), mfcc(12) );
-               fprintf( stdout, "\n" );
-          }
-
-          // file reading stuff
-          g_buffer_count_b++;
-          if( g_filename && !g_file_running && g_buffer_count_a == g_buffer_count_b )
-          g_running = FALSE;
+          g_mutex.lock();
+          memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
+          g_ready = FALSE;
+          g_mutex.unlock();
      }
+     else
+     {
+          memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
+          g_ready = FALSE;
+     }
+
+     // apply the window
+     apply_window( (float*)buffer, g_window, g_buffer_size );
+
+     // take the forward fft, leaving fftsize/2 complex values
+     rfft( (float *)buffer, g_buffer_size/2, FFT_FORWARD );
+     // cast to complex
+     complex * cbuf = (complex *)buffer;
+
+     // get magnitude spectrum
+     for( i = 0; i < g_buffer_size/2; i++ )
+     ptr[i] = cmp_abs( cbuf[i] );
+
+     // centroid
+     g_centroid->process( in, centroid );
+     // flux
+     g_flux->process( in, flux );
+     // lpc
+     g_lpc->process( in, lpc );
+     // mfcc
+     g_mfcc->process( in, mfcc );
+     // rms
+     g_rms->process( in, rms );
+     // rolloff
+     g_rolloff->process( in, rolloff );
+     g_rolloff2->process( in, rolloff2 );
+
+     // print to console
+     if( g_stdout )
+     {
+          fprintf( stdout, "%.2f  %.2f  %.8f  %.2f  %.2f  ", centroid(0), flux(0), rms(0), rolloff(0), rolloff2(0) );
+          fprintf( stdout, "%.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f %.2f %.2f  ",
+          mfcc(0), mfcc(1), mfcc(2), mfcc(3), mfcc(4), mfcc(5), mfcc(6),
+          mfcc(7), mfcc(8), mfcc(9), mfcc(10), mfcc(11), mfcc(12) );
+          fprintf( stdout, "\n" );
+     }
+
+     // file reading stuff
+     g_buffer_count_b++;
+     if( g_filename && !g_file_running && g_buffer_count_a == g_buffer_count_b )
+     g_running = FALSE;
+}
