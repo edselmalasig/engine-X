@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
-sndpeek - real-time audio visualization tool
+engine-X - real-time audio visualization tool
 
 Copyright (c) 2004 Ge Wang, Perry R. Cook, Ananya Misra.
 All rights reserved.
@@ -23,7 +23,7 @@ U.S.A.
 -----------------------------------------------------------------------------*/
 
 //-----------------------------------------------------------------------------
-// name: sndpeek.cpp
+// name: engine-X.cpp
 // desc: small real-time spectrum visualizer, originally implemented
 //       by Ge Wang for the memex project and to entertain small children
 //       at parties.
@@ -117,7 +117,7 @@ U.S.A.
 #include "RMS.h"
 #include "Rolloff.h"
 
-// sndpeek header
+// engine-X header
 #include "sndpeek.h"
 
 
@@ -333,7 +333,7 @@ EngineX * engineX;
 void help()
 {
      fprintf( stderr, "----------------------------------------------------\n" );
-     fprintf( stderr, "sndpeek + wutrfall (1.41)\n" );
+     fprintf( stderr, "engine-X + wutrfall (1.41)\n" );
      fprintf( stderr, "Ge Wang, Perry R. Cook, Ananya Misra\n" );
      fprintf( stderr, "http://www.gewang.com/\n" );
      fprintf( stderr, "----------------------------------------------------\n" );
@@ -425,7 +425,7 @@ void probe()
 void usage()
 {
      fprintf( stderr, "-----------------------\n" );
-     fprintf( stderr, "usage: sndpeek  --[options] [filename]\n" );
+     fprintf( stderr, "usage: engine-X  --[options] [filename]\n" );
      fprintf( stderr, "  ON/OFF options: fullscreen|waveform|lissajous|waterfall|\n" );
      fprintf( stderr, "                  dB|features|fallcolors|backward|showtime|\n" );
      fprintf( stderr, "                  freeze\n" );
@@ -436,11 +436,11 @@ void usage()
      fprintf( stderr, "   other options: about|nodisplay|print\n" );
      fprintf( stderr, "\n" );
      fprintf( stderr, "example:\n" );
-     fprintf( stderr, "    sndpeek --fullscreen:ON --inputDevice:1 --spacing:.05\n" );
+     fprintf( stderr, "    engine-X --fullscreen:ON --inputDevice:1 --spacing:.05\n" );
      fprintf( stderr, "\n" );
      probe();
      fprintf( stderr, "\n" );
-     fprintf( stderr, "sndpeek version: 1.41\n" );
+     fprintf( stderr, "engine-X version: 1.41\n" );
      fprintf( stderr, "    http://www.gewang.com/\n" );
      fprintf( stderr, "\n" );
 }
@@ -458,7 +458,7 @@ int main( int argc, char ** argv )
 //Use GLUT
 int main( int argc, char ** argv )
 #else
-int initialize_sndpeek( int argc, char ** argv )
+int initialize_engine-X( int argc, char ** argv )
 #endif
 {
      // remember command line
@@ -560,7 +560,7 @@ int initialize_sndpeek( int argc, char ** argv )
                     g_wf_delay_ratio = atof( argv[i]+10 );
                     if( g_wf_delay_ratio < 0 || g_wf_delay_ratio >= 1 )
                     {
-                         fprintf( stderr, "[sndpeek]: --preview requires 0 <= value < 1...\n" );
+                         fprintf( stderr, "[engine-X]: --preview requires 0 <= value < 1...\n" );
                          usage();
                          return -1;
                     }
@@ -576,7 +576,7 @@ int initialize_sndpeek( int argc, char ** argv )
                }
                else
                {
-                    fprintf( stderr, "[sndpeek]: unrecognized option '%s'...\n", argv[i] );
+                    fprintf( stderr, "[engine-X]: unrecognized option '%s'...\n", argv[i] );
                     usage();
                     return -1;
                }
@@ -585,7 +585,7 @@ int initialize_sndpeek( int argc, char ** argv )
           {
                if( g_filename )
                {
-                    fprintf( stderr, "[sndpeek]: multiple filenames specified...\n" );
+                    fprintf( stderr, "[engine-X]: multiple filenames specified...\n" );
                     usage();
                     return -2;
                }
@@ -665,7 +665,7 @@ int initialize_sndpeek( int argc, char ** argv )
           // set the window postion
           glutInitWindowPosition( 100, 100 );
           // create the window
-          glutCreateWindow( "sndpeek" );
+          glutCreateWindow( "engine-X" );
           // full screen
           if( g_fullscreen )
           glutFullScreen();
@@ -701,6 +701,9 @@ int initialize_sndpeek( int argc, char ** argv )
 
      // print usage
      help();
+     
+     float clearColor[4];
+     clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
 
      // display mode
      if( true )
@@ -717,6 +720,8 @@ int initialize_sndpeek( int argc, char ** argv )
                glfwMakeContextCurrent(engineX->window);
                glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
                glViewport(0, 0, engineX->window_w, engineX->window_h);
+               glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+
                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                glEnable(GL_CULL_FACE);
                glCullFace(GL_BACK);
@@ -749,7 +754,7 @@ int initialize_sndpeek( int argc, char ** argv )
                     if( !count )
                     {
                          g_file_running = FALSE;
-                         fprintf( stderr, "[sndpeek]: file not running...\n" );
+                         fprintf( stderr, "[engineX]: file not running...\n" );
                     }
                }
 
@@ -817,7 +822,7 @@ int cb( void * outputBuffer, void * inputBuffer, unsigned int numFrames, double 
           else
           {
                // error
-               cerr << "[sndpeek]: ERROR: callback function for INPUT CHANNELS: " << g_audioInputNumChannels << endl;
+               cerr << "[engine-X]: ERROR: callback function for INPUT CHANNELS: " << g_audioInputNumChannels << endl;
                exit(1);
           }
      }
@@ -935,13 +940,13 @@ bool initialize_audio( )
      // read from file
      if( g_filename )
      {
-          fprintf( stderr, "[sndpeek]: opening %s...\n", g_filename );
+          fprintf( stderr, "[engine-X]: opening %s...\n", g_filename );
           // attempt to open file
           g_sf = sf_open( g_filename, SFM_READ, &g_sf_info );
           if( !g_sf )
           {
                // exception
-               fprintf( stderr, "[sndpeek]: ERROR: cannot open '%s'...\n", g_filename );
+               fprintf( stderr, "[engine-X]: ERROR: cannot open '%s'...\n", g_filename );
                return false;
           }
 
@@ -949,7 +954,7 @@ bool initialize_audio( )
           g_file_running = TRUE;
 
           // set srate from the WvIn
-          fprintf( stderr, "[sndpeek]: setting sample rate to %d\n", g_srate );
+          fprintf( stderr, "[engine-X]: setting sample rate to %d\n", g_srate );
           g_srate = g_sf_info.samplerate;
      }
      else
@@ -972,7 +977,7 @@ bool initialize_audio( )
           if( g_audio->getDeviceCount() < 1 )
           {
                // nopes
-               cerr << "[sndpeek]: ERROR: no audio devices found!" << endl;
+               cerr << "[engine-X]: ERROR: no audio devices found!" << endl;
                exit( 1 );
           }
 
@@ -984,7 +989,7 @@ bool initialize_audio( )
           if( g_audioOutputDevice < 0 ) g_audioOutputDevice = g_audio->getDefaultOutputDevice();
 
           // log
-          cerr << "[sndpeek]: opening input device: " << g_audioInputDevice
+          cerr << "[engine-X]: opening input device: " << g_audioInputDevice
           << " output device: " << g_audioOutputDevice << "..." << endl;
 
           // check num channels
@@ -995,7 +1000,7 @@ bool initialize_audio( )
           if( g_audioInputNumChannels <= 0 )
           {
                // log
-               cerr << "[sndpeek]: ERROR: audio input device: " << g_audioInputDevice << " has no input channels!" << endl;
+               cerr << "[engine-X]: ERROR: audio input device: " << g_audioInputDevice << " has no input channels!" << endl;
                exit( 1 );
           }
 
@@ -1020,14 +1025,14 @@ bool initialize_audio( )
                     if( bufferFrames != g_buffer_size )
                     {
                          // potential problem
-                         fprintf( stderr, "[sndpeek]: WARNING: using different buffer sizes: %i : %i\n",
+                         fprintf( stderr, "[engine-X]: WARNING: using different buffer sizes: %i : %i\n",
                          bufferFrames, g_buffer_size );
                     }
 
                     // compute
                     bufferBytes = bufferFrames * NUM_CHANNELS * sizeof(SAMPLE);
                     // test RtAudio functionality for reporting latency.
-                    cerr << "[sndpeek]: stream latency: " << g_audio->getStreamLatency() << " frames..." << endl;
+                    cerr << "[engine-X]: stream latency: " << g_audio->getStreamLatency() << " frames..." << endl;
 
                     // start the audio
                     g_audio->startStream();
@@ -1035,8 +1040,8 @@ bool initialize_audio( )
                catch( RtAudioError & e )
                {
                     // exception
-                    fprintf( stderr, "[sndpeek](via RtAudio): %s\n", e.getMessage().c_str() );
-                    fprintf( stderr, "[sndpeek]: ERROR: cannot open audio device for capture/playback...\n" );
+                    fprintf( stderr, "[engine-X](via RtAudio): %s\n", e.getMessage().c_str() );
+                    fprintf( stderr, "[engine-X]: ERROR: cannot open audio device for capture/playback...\n" );
                     return false;
                }
           }
@@ -1163,78 +1168,78 @@ bool initialize_audio( )
                     default:
                     case GLFW_KEY_J:
                     g_z += g_dz;
-                    fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
+                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                     break;
                     case GLFW_KEY_K:
                     g_z -= g_dz;
-                    fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
+                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                     break;
                     case GLFW_KEY_U:
                     g_space *= 1.02f;
-                    fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
+                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                     break;
                     case GLFW_KEY_I:
                     g_space *= .98f;
-                    fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
+                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                     break;
                     case GLFW_KEY_1:
                     g_waveform = !g_waveform;
-                    fprintf( stderr, "[sndpeek]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_3:
                     case GLFW_KEY_F:
                     g_wutrfall = !g_wutrfall;
-                    fprintf( stderr, "[sndpeek]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_O:
                     g_usedb = !g_usedb;
-                    fprintf( stderr, "[sndpeek]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_4:
                     g_draw_features = !g_draw_features;
-                    fprintf( stderr, "[sndpeek]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_Q:
                     exit( 0 );
                     break;
                     case GLFW_KEY_Z:
                     g_time_scale *= .99f;
-                    fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
+                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                     break;
                     case GLFW_KEY_RIGHT:
                     g_time_scale *= 1.01f;
-                    fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
+                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                     break;
                     case GLFW_KEY_UP:
                     g_freq_scale *= .99f;
-                    fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
+                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                     break;
                     case GLFW_KEY_EQUAL:
                     g_freq_scale *= 1.01f;
-                    fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
+                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                     break;
 
                     case GLFW_KEY_B:
                     if( g_time_view > 1 )
                     g_time_view--;
 
-                    fprintf( stderr, "[sndpeek]: time domain %i samples", g_buffer_size / g_time_view );
+                    fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                     fprintf( stderr, g_time_view == 1 ? " - (MAX)\n" : "\n" );
                     break;
                     case GLFW_KEY_C:
                     if( g_time_view < 32 )
                     g_time_view++;
 
-                    fprintf( stderr, "[sndpeek]: time domain %i samples", g_buffer_size / g_time_view );
+                    fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                     fprintf( stderr, g_time_view == 32 ? " - (MIN)\n" : "\n" );
                     break;
                     case GLFW_KEY_LEFT_BRACKET:
                     g_eye_y -= g_inc_val_kb;
-                    fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
+                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                     break;
                     case GLFW_KEY_RIGHT_BRACKET:
                     g_eye_y += g_inc_val_kb;
-                    fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
+                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                     break;
                     case GLFW_KEY_H:
                     help();
@@ -1251,121 +1256,121 @@ bool initialize_audio( )
                          //glutReshapeWindow( g_last_width, g_last_height );
 
                          g_fullscreen = !g_fullscreen;
-                         //fprintf( stderr, "[sndpeek]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+                         //fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
                     }
                     break;
                     case GLFW_KEY_M:
                     g_mute = !g_mute;
-                    fprintf( stderr, "[sndpeek]: mute:%s\n", g_mute ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_N:
                     if( g_sf )
                     {
                          g_restart = TRUE;
-                         fprintf( stderr, "[sndpeek]: restarting file...\n" );
+                         fprintf( stderr, "[engine-X]: restarting file...\n" );
                     }
                     break;
                     case GLFW_KEY_2:
                     g_lissajous = !g_lissajous;
-                    fprintf( stderr, "[sndpeek]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_L:
                     g_lissajous_scale *= .95f;
-                    fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
+                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                     break;
                     case GLFW_KEY_INSERT:
                     g_lissajous_scale *= 1.05f;
-                    fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
+                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                     break;
                     case GLFW_KEY_Y:
                     g_delay -= 10;
                     if( g_delay < 0 )
                     g_delay = 0;
-                    fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
+                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                     break;
                     case GLFW_KEY_KP_DIVIDE:
                     g_delay += 10;
                     if( g_delay > g_buffer_size )
                     g_delay = g_buffer_size;
-                    fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
+                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                     break;
                     case GLFW_KEY_SEMICOLON:
                     case 'f':
                     g_freeze = g_pause = !g_pause;
-                    fprintf( stderr, "[sndpeek]: free(ze)!\n" );
+                    fprintf( stderr, "[engine-X]: free(ze)!\n" );
                     break;
                     case GLFW_KEY_5:
                     g_log_factor *= .98; //.99985;
                     g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-                    fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
+                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                     break;
                     case GLFW_KEY_6:
                     g_log_factor /= .98; //.99985;
                     g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-                    fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
+                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                     break;
                     case GLFW_KEY_7:
                     g_rainbow = !g_rainbow;
-                    fprintf( stderr, "[sndpeek]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_8:
                     g_show_time = !g_show_time;
-                    fprintf( stderr, "[sndpeek]: show time:%s\n", g_show_time ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: show time:%s\n", g_show_time ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_0:
                     g_backwards = !g_backwards;
-                    fprintf( stderr, "[sndpeek]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
                     break;
                     case GLFW_KEY_COMMA:
                     g_freq_lineWidth -= 1;
                     if( g_freq_lineWidth < 1 ) g_freq_lineWidth = 1;
-                    fprintf( stderr, "[sndpeek]: spectrum line width: %.1f\n", g_freq_lineWidth );
+                    fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                     break;
                     case GLFW_KEY_MINUS:
                     g_freq_lineWidth += 1;
                     if( g_freq_lineWidth > 4 ) g_freq_lineWidth = 4;
-                    fprintf( stderr, "[sndpeek]: spectrum line width: %.1f\n", g_freq_lineWidth );
+                    fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                     break;
                     case GLFW_KEY_SLASH:
                     g_wave_lineWidth -= 1;
                     if( g_wave_lineWidth < 1 ) g_wave_lineWidth = 1;
-                    fprintf( stderr, "[sndpeek]: waveform line width: %.1f\n", g_wave_lineWidth );
+                    fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                     break;
                     case GLFW_KEY_PERIOD:
                     g_wave_lineWidth += 1;
                     if( g_wave_lineWidth > 4 ) g_wave_lineWidth = 4;
-                    fprintf( stderr, "[sndpeek]: waveform line width: %.1f\n", g_wave_lineWidth );
+                    fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                     break;
                     case GLFW_KEY_P:
                     fprintf( stderr, "----------------------------------------------------\n" );
-                    fprintf( stderr, " current sndpeek settings...\n" );
+                    fprintf( stderr, " current engine-X settings...\n" );
                     fprintf( stderr, "----------------------------------------------------\n" );
-                    fprintf( stderr, "[sndpeek]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: features:%s\n", g_draw_features ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: backward:%s\n", g_backwards ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: dB:%s\n", g_usedb ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: mute:%s\n", g_mute ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
-                    fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
-                    fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
-                    fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
-                    fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
-                    fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
-                    fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
-                    fprintf( stderr, "[sndpeek]: dzpos:%f\n", g_dz );
-                    fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
-                    fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
-                    fprintf( stderr, "[sndpeek]: depth:%i\n", g_depth );
-                    fprintf( stderr, "[sndpeek]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
-                    fprintf( stderr, "[sndpeek]: rotatem:%f\n", g_inc_val_mouse );
-                    fprintf( stderr, "[sndpeek]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
-                    fprintf( stderr, "[sndpeek]: begintime:%f (seconds)\n", g_begintime );
-                    fprintf( stderr, "[sndpeek]: ds:%i\n", g_ds );
+                    fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
+                    fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
+                    fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
+                    fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
+                    fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
+                    fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
+                    fprintf( stderr, "[engine-X]: dzpos:%f\n", g_dz );
+                    fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
+                    fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
+                    fprintf( stderr, "[engine-X]: depth:%i\n", g_depth );
+                    fprintf( stderr, "[engine-X]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
+                    fprintf( stderr, "[engine-X]: rotatem:%f\n", g_inc_val_mouse );
+                    fprintf( stderr, "[engine-X]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
+                    fprintf( stderr, "[engine-X]: begintime:%f (seconds)\n", g_begintime );
+                    fprintf( stderr, "[engine-X]: ds:%i\n", g_ds );
                     fprintf( stderr, "----------------------------------------------------\n" );
                     break;
 
@@ -1419,78 +1424,78 @@ bool initialize_audio( )
           {
                case 'j':
                g_z += g_dz;
-               fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
+               fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                break;
                case 'k':
                g_z -= g_dz;
-               fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
+               fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
                break;
                case 'u':
                g_space *= 1.02f;
-               fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
+               fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                break;
                case 'i':
                g_space *= .98f;
-               fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
+               fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
                break;
                case '1':
                g_waveform = !g_waveform;
-               fprintf( stderr, "[sndpeek]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
                break;
                case '3':
                case 'w':
                g_wutrfall = !g_wutrfall;
-               fprintf( stderr, "[sndpeek]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
                break;
                case 'd':
                g_usedb = !g_usedb;
-               fprintf( stderr, "[sndpeek]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
                break;
                case '4':
                g_draw_features = !g_draw_features;
-               fprintf( stderr, "[sndpeek]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
                break;
                case 'q':
                exit( 0 );
                break;
                case '_':
                g_time_scale *= .99f;
-               fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
+               fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                break;
                case '+':
                g_time_scale *= 1.01f;
-               fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
+               fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
                break;
                case '-':
                g_freq_scale *= .99f;
-               fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
+               fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                break;
                case '=':
                g_freq_scale *= 1.01f;
-               fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
+               fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
                break;
 
                case 'V':
                if( g_time_view > 1 )
                g_time_view--;
 
-               fprintf( stderr, "[sndpeek]: time domain %i samples", g_buffer_size / g_time_view );
+               fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                fprintf( stderr, g_time_view == 1 ? " - (MAX)\n" : "\n" );
                break;
                case 'C':
                if( g_time_view < 32 )
                g_time_view++;
 
-               fprintf( stderr, "[sndpeek]: time domain %i samples", g_buffer_size / g_time_view );
+               fprintf( stderr, "[engine-X]: time domain %i samples", g_buffer_size / g_time_view );
                fprintf( stderr, g_time_view == 32 ? " - (MIN)\n" : "\n" );
                break;
                case '[':
                g_eye_y -= g_inc_val_kb;
-               fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
+               fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                break;
                case ']':
                g_eye_y += g_inc_val_kb;
-               fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
+               fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
                break;
                case 'h':
                help();
@@ -1507,121 +1512,121 @@ bool initialize_audio( )
                     glutReshapeWindow( g_last_width, g_last_height );
 
                     g_fullscreen = !g_fullscreen;
-                    fprintf( stderr, "[sndpeek]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+                    fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
                }
                break;
                case 'm':
                g_mute = !g_mute;
-               fprintf( stderr, "[sndpeek]: mute:%s\n", g_mute ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
                break;
                case 'x':
                if( g_sf )
                {
                     g_restart = TRUE;
-                    fprintf( stderr, "[sndpeek]: restarting file...\n" );
+                    fprintf( stderr, "[engine-X]: restarting file...\n" );
                }
                break;
                case '2':
                g_lissajous = !g_lissajous;
-               fprintf( stderr, "[sndpeek]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
                break;
                case 'l':
                g_lissajous_scale *= .95f;
-               fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
+               fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                break;
                case 'L':
                g_lissajous_scale *= 1.05f;
-               fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
+               fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
                break;
                case 'y':
                g_delay -= 10;
                if( g_delay < 0 )
                g_delay = 0;
-               fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
+               fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                break;
                case 'Y':
                g_delay += 10;
                if( g_delay > g_buffer_size )
                g_delay = g_buffer_size;
-               fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
+               fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
                break;
                case 'z':
                case 'f':
                g_freeze = g_pause = !g_pause;
-               fprintf( stderr, "[sndpeek]: free(ze)!\n" );
+               fprintf( stderr, "[engine-X]: free(ze)!\n" );
                break;
                case 'v':
                g_log_factor *= .98; //.99985;
                g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-               fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
+               fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                break;
                case 'c':
                g_log_factor /= .98; //.99985;
                g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
-               fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
+               fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
                break;
                case 'r':
                g_rainbow = !g_rainbow;
-               fprintf( stderr, "[sndpeek]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
                break;
                case 't':
                g_show_time = !g_show_time;
-               fprintf( stderr, "[sndpeek]: show time:%s\n", g_show_time ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: show time:%s\n", g_show_time ? "ON" : "OFF" );
                break;
                case 'b':
                g_backwards = !g_backwards;
-               fprintf( stderr, "[sndpeek]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
                break;
                case ',':
                g_freq_lineWidth -= 1;
                if( g_freq_lineWidth < 1 ) g_freq_lineWidth = 1;
-               fprintf( stderr, "[sndpeek]: spectrum line width: %.1f\n", g_freq_lineWidth );
+               fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                break;
                case '.':
                g_freq_lineWidth += 1;
                if( g_freq_lineWidth > 4 ) g_freq_lineWidth = 4;
-               fprintf( stderr, "[sndpeek]: spectrum line width: %.1f\n", g_freq_lineWidth );
+               fprintf( stderr, "[engine-X]: spectrum line width: %.1f\n", g_freq_lineWidth );
                break;
                case '<':
                g_wave_lineWidth -= 1;
                if( g_wave_lineWidth < 1 ) g_wave_lineWidth = 1;
-               fprintf( stderr, "[sndpeek]: waveform line width: %.1f\n", g_wave_lineWidth );
+               fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                break;
                case '>':
                g_wave_lineWidth += 1;
                if( g_wave_lineWidth > 4 ) g_wave_lineWidth = 4;
-               fprintf( stderr, "[sndpeek]: waveform line width: %.1f\n", g_wave_lineWidth );
+               fprintf( stderr, "[engine-X]: waveform line width: %.1f\n", g_wave_lineWidth );
                break;
                case 'p':
                fprintf( stderr, "----------------------------------------------------\n" );
-               fprintf( stderr, " current sndpeek settings...\n" );
+               fprintf( stderr, " current engine-X settings...\n" );
                fprintf( stderr, "----------------------------------------------------\n" );
-               fprintf( stderr, "[sndpeek]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: features:%s\n", g_draw_features ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: backward:%s\n", g_backwards ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: dB:%s\n", g_usedb ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: mute:%s\n", g_mute ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
-               fprintf( stderr, "[sndpeek]: timescale:%f\n", g_time_scale );
-               fprintf( stderr, "[sndpeek]: freqscale:%f\n", g_freq_scale );
-               fprintf( stderr, "[sndpeek]: logfactor:%f\n", g_log_factor );
-               fprintf( stderr, "[sndpeek]: lissscale:%f\n", g_lissajous_scale );
-               fprintf( stderr, "[sndpeek]: lissdelay = %i\n", g_delay );
-               fprintf( stderr, "[sndpeek]: zpos:%f\n", g_z );
-               fprintf( stderr, "[sndpeek]: dzpos:%f\n", g_dz );
-               fprintf( stderr, "[sndpeek]: spacing:%f\n", g_space );
-               fprintf( stderr, "[sndpeek]: yview:%f\n", g_eye_y );
-               fprintf( stderr, "[sndpeek]: depth:%i\n", g_depth );
-               fprintf( stderr, "[sndpeek]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
-               fprintf( stderr, "[sndpeek]: rotatem:%f\n", g_inc_val_mouse );
-               fprintf( stderr, "[sndpeek]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
-               fprintf( stderr, "[sndpeek]: begintime:%f (seconds)\n", g_begintime );
-               fprintf( stderr, "[sndpeek]: ds:%i\n", g_ds );
+               fprintf( stderr, "[engine-X]: waveform:%s\n", g_waveform ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: lissajous:%s\n", g_lissajous ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: waterfall:%s\n", g_wutrfall ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: features:%s\n", g_draw_features ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: fallcolors:%s\n", g_rainbow ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: backward:%s\n", g_backwards ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: fullscreen:%s\n", g_fullscreen ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: dB:%s\n", g_usedb ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: mute:%s\n", g_mute ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: showtime:%s\n", g_show_time ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: freeze:%s\n", g_freeze ? "ON" : "OFF" );
+               fprintf( stderr, "[engine-X]: timescale:%f\n", g_time_scale );
+               fprintf( stderr, "[engine-X]: freqscale:%f\n", g_freq_scale );
+               fprintf( stderr, "[engine-X]: logfactor:%f\n", g_log_factor );
+               fprintf( stderr, "[engine-X]: lissscale:%f\n", g_lissajous_scale );
+               fprintf( stderr, "[engine-X]: lissdelay = %i\n", g_delay );
+               fprintf( stderr, "[engine-X]: zpos:%f\n", g_z );
+               fprintf( stderr, "[engine-X]: dzpos:%f\n", g_dz );
+               fprintf( stderr, "[engine-X]: spacing:%f\n", g_space );
+               fprintf( stderr, "[engine-X]: yview:%f\n", g_eye_y );
+               fprintf( stderr, "[engine-X]: depth:%i\n", g_depth );
+               fprintf( stderr, "[engine-X]: preview:%f (delay: %i)\n", g_wf_delay_ratio, g_wf_delay);
+               fprintf( stderr, "[engine-X]: rotatem:%f\n", g_inc_val_mouse );
+               fprintf( stderr, "[engine-X]: rotatek:%f\n", g_inc_val_kb * (INC_VAL_MOUSE/INC_VAL_KB) );
+               fprintf( stderr, "[engine-X]: begintime:%f (seconds)\n", g_begintime );
+               fprintf( stderr, "[engine-X]: ds:%i\n", g_ds );
                fprintf( stderr, "----------------------------------------------------\n" );
                break;
           }
@@ -2149,7 +2154,7 @@ bool initialize_audio( )
           glColor3f( 1, 1, 1 );
 
           // title
-          // draw_string( 0.0f, 0.2f, 0.0f, "sndpeek + wutrfall", .5f );
+          // draw_string( 0.0f, 0.2f, 0.0f, "engine-X + wutrfall", .5f );
 
           // time
           if( g_show_time )
