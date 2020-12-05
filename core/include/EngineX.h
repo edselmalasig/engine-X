@@ -1,5 +1,5 @@
-#ifndef INITIALIZE_H
-#define INITIALIZE_H
+#ifndef ENGINEX_H
+#define ENGINEX_H
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -28,7 +28,6 @@
 #endif
 
 // Include glfw3.h after our OpenGL definitions
-#include <GLFW/glfw3.h>
 #include <iostream>
 
 class EngineX

@@ -32,7 +32,7 @@ void EngineX::init_glfw()
   glfwSetErrorCallback(glfw_error_callback);
   if (!glfwInit())
   fprintf(stderr, "Error initializing glfw.\n");
-
+  
   // Decide GL+GLSL versions
   #if __APPLE__
   // GL 3.2 + GLSL 150

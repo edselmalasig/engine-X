@@ -10,8 +10,8 @@ uniform mat4 model;
 
 void main()
 {
-    //gl_Position = projection * view * vec4(vertex.xy, 0.0, 1.0);
-    gl_Position = projection * view * model * vec4(vertex.xy * vec2(2.0/800,2.0/600) - vec2(1,1), 0.0f, 1.0f);   
+    //gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(vertex.xy * vec2(2.0/800,2.0/600) - vec2(1,1), 0.0f, 1.0f);
 
     TexCoords = vertex.zw;
 }
