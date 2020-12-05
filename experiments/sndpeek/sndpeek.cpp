@@ -60,6 +60,7 @@ U.S.A.
 #include "RtAudio.h"
 #include "Thread.h"
 
+#ifdef __USE_GLFW__
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -80,8 +81,11 @@ U.S.A.
 #else
 #include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
-#include <iostream>
 #include <GLFW/glfw3.h>
+#endif
+#include <iostream>
+
+
 
 // OpenGL
 #if defined(__APPLE__)
@@ -323,131 +327,14 @@ GLuint g_wf_index = 0;
 GLfloat g_wave_lineWidth = 1;
 // spectrum line width
 GLfloat g_freq_lineWidth = 1;
-GLFWwindow * window;
+#ifdef __USE_GLFW__
 Camera * camera;
 EngineX * engineX;
-//-----------------------------------------------------------------------------
-// name: help()
-// desc: ...
-//-----------------------------------------------------------------------------
-void help()
-{
-     fprintf( stderr, "----------------------------------------------------\n" );
-     fprintf( stderr, "engine-X + wutrfall (1.41)\n" );
-     fprintf( stderr, "Ge Wang, Perry R. Cook, Ananya Misra\n" );
-     fprintf( stderr, "http://www.gewang.com/\n" );
-     fprintf( stderr, "----------------------------------------------------\n" );
-     fprintf( stderr, "'h' - print this help message\n" );
-     fprintf( stderr, "'p' - print current settings to console\n" );
-     fprintf( stderr, "'s' - toggle fullscreen\n" );
-     fprintf( stderr, "'f' - freeze frame! (can still rotate/scale)\n" );
-     fprintf( stderr, "'1' - toggle waveform display\n" );
-     fprintf( stderr, "'2' - toggle lissajous display\n" );
-     fprintf( stderr, "'3' - (also 'w') toggle wutrfall display\n" );
-     fprintf( stderr, "'4' - toggle feature extraction (broken)\n" );
-     fprintf( stderr, "'d' - toggle dB plot for spectrum\n" );
-     fprintf( stderr, "'r' - toggle rainbow waterfall\n" );
-     fprintf( stderr, "'b' - toggle waterfall moving backwards/forwards\n" );
-     fprintf( stderr, "'x' - restart file playback (if applicable)\n" );
-     fprintf( stderr, "'p' - print current settings to terminal\n" );
-     fprintf( stderr, "'m' - mute\n" );
-     fprintf( stderr, "'j' - move spectrum + z\n" );
-     fprintf( stderr, "'k' - move spectrum - z\n" );
-     fprintf( stderr, "'u' - spacing more!\n" );
-     fprintf( stderr, "'i' - spacing less!\n" );
-     fprintf( stderr, "L/R mouse button - rotate left or right\n" );
-     fprintf( stderr, "'[', ']' - rotate up or down\n" );
-     fprintf( stderr, "'-' - scale DOWN the spectrum\n" );
-     fprintf( stderr, "'=' - scale UP the spectrum\n" );
-     fprintf( stderr, "(shift)'-' - scale DOWN the waveform\n" );
-     fprintf( stderr, "(shift)'=' - scale UP the waveform\n" );
-     fprintf( stderr, "'c' = LOWER log factor of spectrum display\n" );
-     fprintf( stderr, "'v' = RAISE log factor of spectrum display\n" );
-     fprintf( stderr, "      (log factor of 1.0 is linear display\n" );
-     fprintf( stderr, "(shift)'c' - LOWER amount of viewable waveform\n" );
-     fprintf( stderr, "(shift)'v' - RAISE amount of viewable waveform\n" );
-     fprintf( stderr, "'l' - scale DOWN the lissajous!\n" );
-     fprintf( stderr, "'L' - scale UP the lissajous!\n" );
-     fprintf( stderr, "'y' - decrease delay for lissajous plot\n" );
-     fprintf( stderr, "'Y' - increase delay for lissajous plot\n" );
-     fprintf( stderr, "',' - decrease line width for spectrum\n" );
-     fprintf( stderr, "'.' - increase line width for spectrum\n" );
-     fprintf( stderr, "'<' - decrease line width for waveform\n" );
-     fprintf( stderr, "'>' - increase line width for waveform\n" );
-     fprintf( stderr, "'q' - quit\n" );
-     fprintf( stderr, "----------------------------------------------------\n" );
-     fprintf( stderr, "\n" );
-}
+GLFWwindow * window;
 
-
-
-
-//-----------------------------------------------------------------------------
-// name: probe()
-// desc: probe audio info
-//-----------------------------------------------------------------------------
-void probe()
-{
-     RtAudio audio;
-
-     // get number of devices
-     unsigned int numDevices = audio.getDeviceCount();
-
-     cerr << "avalable audio devices: " << numDevices << endl;
-     cerr << "-----------------------" << endl;
-
-     // iterate
-     for( int i = 0; i < numDevices; i++ )
-     {
-          // get info
-          RtAudio::DeviceInfo info = audio.getDeviceInfo(i);
-          // check
-          if( info.probed )
-          {
-               cerr << i << ": " << info.name
-               << " channels in: " << info.inputChannels
-               << (info.isDefaultInput ? " (default)" : "" )
-               << " out: " << info.outputChannels
-               << (info.isDefaultOutput ? " (default)" : "" )
-               << endl;
-          }
-     }
-     // cerr << "------------------------" << endl;
-}
-
-
-
-
-//-----------------------------------------------------------------------------
-// name: usage()
-// desc: ...
-//-----------------------------------------------------------------------------
-void usage()
-{
-     fprintf( stderr, "-----------------------\n" );
-     fprintf( stderr, "usage: engine-X  --[options] [filename]\n" );
-     fprintf( stderr, "  ON/OFF options: fullscreen|waveform|lissajous|waterfall|\n" );
-     fprintf( stderr, "                  dB|features|fallcolors|backward|showtime|\n" );
-     fprintf( stderr, "                  freeze\n" );
-     fprintf( stderr, "  number options: inputDevice|outputDevice|\n" );
-     fprintf( stderr, "                  timescale|freqscale|lissscale|logfactor|\n" );
-     fprintf( stderr, "                  spacing|zpos|dzpos|depth|preview|yview|\n" );
-     fprintf( stderr, "                  rotatem|rotatek|begintime|ds\n" );
-     fprintf( stderr, "   other options: about|nodisplay|print\n" );
-     fprintf( stderr, "\n" );
-     fprintf( stderr, "example:\n" );
-     fprintf( stderr, "    engine-X --fullscreen:ON --inputDevice:1 --spacing:.05\n" );
-     fprintf( stderr, "\n" );
-     probe();
-     fprintf( stderr, "\n" );
-     fprintf( stderr, "engine-X version: 1.41\n" );
-     fprintf( stderr, "    http://www.gewang.com/\n" );
-     fprintf( stderr, "\n" );
-}
-
-
-
-
+#endif
+void help();
+void usage();
 //-----------------------------------------------------------------------------
 // name: main( )
 // desc: entry point
@@ -630,6 +517,7 @@ int main( int argc, char ** argv )
           free( cwd );
           #endif
 
+          #ifdef __USE_GLFW__
           //#ifdef __MACOSX_CORE__
           int fbWidth = 1920;
           int fbHeight = 1080;
@@ -655,7 +543,7 @@ int main( int argc, char ** argv )
           {
                fprintf(stderr, "Failed to initialize OpenGL loader!\n");
           }
-
+          #endif
 
           #ifdef __USE_GLUT__
           // double buffer, use rgb color, enable depth buffer
@@ -737,6 +625,12 @@ int main( int argc, char ** argv )
           #ifdef __USE_GLUT__
           // let GLUT handle the current thread from here
           glutMainLoop();
+          /*
+          while(true){
+               displayFunc();
+          }
+          */
+          #endif
 
      }
      else
@@ -761,7 +655,7 @@ int main( int argc, char ** argv )
                // extract features
                extract_buffer();
           }
-          #endif
+          
 
      }
 
@@ -770,10 +664,6 @@ int main( int argc, char ** argv )
 
 
 }
-
-
-
-
 
 //-----------------------------------------------------------------------------
 // name: cb()
@@ -926,9 +816,6 @@ int cb( void * outputBuffer, void * inputBuffer, unsigned int numFrames, double 
      return 0;
 }
 
-
-
-
 //-----------------------------------------------------------------------------
 // name: initialize_audio( )
 // desc: set up audio capture and playback and initializes any application data
@@ -1047,7 +934,7 @@ bool initialize_audio( )
                }
           }
 
-     // make the transform window
+          // make the transform window
      hanning( g_window, g_buffer_size );
 
      // initialize
@@ -1068,8 +955,6 @@ bool initialize_audio( )
 
 
 }
-
-
 
 //-----------------------------------------------------------------------------
 // Name: initialize_analysis( )
@@ -1096,13 +981,11 @@ void initialize_analysis( )
      g_rolloff2 = new Rolloff( SND_MARSYAS_SIZE, 0.8f );
 }
 
-
-
-
-     //-----------------------------------------------------------------------------
-     // Name: initialize_graphics( )
-     // Desc: sets initial OpenGL states and initializes any application data
-     //-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// Name: initialize_graphics( )
+// Desc: sets initial OpenGL states and initializes any application data
+//-----------------------------------------------------------------------------
+#ifdef __USE_GLUT__
 void initialize_graphics()
 {
      // set the GL clear color - use when the color buffer is cleared
@@ -1152,6 +1035,59 @@ void initialize_graphics()
 
 
 }
+#endif
+
+#ifdef __USE_GLFW__
+void initialize_graphics()
+{
+     // set the GL clear color - use when the color buffer is cleared
+     glClearColor( 0.0f, 0.0f,0.0f, 1.0f );
+     // set the shading model to 'smooth'
+     glShadeModel( GL_SMOOTH );
+     // enable depth
+     glEnable( GL_DEPTH_TEST );
+     // set the front faces of polygons
+     glFrontFace( GL_CCW );
+     // set fill mode
+     glPolygonMode( GL_FRONT_AND_BACK, g_fillmode );
+     // enable lighting
+     glEnable( GL_LIGHTING );
+     // enable lighting for front
+     glLightModeli( GL_FRONT_AND_BACK, GL_TRUE );
+     // material have diffuse and ambient lighting
+     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+     // enable color
+     glEnable( GL_COLOR_MATERIAL );
+
+     // enable light 0
+     glEnable( GL_LIGHT0 );
+
+     // setup and enable light 1
+     glLightfv( GL_LIGHT1, GL_AMBIENT, g_light1_ambient );
+     glLightfv( GL_LIGHT1, GL_DIFFUSE, g_light1_diffuse );
+     glLightfv( GL_LIGHT1, GL_SPECULAR, g_light1_specular );
+     glEnable( GL_LIGHT1 );
+
+     // blend? (Jeff's contribution)
+     // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+     // glEnable( GL_BLEND );
+
+     // initialize
+     g_spectrums = new Pt2D *[g_depth];
+     for( int i = 0; i < g_depth; i++ )
+     {
+          g_spectrums[i] = new Pt2D[SND_FFT_SIZE];
+          memset( g_spectrums[i], 0, sizeof(Pt2D)*SND_FFT_SIZE );
+     }
+     g_draw = new GLboolean[g_depth];
+     memset( g_draw, 0, sizeof(GLboolean)*g_depth );
+
+     // compute log spacing
+     g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
+
+
+}
+#endif
 
 #ifdef __USE_GLFW__
 void reshapeFunc( int w, int h )
@@ -1414,10 +1350,6 @@ void reshapeFunc( int w, int h )
      glLightfv( GL_LIGHT0, GL_POSITION, g_light0_pos );
      glLightfv( GL_LIGHT1, GL_POSITION, g_light1_pos );
 }
-
-
-
-
 //-----------------------------------------------------------------------------
 // Name: keyboardFunc( )
 // Desc: key event
@@ -1640,9 +1572,6 @@ void keyboardFunc( unsigned char key, int x, int y )
      glutPostRedisplay( );
 }
 
-
-
-
 //-----------------------------------------------------------------------------
 // Name: mouseFunc( )
 // Desc: handles mouse stuff
@@ -1669,9 +1598,6 @@ void mouseFunc( int button, int state, int x, int y )
 
      glutPostRedisplay( );
 }
-
-
-
 
 //-----------------------------------------------------------------------------
 // Name: idleFunc( )
@@ -1708,6 +1634,7 @@ void draw_string( GLfloat x, GLfloat y, GLfloat z, const char * str, GLfloat sca
 // name: ...
 // desc: ...
 //-----------------------------------------------------------------------------
+#ifdef __USE_GLUT__
 void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
 {
      float x, y;
@@ -1768,8 +1695,69 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
      if( channels == 1 )
      memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
 }
+#endif
+#ifdef __USE_GLFW__
+void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
+{
+     float x, y;
+     SAMPLE * buffer;
 
+     // 1 or 2 channels only for now
+     assert( channels >= 1 && channels <= 2 );
 
+     // mono
+     if( channels == 1 )
+     {
+          buffer = g_cur_buffer;
+          // convert to mono
+          for( int m = 0; m < len; m++)
+          {
+               buffer[m] = stereobuffer[m*2] + stereobuffer[m*2+1];
+               buffer[m] /= 2.0f;
+          }
+     }
+     else
+     {
+          buffer = stereobuffer;
+     }
+
+     // back to default line width
+     glLineWidth( 1.0f );
+
+     // color
+     glColor3f( 1.0f, 1.0f, .5f );
+     // save current matrix state
+     glPushMatrix();
+     // translate
+     glTranslatef( 1.2f, 0.0f, 0.0f );
+     // draw it
+     glBegin( GL_LINE_STRIP );
+     for( int i = 0; i < len * channels; i += channels )
+     {
+          x = buffer[i] * g_lissajous_scale;
+          if( channels == 1 )
+          {
+               // delay
+               y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
+               y *= g_lissajous_scale;
+          }
+          else
+          {
+               y = buffer[i + channels-1] * g_lissajous_scale;
+          }
+
+          glVertex3f( x, y, 0.0f );
+          // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
+     }
+     glEnd();
+     // restore matrix state
+     glPopMatrix();
+
+     // hmm...
+     if( channels == 1 )
+     memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
+}
+#endif
 
 
 //-----------------------------------------------------------------------------
@@ -1778,9 +1766,9 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
 //-----------------------------------------------------------------------------
 inline double map_log_spacing( double ratio, double power )
 {
-          // compute location
-          return ::pow(ratio, power) * g_fft_size/g_freq_view;
-     }
+     // compute location
+     return ::pow(ratio, power) * g_fft_size/g_freq_view;
+}
 
 
 
@@ -1812,386 +1800,768 @@ double compute_log_spacing( int fft_size, double power )
 // Name: displayFunc( )
 // Desc: callback function invoked to draw the client area
 //-----------------------------------------------------------------------------
+#ifdef __USE_GLUT__
 void displayFunc( )
 {
      // static variables to keep across function calls
-          static const int LP = 4;
-          static long int count = 0;
-          static char str[1024];
-          static float centroid_val, flux_val, rms_val, rolloff_val, rolloff2_val;
-          static fvec in(SND_MARSYAS_SIZE),
-          centroid(1), flux(1), lpc(g_lpc->outSize()), mfcc(13), rms(1), rolloff(1),
-          rolloff2(1), centroid_lp(LP), flux_lp(LP), rms_lp(LP), rolloff_lp(LP),
-          rolloff2_lp(LP);
+     static const int LP = 4;
+     static long int count = 0;
+     static char str[1024];
+     static float centroid_val, flux_val, rms_val, rolloff_val, rolloff2_val;
+     static fvec in(SND_MARSYAS_SIZE),
+     centroid(1), flux(1), lpc(g_lpc->outSize()), mfcc(13), rms(1), rolloff(1),
+     rolloff2(1), centroid_lp(LP), flux_lp(LP), rms_lp(LP), rolloff_lp(LP),
+     rolloff2_lp(LP);
 
-          // local variables
-          SAMPLE * buffer = g_fft_buffer, * ptr = in.getData();
-          GLfloat ytemp, fval;
-          GLint i;
+     // local variables
+     SAMPLE * buffer = g_fft_buffer, * ptr = in.getData();
+     GLfloat ytemp, fval;
+     GLint i;
 
-          // clear the color and depth buffers
-          glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+     // clear the color and depth buffers
+     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-          // save current matrix state
-          glPushMatrix( );
+     // save current matrix state
+     glPushMatrix( );
 
-          // rotate the sphere about y axis
-          glRotatef( g_angle_y += g_inc, 0.0f, 1.0f, 0.0f );
+     // rotate the sphere about y axis
+     glRotatef( g_angle_y += g_inc, 0.0f, 1.0f, 0.0f );
 
-          // wait for data
-          while( !g_ready ) usleep( 1000 );
+     // wait for data
+     while( !g_ready ) usleep( 1000 );
 
-          // lock
-          g_mutex.lock();
+     // lock
+     g_mutex.lock();
 
-          // get the latest (possibly preview) window
-          memset( buffer, 0, SND_FFT_SIZE * sizeof(SAMPLE) );
+     // get the latest (possibly preview) window
+     memset( buffer, 0, SND_FFT_SIZE * sizeof(SAMPLE) );
 
-          // copy currently playing audio into buffer
-          memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
+     // copy currently playing audio into buffer
+     memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
 
-          // some flag (hand off to audio cb thread)
-          g_ready = FALSE;
+     // some flag (hand off to audio cb thread)
+     g_ready = FALSE;
 
-          // unlock
-          g_mutex.unlock();
+     // unlock
+     g_mutex.unlock();
 
-          // lissajous
-          if( g_lissajous )
-          {
-               if( !g_filename ) { // real-time mic input
-                    drawLissajous( g_stereo_buffer, g_buffer_size, 1 );
-               } else { // reading from file
-                    drawLissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
-               }
+     // lissajous
+     if( g_lissajous )
+     {
+          if( !g_filename ) { // real-time mic input
+               drawLissajous( g_stereo_buffer, g_buffer_size, 1 );
+          } else { // reading from file
+               drawLissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
           }
-
-          // soon to be used drawing offsets
-          GLfloat x = -1.8f, inc = 3.6f / g_buffer_size, y = .7f;
-          // apply the transform window
-          apply_window( (float*)buffer, g_window, g_buffer_size );
-
-          // draw the time domain waveform
-          if( g_waveform )
-          {
-               // back to default line width
-               glLineWidth( g_wave_lineWidth );
-
-               // save the current matrix state
-               glPushMatrix();
-               // color waveform
-               glColor3f( 0.4f, 0.4f, 1.0f );
-               // translate the waveform
-               glTranslatef( x, y, 0.0f );
-               // scale visually
-               glScalef( inc * g_time_view , g_gain * g_time_scale * 2.0, 1.0 );
-               // set vertex normals (for somewhat controlled lighting)
-               glNormal3f( 0.0f, 0.0f, 1.0f );
-               // draw waveform
-               glBegin( GL_LINE_STRIP );
-               {
-                    GLint ii = ( g_buffer_size - (g_buffer_size/g_time_view) ) / 2;
-                    GLfloat xcoord = 0.0f;
-                    // loop through samples
-                    for( i = ii; i < ii + g_buffer_size / g_time_view; i++ )
-                    {
-                         glVertex2f( xcoord++ , buffer[i] );
-                    }
-                    glEnd();
-               }
-               // restore previous matrix state
-               glPopMatrix();
-          }
-
-          // take forward FFT; result in buffer as FFT_SIZE/2 complex values
-          rfft( (float *)buffer, g_fft_size/2, FFT_FORWARD );
-          // cast to complex
-          complex * cbuf = (complex *)buffer;
-
-          // reset drawing offsets
-          x = -1.8f;
-          y = -1.0f;
-
-          // color the spectrum
-          glColor3f( 0.4f, 1.0f, 0.4f );
-          // set vertex normals
-          glNormal3f( 0.0f, 1.0f, 0.0f );
-
-          // copy current magnitude spectrum into waterfall memory
-          for( i = 0; i < g_fft_size/2; i++ )
-          {
-               // copy x coordinate
-               g_spectrums[g_wf][i].x = x;
-               // copy y, depending on scaling
-               if( !g_usedb ) {
-                    g_spectrums[g_wf][i].y = g_gain * g_freq_scale * 1.8f *
-                    ::pow( 25 * cmp_abs( cbuf[i] ), .5 ) + y;
-               } else {
-                    g_spectrums[g_wf][i].y = g_gain * g_freq_scale *
-                    ( 20.0f * log10( cmp_abs(cbuf[i])/8.0 ) + 80.0f ) / 80.0f + y + .5f;
-               }
-               // increment x
-               x += inc * g_freq_view;
-          }
-
-          // draw the right things
-          g_draw[g_wf] = g_wutrfall;
-          if( !g_starting )
-          g_draw[(g_wf+g_wf_delay)%g_depth] = true;
-
-          // reset drawing variables
-          x = -1.8f;
-          inc = 3.6f / g_fft_size;
-
-          // back to default line width
-          glLineWidth( g_freq_lineWidth );
-
-          // save current matrix state
-          glPushMatrix();
-          // translate in world coordinate
-          glTranslatef( x, 0.0, g_z );
-          // scale it
-          glScalef( inc*g_freq_view , 1.0 , -g_space );
-          // loop through each layer of waterfall
-          for( i = 0; i < g_depth; i++ )
-          {
-               if( i == g_wf_delay || !g_freeze || g_wutrfall )
-               {
-                    // if layer is flagged for draw
-                    if( g_draw[(g_wf+i)%g_depth] )
-                    {
-                         // get the magnitude spectrum of layer
-                         Pt2D * pt = g_spectrums[(g_wf+i)%g_depth];
-                         // future
-                         if( i < g_wf_delay )
-                         {
-                              // brightness based on depth
-                              fval = (g_depth - g_wf_delay + i) / (float)(g_depth);
-                              // rain or not
-                              if( !g_rainbow ){
-                                   glColor3f( 1.0 * fval, .7 * fval, .4 * fval ); // depth cue
-                                   // interesting colors: (.7, 1, .2), (.4, .9. 1), (1.0, 0.7, 0.2)
-                              } else {
-                                   // rainbow colors
-                                   float cval = 1 - (g_wf_delay - i) / (float)(g_wf_delay);
-                                   cval = 0.4f + cval * (1.0f - 0.4f);
-                                   glColor3f( 1.0f * fval, cval * fval, .4f * fval );
-                              }
-                         }
-                         // present
-                         else if( i == g_wf_delay )
-                         {
-                              // draw the now line?
-                              if( g_draw_play )
-                              {
-                                   glLineWidth( g_filename == NULL ? 2.0f : 3.0f );
-                                   glColor3f( .4f, 1.0f, 1.0f );
-                              }
-                         }
-                         // past
-                         else
-                         {
-                              // brightness based on depth
-                              fval = (g_depth - i + g_wf_delay) / (float)(g_depth);
-                              // draw rainbow?
-                              if( !g_rainbow ) {
-                                   glColor3f( .4f * fval, 1.0f * fval, .4f * fval ); //depth cue
-                              } else {
-                                   // rainbow-ish
-                                   float cval = 1 - (i - g_wf_delay) / (float)(g_depth - g_wf_delay);
-                                   cval = 0.4f + cval * (1.0f - 0.4f);
-                                   glColor3f( cval * fval, 1.0f * fval, .4f * fval );
-                              }
-                         }
-
-                         // render the actual spectrum layer
-                         glBegin( GL_LINE_STRIP );
-                         for( GLint j = 0; j < g_fft_size/g_freq_view; j++, pt++ )
-                         {
-                              // draw the vertex
-                              float d = g_backwards ? g_depth - (float) i : (float) i;
-                              glVertex3f( g_log_positions[j], pt->y, d );
-                         }
-                         glEnd();
-
-                         // back to default line width
-                         glLineWidth( g_freq_lineWidth );
-                    }
-               }
-          }
-          // restore matrix state
-          glPopMatrix();
-
-          // if flagged, mark layer NOT to be drawn
-          if( !g_wutrfall )
-          g_draw[(g_wf+g_wf_delay)%g_depth] = false;
-
-          // wtrfll
-          if( !g_freeze )
-          {
-               // advance index
-               g_wf--;
-               // mod
-               g_wf = (g_wf + g_depth) % g_depth;
-               // can't remember what this does anymore...
-               if( g_wf == g_depth - g_wf_delay )
-               g_starting = 0;
-          }
-
-          // calculate and draw features
-          if( g_draw_features )
-          {
-               // if not frozen
-               if( !g_freeze )
-               {
-                    // for rough downsampling
-                    int ratio = g_fft_size / SND_MARSYAS_SIZE / 2;
-                    // get magnitude response
-                    for( i = 0; i < SND_MARSYAS_SIZE; i++ )
-                    ptr[i] = cmp_abs( cbuf[i*ratio] );
-
-                    // centroid
-                    g_centroid->process( in, centroid );
-                    // flux
-                    g_flux->process( in, flux );
-                    // rms
-                    g_rms->process( in, rms );
-                    // rolloff 1
-                    g_rolloff->process( in, rolloff );
-                    // rolloff 2
-                    g_rolloff2->process( in, rolloff2 );
-
-                    // lowpass
-                    centroid_lp(count % LP) = centroid(0);
-                    flux_lp(count % LP) = flux(0);
-                    rms_lp(count % LP) = rms(0);
-                    rolloff_lp(count % LP) = rolloff(0);
-                    rolloff2_lp(count % LP) = rolloff2(0);
-                    count++;
-
-                    // get average values
-                    centroid_val = centroid_lp.mean();
-                    flux_val = flux_lp.mean();
-                    rms_val = rms_lp.mean();
-                    rolloff_val = rolloff_lp.mean();
-                    rolloff2_val = rolloff2_lp.mean();
-               }
-
-               // draw the centroid
-               // TODO: need to update 'inc'?
-               ytemp = y+.04f + 2 * (::pow( 30 * rms_val, .5 ) );
-               float centroid_x = map_log_spacing( centroid_val/SND_MARSYAS_SIZE, g_log_factor );
-               centroid_x *= (inc*g_freq_view);
-               glColor3f( 1.0f, .4f, .4f );
-               glBegin( GL_LINE_STRIP );
-               glVertex3f( -1.8f + centroid_x, ytemp, 0.0f + g_z );
-               glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
-               glEnd();
-
-               // centroid value
-               glBegin( GL_LINE_STRIP );
-               glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
-               glVertex3f( -1.72f + centroid_x, y-.15f, 0.0f + g_z );
-               glVertex3f( -1.15f + centroid_x, y-.15f, 0.0f + g_z );
-               glEnd();
-
-               // print centroid
-               sprintf( str, "centroid = %.0f Hz", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
-               //draw_string( -1.7f + centroid_x, y-.14f, 0.0f + g_z, str, .4f );
-
-               // rms value
-               glBegin( GL_LINE_STRIP );
-               glVertex3f( -1.8f + centroid_x - .23f, ytemp, 0.0f + g_z );
-               glVertex3f( -1.8f + centroid_x + .23f, ytemp, 0.0f + g_z );
-               glEnd();
-
-               // print RMS
-               sprintf( str, "RMS = %f", 1000 * rms_val );
-               //draw_string( -1.8f + centroid_x - .23f, ytemp + .01f, 0.0f + g_z, str, 0.4f );
-
-               // draw the rolloff
-               glColor3f( 1.0f, 1.0f, .4f );
-               float rolloff_x = map_log_spacing( rolloff_val/SND_MARSYAS_SIZE, g_log_factor );
-               rolloff_x *= (inc*g_freq_view);
-               glBegin( GL_LINE_STRIP );
-               glVertex3f( -1.8f + rolloff_x, y-.04f, 0.0f + g_z );
-               glVertex3f( -1.8f + rolloff_x, y+.04f, 0.0f + g_z );
-               glEnd();
-
-               // draw other rolloff
-               glColor3f( 1.0f, 1.0f, 1.0f );
-               float rolloff2_x = map_log_spacing( rolloff2_val/SND_MARSYAS_SIZE, g_log_factor );
-               rolloff2_x *= (inc*g_freq_view);
-               glBegin( GL_LINE_STRIP );
-               glVertex3f( -1.8f + rolloff2_x, y-.04f, 0.0f + g_z );
-               glVertex3f( -1.8f + rolloff2_x, y+.04f, 0.0f + g_z );
-               glEnd();
-
-               // centroid
-               sprintf( str, "centroid = %.0f", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
-               //draw_string( -1.7f, 0.4f, 0.0f, str, 0.4f );
-               // flux
-               sprintf( str, "flux = %.1f", flux_val );
-               //draw_string( -1.7f, 0.3f, 0.0f, str, 0.4f );
-               // flux
-               sprintf( str, "RMS = %.4f", 1000 * rms_val );
-               //draw_string( -1.7f, 0.2f, 0.0f, str, 0.4f );
-               // flux
-               sprintf( str, "50%% rolloff= %.0f", rolloff_val / SND_MARSYAS_SIZE * g_srate / 2 );
-               //draw_string( -1.7f, 0.1f, 0.0f, str, 0.4f );
-               // flux
-               sprintf( str, "80%% rolloff = %.0f", rolloff2_val / SND_MARSYAS_SIZE * g_srate / 2 );
-               //draw_string( -1.7f, 0.0f, 0.0f, str, 0.4f );
-          }
-
-          // print to console
-          if( g_stdout )
-          {
-               fprintf( stdout, "%.2f  %.2f  %.8f  %.2f  %.2f  ", centroid(0), flux(0), rms(0), rolloff(0), rolloff2(0) );
-               fprintf( stdout, "%.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f %.2f %.2f  ",
-               mfcc(0), mfcc(1), mfcc(2), mfcc(3), mfcc(4), mfcc(5), mfcc(6),
-               mfcc(7), mfcc(8), mfcc(9), mfcc(10), mfcc(11), mfcc(12) );
-               fprintf( stdout, "\n" );
-          }
-
-          // set color
-          glColor3f( 1, 1, 1 );
-
-          // title
-          // draw_string( 0.0f, 0.2f, 0.0f, "engine-X + wutrfall", .5f );
-
-          // time
-          if( g_show_time )
-          {
-               float fsec = ((double)sf_seek(g_sf,0,SEEK_CUR) - (double)g_wf_delay * g_buffer_size) / (double)g_srate;
-               sprintf( str, "%.0f", fsec );
-               //draw_string( -1.7f, 1.1f, -.2f, str, .4f );
-          }
-          /*
-          // pause?
-          if( g_pause )
-          draw_string( 0.95f, 1.1f, -.2f, "paused... (press f to resume)", .4f );
-
-          // mute?
-          if( g_mute )
-          draw_string( 0.95f, 1.05f, -.2f, "muted... (press m to unmute)", .4f );
-          */
-          // restore matrix state
-          glPopMatrix( );
-
-          // flush gl commands
-          glFlush( );
-          // swap the buffers
-          //          glutSwapBuffers( );
-
-          // maintain count from render
-          g_buffer_count_b++;
-          // check against count from reading function
-          if( g_filename && !g_file_running && g_buffer_count_b == g_buffer_count_a )
-          g_running = FALSE;
      }
 
+     // soon to be used drawing offsets
+     GLfloat x = -1.8f, inc = 3.6f / g_buffer_size, y = .7f;
+     // apply the transform window
+     apply_window( (float*)buffer, g_window, g_buffer_size );
 
+     // draw the time domain waveform
+     if( g_waveform )
+     {
+          // back to default line width
+          glLineWidth( g_wave_lineWidth );
+
+          // save the current matrix state
+          glPushMatrix();
+          // color waveform
+          glColor3f( 0.4f, 0.4f, 1.0f );
+          // translate the waveform
+          glTranslatef( x, y, 0.0f );
+          // scale visually
+          glScalef( inc * g_time_view , g_gain * g_time_scale * 2.0, 1.0 );
+          // set vertex normals (for somewhat controlled lighting)
+          glNormal3f( 0.0f, 0.0f, 1.0f );
+          // draw waveform
+          glBegin( GL_LINE_STRIP );
+          {
+               GLint ii = ( g_buffer_size - (g_buffer_size/g_time_view) ) / 2;
+               GLfloat xcoord = 0.0f;
+               // loop through samples
+               for( i = ii; i < ii + g_buffer_size / g_time_view; i++ )
+               {
+                    glVertex2f( xcoord++ , buffer[i] );
+               }
+               glEnd();
+          }
+          // restore previous matrix state
+          glPopMatrix();
+     }
+
+     // take forward FFT; result in buffer as FFT_SIZE/2 complex values
+     rfft( (float *)buffer, g_fft_size/2, FFT_FORWARD );
+     // cast to complex
+     complex * cbuf = (complex *)buffer;
+
+     // reset drawing offsets
+     x = -1.8f;
+     y = -1.0f;
+
+     // color the spectrum
+     glColor3f( 0.4f, 1.0f, 0.4f );
+     // set vertex normals
+     glNormal3f( 0.0f, 1.0f, 0.0f );
+
+     // copy current magnitude spectrum into waterfall memory
+     for( i = 0; i < g_fft_size/2; i++ )
+     {
+          // copy x coordinate
+          g_spectrums[g_wf][i].x = x;
+          // copy y, depending on scaling
+          if( !g_usedb ) {
+               g_spectrums[g_wf][i].y = g_gain * g_freq_scale * 1.8f *
+               ::pow( 25 * cmp_abs( cbuf[i] ), .5 ) + y;
+          } else {
+               g_spectrums[g_wf][i].y = g_gain * g_freq_scale *
+               ( 20.0f * log10( cmp_abs(cbuf[i])/8.0 ) + 80.0f ) / 80.0f + y + .5f;
+          }
+          // increment x
+          x += inc * g_freq_view;
+     }
+
+     // draw the right things
+     g_draw[g_wf] = g_wutrfall;
+     if( !g_starting )
+     g_draw[(g_wf+g_wf_delay)%g_depth] = true;
+
+     // reset drawing variables
+     x = -1.8f;
+     inc = 3.6f / g_fft_size;
+
+     // back to default line width
+     glLineWidth( g_freq_lineWidth );
+
+     // save current matrix state
+     glPushMatrix();
+     // translate in world coordinate
+     glTranslatef( x, 0.0, g_z );
+     // scale it
+     glScalef( inc*g_freq_view , 1.0 , -g_space );
+     // loop through each layer of waterfall
+     for( i = 0; i < g_depth; i++ )
+     {
+          if( i == g_wf_delay || !g_freeze || g_wutrfall )
+          {
+               // if layer is flagged for draw
+               if( g_draw[(g_wf+i)%g_depth] )
+               {
+                    // get the magnitude spectrum of layer
+                    Pt2D * pt = g_spectrums[(g_wf+i)%g_depth];
+                    // future
+                    if( i < g_wf_delay )
+                    {
+                         // brightness based on depth
+                         fval = (g_depth - g_wf_delay + i) / (float)(g_depth);
+                         // rain or not
+                         if( !g_rainbow ){
+                              glColor3f( 1.0 * fval, .7 * fval, .4 * fval ); // depth cue
+                              // interesting colors: (.7, 1, .2), (.4, .9. 1), (1.0, 0.7, 0.2)
+                         } else {
+                              // rainbow colors
+                              float cval = 1 - (g_wf_delay - i) / (float)(g_wf_delay);
+                              cval = 0.4f + cval * (1.0f - 0.4f);
+                              glColor3f( 1.0f * fval, cval * fval, .4f * fval );
+                         }
+                    }
+                    // present
+                    else if( i == g_wf_delay )
+                    {
+                         // draw the now line?
+                         if( g_draw_play )
+                         {
+                              glLineWidth( g_filename == NULL ? 2.0f : 3.0f );
+                              glColor3f( .4f, 1.0f, 1.0f );
+                         }
+                    }
+                    // past
+                    else
+                    {
+                         // brightness based on depth
+                         fval = (g_depth - i + g_wf_delay) / (float)(g_depth);
+                         // draw rainbow?
+                         if( !g_rainbow ) {
+                              glColor3f( .4f * fval, 1.0f * fval, .4f * fval ); //depth cue
+                         } else {
+                              // rainbow-ish
+                              float cval = 1 - (i - g_wf_delay) / (float)(g_depth - g_wf_delay);
+                              cval = 0.4f + cval * (1.0f - 0.4f);
+                              glColor3f( cval * fval, 1.0f * fval, .4f * fval );
+                         }
+                    }
+
+                    // render the actual spectrum layer
+                    glBegin( GL_LINE_STRIP );
+                    for( GLint j = 0; j < g_fft_size/g_freq_view; j++, pt++ )
+                    {
+                         // draw the vertex
+                         float d = g_backwards ? g_depth - (float) i : (float) i;
+                         glVertex3f( g_log_positions[j], pt->y, d );
+                    }
+                    glEnd();
+
+                    // back to default line width
+                    glLineWidth( g_freq_lineWidth );
+               }
+          }
+     }
+     // restore matrix state
+     glPopMatrix();
+
+     // if flagged, mark layer NOT to be drawn
+     if( !g_wutrfall )
+     g_draw[(g_wf+g_wf_delay)%g_depth] = false;
+
+     // wtrfll
+     if( !g_freeze )
+     {
+          // advance index
+          g_wf--;
+          // mod
+          g_wf = (g_wf + g_depth) % g_depth;
+          // can't remember what this does anymore...
+          if( g_wf == g_depth - g_wf_delay )
+          g_starting = 0;
+     }
+
+     // calculate and draw features
+     if( g_draw_features )
+     {
+          // if not frozen
+          if( !g_freeze )
+          {
+               // for rough downsampling
+               int ratio = g_fft_size / SND_MARSYAS_SIZE / 2;
+               // get magnitude response
+               for( i = 0; i < SND_MARSYAS_SIZE; i++ )
+               ptr[i] = cmp_abs( cbuf[i*ratio] );
+
+               // centroid
+               g_centroid->process( in, centroid );
+               // flux
+               g_flux->process( in, flux );
+               // rms
+               g_rms->process( in, rms );
+               // rolloff 1
+               g_rolloff->process( in, rolloff );
+               // rolloff 2
+               g_rolloff2->process( in, rolloff2 );
+
+               // lowpass
+               centroid_lp(count % LP) = centroid(0);
+               flux_lp(count % LP) = flux(0);
+               rms_lp(count % LP) = rms(0);
+               rolloff_lp(count % LP) = rolloff(0);
+               rolloff2_lp(count % LP) = rolloff2(0);
+               count++;
+
+               // get average values
+               centroid_val = centroid_lp.mean();
+               flux_val = flux_lp.mean();
+               rms_val = rms_lp.mean();
+               rolloff_val = rolloff_lp.mean();
+               rolloff2_val = rolloff2_lp.mean();
+          }
+
+          // draw the centroid
+          // TODO: need to update 'inc'?
+          ytemp = y+.04f + 2 * (::pow( 30 * rms_val, .5 ) );
+          float centroid_x = map_log_spacing( centroid_val/SND_MARSYAS_SIZE, g_log_factor );
+          centroid_x *= (inc*g_freq_view);
+          glColor3f( 1.0f, .4f, .4f );
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x, ytemp, 0.0f + g_z );
+          glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
+          glEnd();
+
+          // centroid value
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.72f + centroid_x, y-.15f, 0.0f + g_z );
+          glVertex3f( -1.15f + centroid_x, y-.15f, 0.0f + g_z );
+          glEnd();
+
+          // print centroid
+          sprintf( str, "centroid = %.0f Hz", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          //draw_string( -1.7f + centroid_x, y-.14f, 0.0f + g_z, str, .4f );
+
+          // rms value
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x - .23f, ytemp, 0.0f + g_z );
+          glVertex3f( -1.8f + centroid_x + .23f, ytemp, 0.0f + g_z );
+          glEnd();
+
+          // print RMS
+          sprintf( str, "RMS = %f", 1000 * rms_val );
+          //draw_string( -1.8f + centroid_x - .23f, ytemp + .01f, 0.0f + g_z, str, 0.4f );
+
+          // draw the rolloff
+          glColor3f( 1.0f, 1.0f, .4f );
+          float rolloff_x = map_log_spacing( rolloff_val/SND_MARSYAS_SIZE, g_log_factor );
+          rolloff_x *= (inc*g_freq_view);
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + rolloff_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.8f + rolloff_x, y+.04f, 0.0f + g_z );
+          glEnd();
+
+          // draw other rolloff
+          glColor3f( 1.0f, 1.0f, 1.0f );
+          float rolloff2_x = map_log_spacing( rolloff2_val/SND_MARSYAS_SIZE, g_log_factor );
+          rolloff2_x *= (inc*g_freq_view);
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + rolloff2_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.8f + rolloff2_x, y+.04f, 0.0f + g_z );
+          glEnd();
+
+          // centroid
+          sprintf( str, "centroid = %.0f", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          draw_string( -1.7f, 0.4f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "flux = %.1f", flux_val );
+          draw_string( -1.7f, 0.3f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "RMS = %.4f", 1000 * rms_val );
+          draw_string( -1.7f, 0.2f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "50%% rolloff= %.0f", rolloff_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          draw_string( -1.7f, 0.1f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "80%% rolloff = %.0f", rolloff2_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          draw_string( -1.7f, 0.0f, 0.0f, str, 0.4f );
+     }
+
+     // print to console
+     if( g_stdout )
+     {
+          fprintf( stdout, "%.2f  %.2f  %.8f  %.2f  %.2f  ", centroid(0), flux(0), rms(0), rolloff(0), rolloff2(0) );
+          fprintf( stdout, "%.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f %.2f %.2f  ",
+          mfcc(0), mfcc(1), mfcc(2), mfcc(3), mfcc(4), mfcc(5), mfcc(6),
+          mfcc(7), mfcc(8), mfcc(9), mfcc(10), mfcc(11), mfcc(12) );
+          fprintf( stdout, "\n" );
+     }
+
+     // set color
+     glColor3f( 1, 1, 1 );
+
+     // title
+     draw_string( 0.0f, 0.2f, 0.0f, "engine-X + wutrfall", .5f );
+
+     // time
+     if( g_show_time )
+     {
+          float fsec = ((double)sf_seek(g_sf,0,SEEK_CUR) - (double)g_wf_delay * g_buffer_size) / (double)g_srate;
+          sprintf( str, "%.0f", fsec );
+          draw_string( -1.7f, 1.1f, -.2f, str, .4f );
+     }
+
+     // pause?
+     if( g_pause )
+     draw_string( 0.95f, 1.1f, -.2f, "paused... (press f to resume)", .4f );
+
+     // mute?
+     if( g_mute )
+     draw_string( 0.95f, 1.05f, -.2f, "muted... (press m to unmute)", .4f );
+
+     // restore matrix state
+     glPopMatrix( );
+
+     // flush gl commands
+     glFlush( );
+     // swap the buffers
+     #ifdef __USE_GLUT__
+     glutSwapBuffers( );
+     #endif
+     // maintain count from render
+     g_buffer_count_b++;
+     // check against count from reading function
+     if( g_filename && !g_file_running && g_buffer_count_b == g_buffer_count_a )
+     g_running = FALSE;
+}
+#endif
+
+#ifdef __USE_GLFW__
+void displayFunc( )
+{
+     // static variables to keep across function calls
+     static const int LP = 4;
+     static long int count = 0;
+     static char str[1024];
+     static float centroid_val, flux_val, rms_val, rolloff_val, rolloff2_val;
+     static fvec in(SND_MARSYAS_SIZE),
+     centroid(1), flux(1), lpc(g_lpc->outSize()), mfcc(13), rms(1), rolloff(1),
+     rolloff2(1), centroid_lp(LP), flux_lp(LP), rms_lp(LP), rolloff_lp(LP),
+     rolloff2_lp(LP);
+
+     // local variables
+     SAMPLE * buffer = g_fft_buffer, * ptr = in.getData();
+     GLfloat ytemp, fval;
+     GLint i;
+
+     // clear the color and depth buffers
+     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+     // save current matrix state
+     glPushMatrix( );
+
+     // rotate the sphere about y axis
+     glRotatef( g_angle_y += g_inc, 0.0f, 1.0f, 0.0f );
+
+     // wait for data
+     while( !g_ready ) usleep( 1000 );
+
+     // lock
+     g_mutex.lock();
+
+     // get the latest (possibly preview) window
+     memset( buffer, 0, SND_FFT_SIZE * sizeof(SAMPLE) );
+
+     // copy currently playing audio into buffer
+     memcpy( buffer, g_audio_buffer, g_buffer_size * sizeof(SAMPLE) );
+
+     // some flag (hand off to audio cb thread)
+     g_ready = FALSE;
+
+     // unlock
+     g_mutex.unlock();
+
+     // lissajous
+     if( g_lissajous )
+     {
+          if( !g_filename ) { // real-time mic input
+               drawLissajous( g_stereo_buffer, g_buffer_size, 1 );
+          } else { // reading from file
+               drawLissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
+          }
+     }
+
+     // soon to be used drawing offsets
+     GLfloat x = -1.8f, inc = 3.6f / g_buffer_size, y = .7f;
+     // apply the transform window
+     apply_window( (float*)buffer, g_window, g_buffer_size );
+
+     // draw the time domain waveform
+     if( g_waveform )
+     {
+          // back to default line width
+          glLineWidth( g_wave_lineWidth );
+
+          // save the current matrix state
+          glPushMatrix();
+          // color waveform
+          glColor3f( 0.4f, 0.4f, 1.0f );
+          // translate the waveform
+          glTranslatef( x, y, 0.0f );
+          // scale visually
+          glScalef( inc * g_time_view , g_gain * g_time_scale * 2.0, 1.0 );
+          // set vertex normals (for somewhat controlled lighting)
+          glNormal3f( 0.0f, 0.0f, 1.0f );
+          // draw waveform
+          glBegin( GL_LINE_STRIP );
+          {
+               GLint ii = ( g_buffer_size - (g_buffer_size/g_time_view) ) / 2;
+               GLfloat xcoord = 0.0f;
+               // loop through samples
+               for( i = ii; i < ii + g_buffer_size / g_time_view; i++ )
+               {
+                    glVertex2f( xcoord++ , buffer[i] );
+               }
+               glEnd();
+          }
+          // restore previous matrix state
+          glPopMatrix();
+     }
+
+     // take forward FFT; result in buffer as FFT_SIZE/2 complex values
+     rfft( (float *)buffer, g_fft_size/2, FFT_FORWARD );
+     // cast to complex
+     complex * cbuf = (complex *)buffer;
+
+     // reset drawing offsets
+     x = -1.8f;
+     y = -1.0f;
+
+     // color the spectrum
+     glColor3f( 0.4f, 1.0f, 0.4f );
+     // set vertex normals
+     glNormal3f( 0.0f, 1.0f, 0.0f );
+
+     // copy current magnitude spectrum into waterfall memory
+     for( i = 0; i < g_fft_size/2; i++ )
+     {
+          // copy x coordinate
+          g_spectrums[g_wf][i].x = x;
+          // copy y, depending on scaling
+          if( !g_usedb ) {
+               g_spectrums[g_wf][i].y = g_gain * g_freq_scale * 1.8f *
+               ::pow( 25 * cmp_abs( cbuf[i] ), .5 ) + y;
+          } else {
+               g_spectrums[g_wf][i].y = g_gain * g_freq_scale *
+               ( 20.0f * log10( cmp_abs(cbuf[i])/8.0 ) + 80.0f ) / 80.0f + y + .5f;
+          }
+          // increment x
+          x += inc * g_freq_view;
+     }
+
+     // draw the right things
+     g_draw[g_wf] = g_wutrfall;
+     if( !g_starting )
+     g_draw[(g_wf+g_wf_delay)%g_depth] = true;
+
+     // reset drawing variables
+     x = -1.8f;
+     inc = 3.6f / g_fft_size;
+
+     // back to default line width
+     glLineWidth( g_freq_lineWidth );
+
+     // save current matrix state
+     glPushMatrix();
+     // translate in world coordinate
+     glTranslatef( x, 0.0, g_z );
+     // scale it
+     glScalef( inc*g_freq_view , 1.0 , -g_space );
+     // loop through each layer of waterfall
+     for( i = 0; i < g_depth; i++ )
+     {
+          if( i == g_wf_delay || !g_freeze || g_wutrfall )
+          {
+               // if layer is flagged for draw
+               if( g_draw[(g_wf+i)%g_depth] )
+               {
+                    // get the magnitude spectrum of layer
+                    Pt2D * pt = g_spectrums[(g_wf+i)%g_depth];
+                    // future
+                    if( i < g_wf_delay )
+                    {
+                         // brightness based on depth
+                         fval = (g_depth - g_wf_delay + i) / (float)(g_depth);
+                         // rain or not
+                         if( !g_rainbow ){
+                              glColor3f( 1.0 * fval, .7 * fval, .4 * fval ); // depth cue
+                              // interesting colors: (.7, 1, .2), (.4, .9. 1), (1.0, 0.7, 0.2)
+                         } else {
+                              // rainbow colors
+                              float cval = 1 - (g_wf_delay - i) / (float)(g_wf_delay);
+                              cval = 0.4f + cval * (1.0f - 0.4f);
+                              glColor3f( 1.0f * fval, cval * fval, .4f * fval );
+                         }
+                    }
+                    // present
+                    else if( i == g_wf_delay )
+                    {
+                         // draw the now line?
+                         if( g_draw_play )
+                         {
+                              glLineWidth( g_filename == NULL ? 2.0f : 3.0f );
+                              glColor3f( .4f, 1.0f, 1.0f );
+                         }
+                    }
+                    // past
+                    else
+                    {
+                         // brightness based on depth
+                         fval = (g_depth - i + g_wf_delay) / (float)(g_depth);
+                         // draw rainbow?
+                         if( !g_rainbow ) {
+                              glColor3f( .4f * fval, 1.0f * fval, .4f * fval ); //depth cue
+                         } else {
+                              // rainbow-ish
+                              float cval = 1 - (i - g_wf_delay) / (float)(g_depth - g_wf_delay);
+                              cval = 0.4f + cval * (1.0f - 0.4f);
+                              glColor3f( cval * fval, 1.0f * fval, .4f * fval );
+                         }
+                    }
+
+                    // render the actual spectrum layer
+                    glBegin( GL_LINE_STRIP );
+                    for( GLint j = 0; j < g_fft_size/g_freq_view; j++, pt++ )
+                    {
+                         // draw the vertex
+                         float d = g_backwards ? g_depth - (float) i : (float) i;
+                         glVertex3f( g_log_positions[j], pt->y, d );
+                    }
+                    glEnd();
+
+                    // back to default line width
+                    glLineWidth( g_freq_lineWidth );
+               }
+          }
+     }
+     // restore matrix state
+     glPopMatrix();
+
+     // if flagged, mark layer NOT to be drawn
+     if( !g_wutrfall )
+     g_draw[(g_wf+g_wf_delay)%g_depth] = false;
+
+     // wtrfll
+     if( !g_freeze )
+     {
+          // advance index
+          g_wf--;
+          // mod
+          g_wf = (g_wf + g_depth) % g_depth;
+          // can't remember what this does anymore...
+          if( g_wf == g_depth - g_wf_delay )
+          g_starting = 0;
+     }
+
+     // calculate and draw features
+     if( g_draw_features )
+     {
+          // if not frozen
+          if( !g_freeze )
+          {
+               // for rough downsampling
+               int ratio = g_fft_size / SND_MARSYAS_SIZE / 2;
+               // get magnitude response
+               for( i = 0; i < SND_MARSYAS_SIZE; i++ )
+               ptr[i] = cmp_abs( cbuf[i*ratio] );
+
+               // centroid
+               g_centroid->process( in, centroid );
+               // flux
+               g_flux->process( in, flux );
+               // rms
+               g_rms->process( in, rms );
+               // rolloff 1
+               g_rolloff->process( in, rolloff );
+               // rolloff 2
+               g_rolloff2->process( in, rolloff2 );
+
+               // lowpass
+               centroid_lp(count % LP) = centroid(0);
+               flux_lp(count % LP) = flux(0);
+               rms_lp(count % LP) = rms(0);
+               rolloff_lp(count % LP) = rolloff(0);
+               rolloff2_lp(count % LP) = rolloff2(0);
+               count++;
+
+               // get average values
+               centroid_val = centroid_lp.mean();
+               flux_val = flux_lp.mean();
+               rms_val = rms_lp.mean();
+               rolloff_val = rolloff_lp.mean();
+               rolloff2_val = rolloff2_lp.mean();
+          }
+
+          // draw the centroid
+          // TODO: need to update 'inc'?
+          ytemp = y+.04f + 2 * (::pow( 30 * rms_val, .5 ) );
+          float centroid_x = map_log_spacing( centroid_val/SND_MARSYAS_SIZE, g_log_factor );
+          centroid_x *= (inc*g_freq_view);
+          glColor3f( 1.0f, .4f, .4f );
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x, ytemp, 0.0f + g_z );
+          glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
+          glEnd();
+
+          // centroid value
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.72f + centroid_x, y-.15f, 0.0f + g_z );
+          glVertex3f( -1.15f + centroid_x, y-.15f, 0.0f + g_z );
+          glEnd();
+
+          // print centroid
+          sprintf( str, "centroid = %.0f Hz", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          //draw_string( -1.7f + centroid_x, y-.14f, 0.0f + g_z, str, .4f );
+
+          // rms value
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + centroid_x - .23f, ytemp, 0.0f + g_z );
+          glVertex3f( -1.8f + centroid_x + .23f, ytemp, 0.0f + g_z );
+          glEnd();
+
+          // print RMS
+          sprintf( str, "RMS = %f", 1000 * rms_val );
+          //draw_string( -1.8f + centroid_x - .23f, ytemp + .01f, 0.0f + g_z, str, 0.4f );
+
+          // draw the rolloff
+          glColor3f( 1.0f, 1.0f, .4f );
+          float rolloff_x = map_log_spacing( rolloff_val/SND_MARSYAS_SIZE, g_log_factor );
+          rolloff_x *= (inc*g_freq_view);
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + rolloff_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.8f + rolloff_x, y+.04f, 0.0f + g_z );
+          glEnd();
+
+          // draw other rolloff
+          glColor3f( 1.0f, 1.0f, 1.0f );
+          float rolloff2_x = map_log_spacing( rolloff2_val/SND_MARSYAS_SIZE, g_log_factor );
+          rolloff2_x *= (inc*g_freq_view);
+          glBegin( GL_LINE_STRIP );
+          glVertex3f( -1.8f + rolloff2_x, y-.04f, 0.0f + g_z );
+          glVertex3f( -1.8f + rolloff2_x, y+.04f, 0.0f + g_z );
+          glEnd();
+
+          // centroid
+          sprintf( str, "centroid = %.0f", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          //draw_string( -1.7f, 0.4f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "flux = %.1f", flux_val );
+          //draw_string( -1.7f, 0.3f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "RMS = %.4f", 1000 * rms_val );
+          //draw_string( -1.7f, 0.2f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "50%% rolloff= %.0f", rolloff_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          //draw_string( -1.7f, 0.1f, 0.0f, str, 0.4f );
+          // flux
+          sprintf( str, "80%% rolloff = %.0f", rolloff2_val / SND_MARSYAS_SIZE * g_srate / 2 );
+          //draw_string( -1.7f, 0.0f, 0.0f, str, 0.4f );
+     }
+
+     // print to console
+     if( g_stdout )
+     {
+          fprintf( stdout, "%.2f  %.2f  %.8f  %.2f  %.2f  ", centroid(0), flux(0), rms(0), rolloff(0), rolloff2(0) );
+          fprintf( stdout, "%.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f  %.2f %.2f %.2f  ",
+          mfcc(0), mfcc(1), mfcc(2), mfcc(3), mfcc(4), mfcc(5), mfcc(6),
+          mfcc(7), mfcc(8), mfcc(9), mfcc(10), mfcc(11), mfcc(12) );
+          fprintf( stdout, "\n" );
+     }
+
+     // set color
+     glColor3f( 1, 1, 1 );
+
+     // title
+     // draw_string( 0.0f, 0.2f, 0.0f, "engine-X + wutrfall", .5f );
+
+     // time
+     if( g_show_time )
+     {
+          float fsec = ((double)sf_seek(g_sf,0,SEEK_CUR) - (double)g_wf_delay * g_buffer_size) / (double)g_srate;
+          sprintf( str, "%.0f", fsec );
+          //draw_string( -1.7f, 1.1f, -.2f, str, .4f );
+     }
+     /*
+     // pause?
+     if( g_pause )
+     draw_string( 0.95f, 1.1f, -.2f, "paused... (press f to resume)", .4f );
+
+     // mute?
+     if( g_mute )
+     draw_string( 0.95f, 1.05f, -.2f, "muted... (press m to unmute)", .4f );
+     */
+     // restore matrix state
+     glPopMatrix( );
+
+     // flush gl commands
+     glFlush( );
+     // swap the buffers
+     //          glutSwapBuffers( );
+
+     // maintain count from render
+     g_buffer_count_b++;
+     // check against count from reading function
+     if( g_filename && !g_file_running && g_buffer_count_b == g_buffer_count_a )
+     g_running = FALSE;
+}
+#endif
 
 
 //-----------------------------------------------------------------------------
@@ -2267,4 +2637,123 @@ void extract_buffer( )
      g_buffer_count_b++;
      if( g_filename && !g_file_running && g_buffer_count_a == g_buffer_count_b )
      g_running = FALSE;
+}
+
+//-----------------------------------------------------------------------------
+// name: help()
+// desc: ...
+//-----------------------------------------------------------------------------
+void help()
+{
+     fprintf( stderr, "----------------------------------------------------\n" );
+     fprintf( stderr, "engine-X + wutrfall (1.41)\n" );
+     fprintf( stderr, "Ge Wang, Perry R. Cook, Ananya Misra\n" );
+     fprintf( stderr, "http://www.gewang.com/\n" );
+     fprintf( stderr, "----------------------------------------------------\n" );
+     fprintf( stderr, "'h' - print this help message\n" );
+     fprintf( stderr, "'p' - print current settings to console\n" );
+     fprintf( stderr, "'s' - toggle fullscreen\n" );
+     fprintf( stderr, "'f' - freeze frame! (can still rotate/scale)\n" );
+     fprintf( stderr, "'1' - toggle waveform display\n" );
+     fprintf( stderr, "'2' - toggle lissajous display\n" );
+     fprintf( stderr, "'3' - (also 'w') toggle wutrfall display\n" );
+     fprintf( stderr, "'4' - toggle feature extraction (broken)\n" );
+     fprintf( stderr, "'d' - toggle dB plot for spectrum\n" );
+     fprintf( stderr, "'r' - toggle rainbow waterfall\n" );
+     fprintf( stderr, "'b' - toggle waterfall moving backwards/forwards\n" );
+     fprintf( stderr, "'x' - restart file playback (if applicable)\n" );
+     fprintf( stderr, "'p' - print current settings to terminal\n" );
+     fprintf( stderr, "'m' - mute\n" );
+     fprintf( stderr, "'j' - move spectrum + z\n" );
+     fprintf( stderr, "'k' - move spectrum - z\n" );
+     fprintf( stderr, "'u' - spacing more!\n" );
+     fprintf( stderr, "'i' - spacing less!\n" );
+     fprintf( stderr, "L/R mouse button - rotate left or right\n" );
+     fprintf( stderr, "'[', ']' - rotate up or down\n" );
+     fprintf( stderr, "'-' - scale DOWN the spectrum\n" );
+     fprintf( stderr, "'=' - scale UP the spectrum\n" );
+     fprintf( stderr, "(shift)'-' - scale DOWN the waveform\n" );
+     fprintf( stderr, "(shift)'=' - scale UP the waveform\n" );
+     fprintf( stderr, "'c' = LOWER log factor of spectrum display\n" );
+     fprintf( stderr, "'v' = RAISE log factor of spectrum display\n" );
+     fprintf( stderr, "      (log factor of 1.0 is linear display\n" );
+     fprintf( stderr, "(shift)'c' - LOWER amount of viewable waveform\n" );
+     fprintf( stderr, "(shift)'v' - RAISE amount of viewable waveform\n" );
+     fprintf( stderr, "'l' - scale DOWN the lissajous!\n" );
+     fprintf( stderr, "'L' - scale UP the lissajous!\n" );
+     fprintf( stderr, "'y' - decrease delay for lissajous plot\n" );
+     fprintf( stderr, "'Y' - increase delay for lissajous plot\n" );
+     fprintf( stderr, "',' - decrease line width for spectrum\n" );
+     fprintf( stderr, "'.' - increase line width for spectrum\n" );
+     fprintf( stderr, "'<' - decrease line width for waveform\n" );
+     fprintf( stderr, "'>' - increase line width for waveform\n" );
+     fprintf( stderr, "'q' - quit\n" );
+     fprintf( stderr, "----------------------------------------------------\n" );
+     fprintf( stderr, "\n" );
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// name: probe()
+// desc: probe audio info
+//-----------------------------------------------------------------------------
+void probe()
+{
+     RtAudio audio;
+
+     // get number of devices
+     unsigned int numDevices = audio.getDeviceCount();
+
+     cerr << "avalable audio devices: " << numDevices << endl;
+     cerr << "-----------------------" << endl;
+
+     // iterate
+     for( int i = 0; i < numDevices; i++ )
+     {
+          // get info
+          RtAudio::DeviceInfo info = audio.getDeviceInfo(i);
+          // check
+          if( info.probed )
+          {
+               cerr << i << ": " << info.name
+               << " channels in: " << info.inputChannels
+               << (info.isDefaultInput ? " (default)" : "" )
+               << " out: " << info.outputChannels
+               << (info.isDefaultOutput ? " (default)" : "" )
+               << endl;
+          }
+     }
+     // cerr << "------------------------" << endl;
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// name: usage()
+// desc: ...
+//-----------------------------------------------------------------------------
+void usage()
+{
+     fprintf( stderr, "-----------------------\n" );
+     fprintf( stderr, "usage: engine-X  --[options] [filename]\n" );
+     fprintf( stderr, "  ON/OFF options: fullscreen|waveform|lissajous|waterfall|\n" );
+     fprintf( stderr, "                  dB|features|fallcolors|backward|showtime|\n" );
+     fprintf( stderr, "                  freeze\n" );
+     fprintf( stderr, "  number options: inputDevice|outputDevice|\n" );
+     fprintf( stderr, "                  timescale|freqscale|lissscale|logfactor|\n" );
+     fprintf( stderr, "                  spacing|zpos|dzpos|depth|preview|yview|\n" );
+     fprintf( stderr, "                  rotatem|rotatek|begintime|ds\n" );
+     fprintf( stderr, "   other options: about|nodisplay|print\n" );
+     fprintf( stderr, "\n" );
+     fprintf( stderr, "example:\n" );
+     fprintf( stderr, "    engine-X --fullscreen:ON --inputDevice:1 --spacing:.05\n" );
+     fprintf( stderr, "\n" );
+     probe();
+     fprintf( stderr, "\n" );
+     fprintf( stderr, "engine-X version: 1.41\n" );
+     fprintf( stderr, "    http://www.gewang.com/\n" );
+     fprintf( stderr, "\n" );
 }
