@@ -622,14 +622,10 @@ int main( int argc, char ** argv )
                glfwSwapBuffers(engineX->window);
           }
           #endif
+
           #ifdef __USE_GLUT__
           // let GLUT handle the current thread from here
           glutMainLoop();
-          /*
-          while(true){
-               displayFunc();
-          }
-          */
           #endif
 
      }
@@ -655,7 +651,7 @@ int main( int argc, char ** argv )
                // extract features
                extract_buffer();
           }
-          
+
 
      }
 
@@ -2086,7 +2082,7 @@ void displayFunc( )
 
           // print centroid
           sprintf( str, "centroid = %.0f Hz", centroid_val / SND_MARSYAS_SIZE * g_srate / 2 );
-          //draw_string( -1.7f + centroid_x, y-.14f, 0.0f + g_z, str, .4f );
+          draw_string( -1.7f + centroid_x, y-.14f, 0.0f + g_z, str, .4f );
 
           // rms value
           glBegin( GL_LINE_STRIP );
@@ -2096,7 +2092,7 @@ void displayFunc( )
 
           // print RMS
           sprintf( str, "RMS = %f", 1000 * rms_val );
-          //draw_string( -1.8f + centroid_x - .23f, ytemp + .01f, 0.0f + g_z, str, 0.4f );
+          draw_string( -1.8f + centroid_x - .23f, ytemp + .01f, 0.0f + g_z, str, 0.4f );
 
           // draw the rolloff
           glColor3f( 1.0f, 1.0f, .4f );
@@ -2258,7 +2254,9 @@ void displayFunc( )
           glScalef( inc * g_time_view , g_gain * g_time_scale * 2.0, 1.0 );
           // set vertex normals (for somewhat controlled lighting)
           glNormal3f( 0.0f, 0.0f, 1.0f );
+          //###################################################
           // draw waveform
+          //###################################################
           glBegin( GL_LINE_STRIP );
           {
                GLint ii = ( g_buffer_size - (g_buffer_size/g_time_view) ) / 2;
