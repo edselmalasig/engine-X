@@ -349,6 +349,7 @@ unsigned int wVAO, wVBO, wEBO;
 #endif
 void help();
 void usage();
+void calc_Lissajous(SAMPLE * stereobuffer, int len, int channels);
 //-----------------------------------------------------------------------------
 // name: main( )
 // desc: entry point
@@ -1090,8 +1091,45 @@ void initialize_graphics()
     waveform->modelLoc = glGetUniformLocation(waveform->shader->ID, "model");
 
     glUniformMatrix4fv(waveform->modelLoc, 1, GL_FALSE, glm::value_ptr(waveform->model));
-
     glBindVertexArray(0);
+
+
+
+    // Bind our Vertex Array Object first, then bind and set our buffers and pointers.
+    lissajous = new Particle("../res/shaders/lissajous.vs", "../res/shaders/lissajous.fs", sizeof(GLfloat) * 3 * NUM_CHANNELS * g_buffer_size);
+
+    lissajous->initParticles(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glEnableVertexAttribArray(0);
+    lissajous->incolorLoc = glGetUniformLocation(lissajous->shader->ID, "f_color");
+
+    lissajous->timeLoc = glGetUniformLocation(lissajous->shader->ID, "time");
+
+    glm::perspective(*camera->Zoom, (float)g_width/(float)g_height, 1.0f, 1300.0f);
+
+    //move initial position of the model
+    lissajous->modelLoc = glGetUniformLocation(lissajous->shader->ID, "model");
+
+    glUniformMatrix4fv(lissajous->modelLoc, 1, GL_FALSE, glm::value_ptr(lissajous->model));
+    glBindVertexArray(0);
+
+    // Bind our Vertex Array Object first, then bind and set our buffers and pointers.
+  spectrum = new Particle("spectrumVS.glsl", "spectrumFS.glsl", sizeof(GLfloat) * 3 * g_fft_size/g_freq_view);
+
+  spectrum->initParticles(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+  glEnableVertexAttribArray(0);
+
+
+  glm::perspective(*camera->Zoom, (float)g_width/(float)g_height, 1.0f, 1300.0f);
+
+  //move initial position of the model
+  spectrum->modelLoc = glGetUniformLocation(spectrum->shader->ID, "model");
+  spectrum->incolorLoc = glGetUniformLocation(spectrum->shader->ID, "incolor");
+
+  glUniformMatrix4fv(spectrum->modelLoc, 1, GL_FALSE, glm::value_ptr(spectrum->model));
+  glUniform4fv(spectrum->modelLoc, 1, glm::value_ptr(spectrum->model));
+  glBindVertexArray(0);
+
 
      // initialize
      g_spectrums = new Pt2D *[g_depth];
@@ -1111,6 +1149,134 @@ void initialize_graphics()
      g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
 
 
+}
+
+void draw_spectrum(){
+
+    spectrum->shader->use();
+    spectrum->view = glm::lookAt( glm::vec3(camera->Position.x, camera->Position.y, camera->Position.z),
+                                      glm::vec3(camera->Position.x + camera->Front.x, camera->Position.y + camera->Front.y, camera->Position.z + camera->Front.z),
+                                      glm::vec3(camera->Up.x, camera->Up.y, camera->Up.z));
+    spectrum->projection = glm::perspective(*camera->Zoom, (float)g_width/(float)g_height, 1.0f, 1300.0f);
+
+    spectrum->modelLoc = glGetUniformLocation(spectrum->shader->ID, "model");
+    spectrum->viewLoc = glGetUniformLocation(spectrum->shader->ID, "view");
+    spectrum->projLoc = glGetUniformLocation(spectrum->shader->ID, "projection");
+
+    glUniformMatrix4fv(spectrum->viewLoc, 1, GL_FALSE, glm::value_ptr(spectrum->view));
+    glUniformMatrix4fv(spectrum->projLoc, 1, GL_FALSE, glm::value_ptr(spectrum->projection));
+    glUniformMatrix4fv(spectrum->modelLoc, 1, GL_FALSE, glm::value_ptr(spectrum->model));
+
+
+    spectrum->updateBuffData(sizeof(GLfloat) * 3 * (g_fft_size/g_freq_view));
+    glEnableVertexAttribArray(0);
+
+    glUniformMatrix4fv(spectrum->modelLoc, 1, GL_FALSE, glm::value_ptr(spectrum->model));
+    glDrawArrays(GL_LINE_STRIP, 0, (g_fft_size/g_freq_view)/2);
+
+}
+
+void calc_spectrum(complex * cbuf, GLboolean * g_draw){
+    GLfloat fval,x,y,inc;
+    // reset drawing variables
+    x = -1.8f;
+    inc = 3.6f / g_fft_size;
+    y=- 0.7f;
+
+    // copy current magnitude spectrum into waterfall memory
+    for( int i = 0; i < g_fft_size/2; i++ )
+    {
+        // copy x coordinate
+        g_spectrums[g_wf][i].x = x;
+        // copy y, depending on scaling
+        if( !g_usedb ) {
+            g_spectrums[g_wf][i].y = g_gain * g_freq_scale * 1.8f *
+            ::pow( 25 * cmp_abs( cbuf[i] ), .5 ) + y;
+        } else {
+            g_spectrums[g_wf][i].y = g_gain * g_freq_scale *
+            ( 20.0f * log10( cmp_abs(cbuf[i])/8.0 ) + 80.0f ) / 80.0f + y + .5f;
+        }
+        // increment x
+        x += inc * g_freq_view;
+    }
+
+    // draw the right things
+    g_draw[g_wf] = g_wutrfall;
+    if( !g_starting )
+        g_draw[(g_wf+g_wf_delay)%g_depth] = true;
+
+    for( int i = 0; i < g_depth; i++ )
+    {
+        if( i == g_wf_delay || !g_freeze || g_wutrfall )
+        {
+            // if layer is flagged for draw
+            if( g_draw[(g_wf+i)%g_depth] )
+            {
+                //glLineWidth( g_filename.empty() ? 0.2f : 0.4f );
+
+                // get the magnitude spectrum of layer
+                Pt2D * pt = (Pt2D *)g_spectrums[(g_wf+i)%g_depth];
+                // future
+                if( i < g_wf_delay )
+                {
+                    // brightness based on depth
+                    fval = (g_depth - g_wf_delay + i) / (float)(g_depth);
+                    // rain or not
+                    if( !g_rainbow ){
+                        spectrum->incolor = glm::vec4( .4 * fval, 0.9 * fval, 0.1 * fval, 1.0f ); // depth cue
+                        // interesting colors: (.7, 1, .2), (.4, .9. 1), (1.0, 0.7, 0.2)
+                    } else {
+                        // rainbow colors
+                        float cval = 1 - (g_wf_delay - i) / (float)(g_wf_delay);
+                        cval = 0.4f + cval * (1.0f - 0.4f);
+                        spectrum->incolor = glm::vec4(7.0f * fval, cval * fval, 0.2f * fval, 1.0f);
+                    }
+                }
+                // present
+                else if( i == g_wf_delay )
+                {
+                    // draw the now line?
+                    if( g_draw_play )
+                    {
+                        glColor3f( .6f, 0.65f, 0.2f );
+                        spectrum->incolor = glm::vec4(.6f, 0.65f, 0.2f, 1.0f);
+                    }
+                }
+                // past
+                else
+                {
+                    // brightness based on depth
+                    fval = (g_depth - i + g_wf_delay) / (float)(g_depth);
+                    // draw rainbow?
+                    if( !g_rainbow ) {
+                        spectrum->incolor = glm::vec4( .4f * fval, 1.0f * fval, .4f * fval, 1.0f ); //depth cue
+                    } else {
+                        // rainbow-ish
+                        float cval = 1 - (i - g_wf_delay) / (float)(g_depth - g_wf_delay);
+                        cval = 0.4f + cval * (1.0f - 0.4f);
+                        spectrum->incolor = glm::vec4(cval * fval, 1.0f * fval, .4f * fval,  1.0f);
+                    }
+                }
+
+
+                for( GLint j = 0; j < g_fft_size/g_freq_view; j++, pt++ )
+                {
+
+                    float d = g_backwards ? g_depth - (float) i : (float) i;
+
+                    spectrum->bufferdata[3*j] = (inc * g_freq_view * g_log_positions[j]) + x;
+                    spectrum->bufferdata[(3*j) + 1] = pt->y;
+                    spectrum->bufferdata[(3*j) + 2] = (-g_space * d) + g_z;
+
+
+                }
+                glUniform4fv(spectrum->incolorLoc, 1, glm::value_ptr(spectrum->incolor));
+                draw_spectrum();
+
+            }
+            glBindVertexArray(0);
+        }
+    }
 }
 
 void draw_waveform(){
@@ -1773,6 +1939,98 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
 }
 #endif
 #ifdef __USE_GLFW__
+
+//-----------------------------------------------------------------------------
+// name: ...
+// desc: ...
+//-----------------------------------------------------------------------------
+void calc_Lissajous( SAMPLE * stereobuffer, int len, int channels)
+{
+    float x=0, y=0;
+    SAMPLE * buffer;
+
+    // 1 or 2 channels only for now
+    //assert( channels >= 1 && channels <= 2 );
+
+    // mono
+    if (g_sf != NULL) {
+        if (channels == 1)
+        {
+            buffer = g_cur_buffer;
+            // convert to mono
+            for (int m = 0; m < len; m++)
+            {
+                buffer[m] = stereobuffer[m * 2] + stereobuffer[m * 2 + 1];
+                buffer[m] /= 2.0f;
+            }
+        }
+    }
+    else{
+        buffer = stereobuffer;
+    }
+    for( int i = 0; i < len * channels; i += NUM_CHANNELS )
+    {
+        x = (buffer[i] * g_lissajous_scale);
+
+        if( channels == 1 )
+        {
+            // delay
+            y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
+            y *= g_lissajous_scale;
+            lissajous->bufferdata[3*i] = x;
+            lissajous->bufferdata[(3*i)+1] = y;
+            lissajous->bufferdata[(3*i)+2] = 0.0f;
+        }
+        else
+        {
+            y = buffer[i + channels-1] * g_lissajous_scale;
+            lissajous->bufferdata[(3*i)/2] = x;
+            lissajous->bufferdata[(3*i)/2+1] = y;
+            lissajous->bufferdata[(3*i)/2+2] = 0.0f;
+        }
+
+        // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
+    }
+
+    // hmm...
+
+    if( channels == 1 )
+        memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
+
+}
+
+void draw_Lissajous( int len ){
+
+    lissajous->shader->use();
+
+    lissajous->view = glm::lookAt( glm::vec3(camera->Position.x, camera->Position.y, camera->Position.z),
+                                       glm::vec3(camera->Position.x + camera->Front.x, camera->Position.y + camera->Front.y, camera->Position.z + camera->Front.z),
+                                       glm::vec3(camera->Up.x, camera->Up.y, camera->Up.z));
+    lissajous->projection = glm::perspective(*camera->Zoom, (float)g_width/(float)g_height, 1.0f, 1300.0f);
+
+    lissajous->viewLoc = glGetUniformLocation(lissajous->shader->ID, "view");
+    lissajous->projLoc = glGetUniformLocation(lissajous->shader->ID, "projection");
+    lissajous->timeLoc = glGetUniformLocation(lissajous->shader->ID, "time");
+
+    lissajous->modelLoc = glGetUniformLocation(lissajous->shader->ID, "model");
+    glUniformMatrix4fv(lissajous->viewLoc, 1, GL_FALSE, glm::value_ptr(lissajous->view));
+    glUniformMatrix4fv(lissajous->projLoc, 1, GL_FALSE, glm::value_ptr(lissajous->projection));
+    glUniformMatrix4fv(lissajous->modelLoc, 1, GL_FALSE, glm::value_ptr(lissajous->model));
+    glNormal3f( 0.0f, 0.0f, 1.0f );
+    //lissajous->bindBuff();
+    lissajous->updateBuffData(sizeof(GLfloat) * 3 * len);
+    glEnableVertexAttribArray(0);
+
+    glPointSize(1.0f);
+    glUniform4fv(lissajous->incolorLoc, 1, glm::value_ptr(lissajous->incolor));
+    glUniform1f(lissajous->timeLoc, glfwGetTime());
+
+    glUniformMatrix4fv(lissajous->modelLoc, 1, GL_FALSE, glm::value_ptr(lissajous->model));
+    glDrawArrays(GL_LINES, 0, len);
+
+    glBindVertexArray(0);
+}
+
 void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
 {
      float x, y;
@@ -2299,17 +2557,19 @@ void displayFunc( )
 
      // unlock
      g_mutex.unlock();
-/*
+
      // lissajous
      if( g_lissajous )
      {
           if( !g_filename ) { // real-time mic input
-               drawLissajous( g_stereo_buffer, g_buffer_size, 1 );
+                calc_Lissajous( g_stereo_buffer, g_buffer_size, 1 );
+               draw_Lissajous(g_buffer_size);
           } else { // reading from file
-               drawLissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
+               calc_Lissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
+               draw_Lissajous(g_buffer_size);
           }
      }
-*/
+
      // soon to be used drawing offsets
      GLfloat x = -1.8f, inc = 3.6f / g_buffer_size, y = .7f;
      // apply the transform window
@@ -2392,7 +2652,8 @@ void displayFunc( )
      // reset drawing variables
      x = -1.8f;
      inc = 3.6f / g_fft_size;
-
+     if(g_spectrums)
+      calc_spectrum(cbuf, g_draw);
 
 /*
      // back to default line width
@@ -2473,7 +2734,7 @@ void displayFunc( )
      }
      // restore matrix state
      glPopMatrix();
-
+*/
      // if flagged, mark layer NOT to be drawn
      if( !g_wutrfall )
      g_draw[(g_wf+g_wf_delay)%g_depth] = false;
