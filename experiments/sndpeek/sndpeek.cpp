@@ -67,9 +67,12 @@ U.S.A.
 #include "imguistyleserializer.h"
 
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <GL/glew.h>
 #include "camera.h"
-
+#include "Particle.h"
 #include "EngineX.h"
 
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -327,10 +330,21 @@ GLuint g_wf_index = 0;
 GLfloat g_wave_lineWidth = 1;
 // spectrum line width
 GLfloat g_freq_lineWidth = 1;
+
 #ifdef __USE_GLFW__
 Camera * camera;
 EngineX * engineX;
 GLFWwindow * window;
+
+//Particle waveform;
+//Particle lissajous;
+Particle * spectrum;
+Particle * lissajous;
+Particle * waveform;
+//Shader sShader, lShader, wShader;
+unsigned int sVAO, sVBO, sEBO;
+unsigned int lVAO, lVBO, lEBO;
+unsigned int wVAO, wVBO, wEBO;
 
 #endif
 void help();
@@ -600,8 +614,6 @@ int main( int argc, char ** argv )
           while(!glfwWindowShouldClose(engineX->window))
           {
                GLfloat currentFrame = (GLfloat) glfwGetTime();
-               engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
-               engineX->camera->lastFrame = currentFrame;
 
                glfwPollEvents();
 
@@ -1064,23 +1076,90 @@ void initialize_graphics()
      glLightfv( GL_LIGHT1, GL_SPECULAR, g_light1_specular );
      glEnable( GL_LIGHT1 );
 
+
      // blend? (Jeff's contribution)
      // glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
      // glEnable( GL_BLEND );
 
+
+     waveform = new Particle("../res/shaders/waveform.vs", "../res/shaders/waveform.fs", sizeof(GLfloat)*3*g_buffer_size);
+     waveform->initParticles(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
+     glm::perspective(*camera->Zoom, (float)g_width/ (float)g_height, 1.0f, 1300.0f);
+
+    //move initial position of the model
+    waveform->modelLoc = glGetUniformLocation(waveform->shader->ID, "model");
+
+    glUniformMatrix4fv(waveform->modelLoc, 1, GL_FALSE, glm::value_ptr(waveform->model));
+
+    glBindVertexArray(0);
+
      // initialize
      g_spectrums = new Pt2D *[g_depth];
+
      for( int i = 0; i < g_depth; i++ )
      {
           g_spectrums[i] = new Pt2D[SND_FFT_SIZE];
           memset( g_spectrums[i], 0, sizeof(Pt2D)*SND_FFT_SIZE );
      }
+
+
+
      g_draw = new GLboolean[g_depth];
      memset( g_draw, 0, sizeof(GLboolean)*g_depth );
 
      // compute log spacing
      g_log_space = compute_log_spacing( g_fft_size / 2, g_log_factor );
 
+
+}
+
+void draw_waveform(){
+    waveform->shader->use();
+
+    waveform->view = glm::lookAt( glm::vec3(camera->Position.x, camera->Position.y, camera->Position.z),
+                                      glm::vec3(camera->Position.x + camera->Front.x, camera->Position.y + camera->Front.y, camera->Position.z + camera->Front.z),
+                                      glm::vec3(camera->Up.x, camera->Up.y, camera->Up.z));
+    waveform->projection = glm::perspective(*camera->Zoom, (float)g_width/(float)g_height, 1.0f, 1300.0f);
+
+    waveform->modelLoc = glGetUniformLocation(waveform->shader->ID, "model");
+    waveform->viewLoc = glGetUniformLocation(waveform->shader->ID, "view");
+    waveform->projLoc = glGetUniformLocation(waveform->shader->ID, "projection");
+
+    glUniformMatrix4fv(waveform->viewLoc, 1, GL_FALSE, glm::value_ptr(waveform->view));
+    glUniformMatrix4fv(waveform->projLoc, 1, GL_FALSE, glm::value_ptr(waveform->projection));
+    glUniformMatrix4fv(waveform->modelLoc, 1, GL_FALSE, glm::value_ptr(waveform->model));
+
+    glNormal3f( 0.0f, 0.0f, 1.0f );
+    // draw waveform
+    //glLineWidth( g_filename.empty() ? 0.2f : 0.4f );
+//    waveform->bindBuff();
+
+    waveform->updateBuffData(sizeof(GLfloat) * 3 * g_buffer_size/g_time_view);
+
+    glEnableVertexAttribArray(0);
+
+//    waveform->bindVA();
+
+    glUniformMatrix4fv(waveform->modelLoc, 1, GL_FALSE, glm::value_ptr(waveform->model));
+    glDrawArrays(GL_LINE_STRIP, 0, g_buffer_size/g_time_view);
+    glBindVertexArray(0);
+}
+
+void calc_waveform(GLfloat x, GLfloat y, GLfloat inc, SAMPLE * buffer){
+
+    apply_window( (float*)buffer, g_window, g_buffer_size * 3);
+    x = -1.8f;
+    inc = 3.6f / g_buffer_size;
+    y = .7f;
+    GLint ii = ( g_buffer_size - (g_buffer_size/g_time_view) ) / g_time_view;
+    GLfloat xcoord = 0.0f;
+    // loop through samples
+    for( int i = ii; i < ii + g_buffer_size / g_time_view; i++ )
+    {
+        waveform->bufferdata[3*i] = (xcoord++ * inc * g_time_view) + x;
+        waveform->bufferdata[(3*i)+1] = (buffer[i] * g_gain * g_time_scale * 2.0f) + y;
+        waveform->bufferdata[(3*i)+2] = 0.0f;
+    }
 
 }
 #endif
@@ -1661,11 +1740,11 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
      // color
      glColor3f( 1.0f, 1.0f, .5f );
      // save current matrix state
-     glPushMatrix();
+     //glPushMatrix();
      // translate
      glTranslatef( 1.2f, 0.0f, 0.0f );
      // draw it
-     glBegin( GL_LINE_STRIP );
+     //glBegin( GL_LINE_STRIP );
      for( int i = 0; i < len * channels; i += channels )
      {
           x = buffer[i] * g_lissajous_scale;
@@ -1680,12 +1759,13 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
                y = buffer[i + channels-1] * g_lissajous_scale;
           }
 
+
           glVertex3f( x, y, 0.0f );
           // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
      }
-     glEnd();
+     //glEnd();
      // restore matrix state
-     glPopMatrix();
+     //glPopMatrix();
 
      // hmm...
      if( channels == 1 )
@@ -1723,11 +1803,11 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
      // color
      glColor3f( 1.0f, 1.0f, .5f );
      // save current matrix state
-     glPushMatrix();
+     //glPushMatrix();
      // translate
      glTranslatef( 1.2f, 0.0f, 0.0f );
      // draw it
-     glBegin( GL_LINE_STRIP );
+     //glBegin( GL_LINE_STRIP );
      for( int i = 0; i < len * channels; i += channels )
      {
           x = buffer[i] * g_lissajous_scale;
@@ -1745,9 +1825,9 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
           glVertex3f( x, y, 0.0f );
           // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
      }
-     glEnd();
+     //glEnd();
      // restore matrix state
-     glPopMatrix();
+     //glPopMatrix();
 
      // hmm...
      if( channels == 1 )
@@ -1788,9 +1868,6 @@ double compute_log_spacing( int fft_size, double power )
 
      return 1/::log(fft_size);
 }
-
-
-
 
 //-----------------------------------------------------------------------------
 // Name: displayFunc( )
@@ -1858,7 +1935,7 @@ void displayFunc( )
 
      // draw the time domain waveform
      if( g_waveform )
-     {
+{
           // back to default line width
           glLineWidth( g_wave_lineWidth );
 
@@ -2222,7 +2299,7 @@ void displayFunc( )
 
      // unlock
      g_mutex.unlock();
-
+/*
      // lissajous
      if( g_lissajous )
      {
@@ -2232,7 +2309,7 @@ void displayFunc( )
                drawLissajous( g_stereo_buffer, g_buffer_size, g_sf_info.channels );
           }
      }
-
+*/
      // soon to be used drawing offsets
      GLfloat x = -1.8f, inc = 3.6f / g_buffer_size, y = .7f;
      // apply the transform window
@@ -2241,7 +2318,7 @@ void displayFunc( )
      // draw the time domain waveform
      if( g_waveform )
      {
-          // back to default line width
+/*          // back to default line width
           glLineWidth( g_wave_lineWidth );
 
           // save the current matrix state
@@ -2270,7 +2347,11 @@ void displayFunc( )
           }
           // restore previous matrix state
           glPopMatrix();
+*/
+          calc_waveform(x,y,inc,buffer);
+          draw_waveform();
      }
+
 
      // take forward FFT; result in buffer as FFT_SIZE/2 complex values
      rfft( (float *)buffer, g_fft_size/2, FFT_FORWARD );
@@ -2312,6 +2393,8 @@ void displayFunc( )
      x = -1.8f;
      inc = 3.6f / g_fft_size;
 
+
+/*
      // back to default line width
      glLineWidth( g_freq_lineWidth );
 
@@ -2544,7 +2627,7 @@ void displayFunc( )
      // mute?
      if( g_mute )
      draw_string( 0.95f, 1.05f, -.2f, "muted... (press m to unmute)", .4f );
-     */
+
      // restore matrix state
      glPopMatrix( );
 
@@ -2552,7 +2635,7 @@ void displayFunc( )
      glFlush( );
      // swap the buffers
      //          glutSwapBuffers( );
-
+     */
      // maintain count from render
      g_buffer_count_b++;
      // check against count from reading function

@@ -26,11 +26,12 @@ FREETYPE = /usr/local/include/freetype2/
 MARSYAS_DIR = marsyas/
 
 
-SOURCES = sndpeek.cpp ../../core/src/camera.cpp ../../core/src/Geometry.cpp ../../core/src/EngineX.cpp
+SOURCES = Particle.cpp sndpeek.cpp ../../core/src/camera.cpp ../../core/src/Geometry.cpp ../../core/src/EngineX.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
 SOURCES += $(IMGUI)/imgui.cpp $(IMGUI)/imgui_demo.cpp $(IMGUI)/imgui_draw.cpp $(IMGUI)/imgui_widgets.cpp
 SOURCES += $(FREEIMAGE_EXT)/fip_ImageOperations.cpp
+SOURCES +=
 
 SOURCES += $(MARSYAS_DIR)/AutoCorrelation.cpp $(MARSYAS_DIR)/Centroid.cpp
 SOURCES += $(MARSYAS_DIR)/Communicator.cpp $(MARSYAS_DIR)/DownSampler.cpp
