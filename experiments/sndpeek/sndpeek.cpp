@@ -2032,11 +2032,11 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
      // color
      glColor3f( 1.0f, 1.0f, .5f );
      // save current matrix state
-     //glPushMatrix();
+     glPushMatrix();
      // translate
      glTranslatef( 1.2f, 0.0f, 0.0f );
      // draw it
-     //glBegin( GL_LINE_STRIP );
+     glBegin( GL_LINE_STRIP );
      for( int i = 0; i < len * channels; i += channels )
      {
           x = buffer[i] * g_lissajous_scale;
@@ -2055,9 +2055,9 @@ void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
           glVertex3f( x, y, 0.0f );
           // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
      }
-     //glEnd();
+     glEnd();
      // restore matrix state
-     //glPopMatrix();
+     glPopMatrix();
 
      // hmm...
      if( channels == 1 )
