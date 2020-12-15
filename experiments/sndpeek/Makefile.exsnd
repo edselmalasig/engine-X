@@ -96,7 +96,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	LIBS += -L$(FREEIMAGE_LIB) -lfreeimage -lfreeimageplus
 	LIBS += -lglfw -lassimp -lfreetype
 
-	CXXFLAGS += -DIMGUI_IMPL_OPENGL_LOADER_GLEW -DFREEIMAGE_LIB -DMACOS -D__MACOSX_CORE__ -D__USE_GLFW__ -D__OS_MACOSX__
+	CXXFLAGS += -DIMGUI_IMPL_OPENGL_LOADER_GLEW -DFREEIMAGE_LIB -DMACOS -D__MACOSX_CORE__ -D__USE_GLUT__ -D__OS_MACOSX__
 	CXXFLAGS += -I/usr/local/include
 	CXXFLAGS += -I ../../core/ -I ../../core/include/ -I ../../core/src/
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/

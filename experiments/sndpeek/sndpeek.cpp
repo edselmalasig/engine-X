@@ -1997,6 +1997,73 @@ void displayFunc( )
 }
 #endif
 
+//-----------------------------------------------------------------------------
+// name: ...
+// desc: ...
+//-----------------------------------------------------------------------------
+#ifdef __USE_GLUT__
+void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
+{
+     float x, y;
+     SAMPLE * buffer;
+
+     // 1 or 2 channels only for now
+     assert( channels >= 1 && channels <= 2 );
+
+     // mono
+     if( channels == 1 )
+     {
+          buffer = g_cur_buffer;
+          // convert to mono
+          for( int m = 0; m < len; m++)
+          {
+               buffer[m] = stereobuffer[m*2] + stereobuffer[m*2+1];
+               buffer[m] /= 2.0f;
+          }
+     }
+     else
+     {
+          buffer = stereobuffer;
+     }
+
+     // back to default line width
+     glLineWidth( 1.0f );
+
+     // color
+     glColor3f( 1.0f, 1.0f, .5f );
+     // save current matrix state
+     //glPushMatrix();
+     // translate
+     glTranslatef( 1.2f, 0.0f, 0.0f );
+     // draw it
+     //glBegin( GL_LINE_STRIP );
+     for( int i = 0; i < len * channels; i += channels )
+     {
+          x = buffer[i] * g_lissajous_scale;
+          if( channels == 1 )
+          {
+               // delay
+               y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
+               y *= g_lissajous_scale;
+          }
+          else
+          {
+               y = buffer[i + channels-1] * g_lissajous_scale;
+          }
+
+
+          glVertex3f( x, y, 0.0f );
+          // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
+     }
+     //glEnd();
+     // restore matrix state
+     //glPopMatrix();
+
+     // hmm...
+     if( channels == 1 )
+     memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
+}
+#endif
 
 #ifdef __USE_GLUT__
 
@@ -2745,73 +2812,7 @@ void displayFunc( )
      g_running = FALSE;
 }
 #endif
-//-----------------------------------------------------------------------------
-// name: ...
-// desc: ...
-//-----------------------------------------------------------------------------
-#ifdef __USE_GLUT__
-void drawLissajous( SAMPLE * stereobuffer, int len, int channels)
-{
-     float x, y;
-     SAMPLE * buffer;
 
-     // 1 or 2 channels only for now
-     assert( channels >= 1 && channels <= 2 );
-
-     // mono
-     if( channels == 1 )
-     {
-          buffer = g_cur_buffer;
-          // convert to mono
-          for( int m = 0; m < len; m++)
-          {
-               buffer[m] = stereobuffer[m*2] + stereobuffer[m*2+1];
-               buffer[m] /= 2.0f;
-          }
-     }
-     else
-     {
-          buffer = stereobuffer;
-     }
-
-     // back to default line width
-     glLineWidth( 1.0f );
-
-     // color
-     glColor3f( 1.0f, 1.0f, .5f );
-     // save current matrix state
-     //glPushMatrix();
-     // translate
-     glTranslatef( 1.2f, 0.0f, 0.0f );
-     // draw it
-     //glBegin( GL_LINE_STRIP );
-     for( int i = 0; i < len * channels; i += channels )
-     {
-          x = buffer[i] * g_lissajous_scale;
-          if( channels == 1 )
-          {
-               // delay
-               y = (i - g_delay >= 0) ? buffer[i-g_delay] : g_back_buffer[len + i-g_delay];
-               y *= g_lissajous_scale;
-          }
-          else
-          {
-               y = buffer[i + channels-1] * g_lissajous_scale;
-          }
-
-
-          glVertex3f( x, y, 0.0f );
-          // glVertex3f( x, y, sqrt( x*x + y*y ) * -g_lissajous_scale );
-     }
-     //glEnd();
-     // restore matrix state
-     //glPopMatrix();
-
-     // hmm...
-     if( channels == 1 )
-     memcpy( g_back_buffer, buffer, len * sizeof(SAMPLE) );
-}
-#endif
 
 
 
