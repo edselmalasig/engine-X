@@ -161,7 +161,7 @@ void EngineX::init_ImGui( )
 
   //io.Fonts->AddFontFromFileTTF("resources/Monofur for Powerline.ttf", 14.0f);
   //io.Fonts->AddFontFromFileTTF("resources/SSFDisplayRegular.ttf", 14.0f) );
-  io.Fonts->AddFontFromFileTTF("../../resources/SSFDisplayRegular.ttf", 14.0f);
+  //io.Fonts->AddFontFromFileTTF("../../../resources/SSFDisplayRegular.ttf", 14.0f);
 
   //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
   //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);

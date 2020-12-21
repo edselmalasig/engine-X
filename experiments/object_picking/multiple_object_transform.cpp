@@ -394,14 +394,20 @@ int main(int, char**)
                          selectedIndex = i;
                          selectedType = "container";
                          #include <algorithm>
+
                          std::vector<int>::iterator it;
                          it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
                          if(it != selectionVec.end())
                               selectionVec.erase(it);
                          else
                               selectionVec.push_back(selectedIndex);
-                         //EditTransform(engineX->camera, (float *) glm::value_ptr(model))
-                         //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
+
+                        ImGui::NewFrame();
+                        ImGuizmo::BeginFrame();
+                         EditTransform(engineX->camera, (float *) glm::value_ptr(model),
+                              glm::value_ptr(view), glm::value_ptr(projection));
+                        ImGui::EndFrame();
+                        ImGui::Render();
                     }
                }
 

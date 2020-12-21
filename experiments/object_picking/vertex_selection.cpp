@@ -50,9 +50,6 @@ void EditTransform(const Camera * camera, float * matrix, float * view, float * 
     ImGui::InputFloat3("Tr", matrixTranslation, 3);
     ImGui::InputFloat3("Rt", matrixRotation, 3);
     ImGui::InputFloat3("Sc", matrixScale, 3);
-
-    ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
-
     if (mCurrentGizmoOperation != ImGuizmo::SCALE)
     {
         if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
@@ -61,6 +58,9 @@ void EditTransform(const Camera * camera, float * matrix, float * view, float * 
         if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
         mCurrentGizmoMode = ImGuizmo::WORLD;
     }
+    ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+
+
     static bool useSnap(false);
     if (ImGui::IsKeyPressed(83))
     useSnap = !useSnap;
