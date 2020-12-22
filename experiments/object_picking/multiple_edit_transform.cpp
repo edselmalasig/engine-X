@@ -383,17 +383,19 @@ for(int i=0; i <10; i++)
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "container";
+                         g_cube[i]->model = model;
 
                     }
-
+}
+               if(selectedIndex > -1){
                //ImGui::NewFrame();
                ImGuizmo::BeginFrame();
-               EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[i]->model),
+               EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[selectedIndex]->model),
                     glm::value_ptr(view), glm::value_ptr(projection));
                //ImGui::End();
                ImGuizmo::Enable(TRUE);
                //ImGui::Render();
-          }
+               }
 
 
           }
