@@ -165,6 +165,7 @@ for(int i=0; i <10; i++)
      // variables for selected objects.
      std::string selectedType = "container";
      int selectedIndex = -2;
+     std::vector<int> selectionVec;
 
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
@@ -173,7 +174,7 @@ for(int i=0; i <10; i++)
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
 
-          glfwPollEvents();
+          glfwWaitEvents();
 
           {
                // Poll and handle events (inputs, window resize, etc.)
@@ -278,12 +279,21 @@ for(int i=0; i <10; i++)
                          ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
                          else
                          ImGui::Text("Mouse Position: <invalid>");
-                         if( selectedIndex > -1)
-                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+                         if(selectionVec.empty()){
+                              ImGui::Text("Selection: none");
+                         }
                          else
-                         ImGui::Text("Selection: none");
-
+                         {
+                              ImGui::Text("Selection: %s - count %i", selectedType.c_str(), selectionVec.size());
+                              std::string indexString;
+                              for(int i=0; i < selectionVec.size(); i++){
+                                   indexString += std::to_string(selectionVec.at(i)) + " ";
+                              }
+                              ImGui::Text("%s\n", indexString.c_str());
+                              indexString = " ";
+                         }
                     }
+
                     ImGui::End();
                }
                // Rendering
@@ -336,12 +346,14 @@ for(int i=0; i <10; i++)
                g_cube[i]->lo_shader->setMat4("view", view);
                model = glm::mat4(1.0f);
                g_cube[i]->lo_shader->setMat4("model", model);
+
                // calculate the model matrix for each object and pass it to shader before drawing
                glm::mat4 model = glm::mat4(1.0f);
                model = glm::translate(model, cubePositions[i]);
                float angle = 20.0f * i;
                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-               //if(i<1)
+               ////This is where the error is
+               g_cube[i]->model = model;
                g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
                //else
                //g_cube[i]->lo_shader->setMat4("model", model);
@@ -384,9 +396,20 @@ for(int i=0; i <10; i++)
                          selectedIndex = i;
                          selectedType = "container";
                          g_cube[i]->model = model;
+                         #include <algorithm>
+
+                         std::vector<int>::iterator it;
+                         it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
+                         if(it != selectionVec.end()){
+                              selectionVec.erase(it);
+                         }
+                         else{
+                              selectionVec.push_back(selectedIndex);
+                              //6std::cout << selectedIndex << " " << std::endl;
+                         }
 
                     }
-}
+               }
                if(selectedIndex > -1){
                //ImGui::NewFrame();
                ImGuizmo::BeginFrame();
@@ -395,6 +418,13 @@ for(int i=0; i <10; i++)
                //ImGui::End();
                ImGuizmo::Enable(TRUE);
                //ImGui::Render();
+               }
+               int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
+               if(keystate == GLFW_PRESS){
+                    selectionVec.clear();
+                    selectionBool = false;
+                    selectedIndex = -1;
+
                }
 
 
