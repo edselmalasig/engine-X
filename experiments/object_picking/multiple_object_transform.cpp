@@ -23,67 +23,67 @@
 
 void EditTransform(const Camera * camera, float * matrix, float * view, float * proj)
 {
-    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+     static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+     static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
-    if (ImGui::IsKeyPressed(90))
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-    if (ImGui::IsKeyPressed(69))
-        mCurrentGizmoOperation = ImGuizmo::ROTATE;
-    if (ImGui::IsKeyPressed(82)) // r Key
-        mCurrentGizmoOperation = ImGuizmo::SCALE;
-    if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-        mCurrentGizmoOperation = ImGuizmo::ROTATE;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-        mCurrentGizmoOperation = ImGuizmo::SCALE;
-    float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+     if (ImGui::IsKeyPressed(90))
+     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+     if (ImGui::IsKeyPressed(69))
+     mCurrentGizmoOperation = ImGuizmo::ROTATE;
+     if (ImGui::IsKeyPressed(82)) // r Key
+     mCurrentGizmoOperation = ImGuizmo::SCALE;
+     if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+     ImGui::SameLine();
+     if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+     mCurrentGizmoOperation = ImGuizmo::ROTATE;
+     ImGui::SameLine();
+     if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+     mCurrentGizmoOperation = ImGuizmo::SCALE;
+     float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 
-    ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
-    ImGui::InputFloat3("Tr", matrixTranslation, 3);
-    ImGui::InputFloat3("Rt", matrixRotation, 3);
-    ImGui::InputFloat3("Sc", matrixScale, 3);
+     ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
+     ImGui::InputFloat3("Tr", matrixTranslation, 3);
+     ImGui::InputFloat3("Rt", matrixRotation, 3);
+     ImGui::InputFloat3("Sc", matrixScale, 3);
 
-    ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+     ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
 
-    if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-    {
-        if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-            mCurrentGizmoMode = ImGuizmo::LOCAL;
-        ImGui::SameLine();
-        if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-            mCurrentGizmoMode = ImGuizmo::WORLD;
-    }
-    static bool useSnap(false);
-    if (ImGui::IsKeyPressed(83))
-        useSnap = !useSnap;
-    ImGui::Checkbox("", &useSnap);
-    ImGui::SameLine();
-    /*
-    vec_t snap;
-    switch (mCurrentGizmoOperation)
-    {
-        case ImGuizmo::TRANSLATE:
-            snap = config.mSnapTranslation;
-            ImGui::InputFloat3("Snap", &snap.x);
-            break;
-        case ImGuizmo::ROTATE:
-            snap = config.mSnapRotation;
-            ImGui::InputFloat("Angle Snap", &snap.x);
-            break;
-        case ImGuizmo::SCALE:
-            snap = config.mSnapScale;
-            ImGui::InputFloat("Scale Snap", &snap.x);
-            break;
-    }
-     */
+     if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+     {
+          if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+          mCurrentGizmoMode = ImGuizmo::LOCAL;
+          ImGui::SameLine();
+          if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+          mCurrentGizmoMode = ImGuizmo::WORLD;
+     }
+     static bool useSnap(false);
+     if (ImGui::IsKeyPressed(83))
+     useSnap = !useSnap;
+     ImGui::Checkbox("", &useSnap);
+     ImGui::SameLine();
+     /*
+     vec_t snap;
+     switch (mCurrentGizmoOperation)
+     {
+     case ImGuizmo::TRANSLATE:
+     snap = config.mSnapTranslation;
+     ImGui::InputFloat3("Snap", &snap.x);
+     break;
+     case ImGuizmo::ROTATE:
+     snap = config.mSnapRotation;
+     ImGui::InputFloat("Angle Snap", &snap.x);
+     break;
+     case ImGuizmo::SCALE:
+     snap = config.mSnapScale;
+     ImGui::InputFloat("Scale Snap", &snap.x);
+     break;
+}
+*/
 
-    ImGuiIO& io = ImGui::GetIO();
-    ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-    ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
+ImGuiIO& io = ImGui::GetIO();
+ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
 }
 
 struct coordinates
@@ -224,9 +224,9 @@ int main(int, char**)
                     ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
 
                     if( selectedIndex > -1)
-                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+                    ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
                     else
-                         ImGui::Text("Selection: none");
+                    ImGui::Text("Selection: none");
 
                     ImGui::Text("\n");
                     ImGui::Text("Please modify the current style in:");
@@ -292,6 +292,7 @@ int main(int, char**)
                     }
                     ImGui::End();
                }
+
                // Rendering
                ImGui::Render();
           }
@@ -382,13 +383,13 @@ int main(int, char**)
                     glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
                     glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
                     selectionBool = engineX->RayAABBIntersection(
-                                                            ray_origin,
-                                                            ray_direction,
-                                                            aabb_min,
-                                                            aabb_max,
-                                                            model,
-                                                            intersection_distance
-                                                       );
+                         ray_origin,
+                         ray_direction,
+                         aabb_min,
+                         aabb_max,
+                         model,
+                         intersection_distance
+                    );
 
                     if ( selectionBool ){
                          selectedIndex = i;
@@ -398,23 +399,31 @@ int main(int, char**)
                          std::vector<int>::iterator it;
                          it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
                          if(it != selectionVec.end())
-                              selectionVec.erase(it);
+                         selectionVec.erase(it);
                          else
-                              selectionVec.push_back(selectedIndex);
+                         selectionVec.push_back(selectedIndex);
 
-                        ImGui::NewFrame();
-                        ImGuizmo::BeginFrame();
-                         EditTransform(engineX->camera, (float *) glm::value_ptr(model),
-                              glm::value_ptr(view), glm::value_ptr(projection));
-                        ImGui::EndFrame();
-                        ImGui::Render();
                     }
-               }
 
+               }
+               int editState = glfwGetKey(engineX->window, GLFW_KEY_L);
+               if(editState == GLFW_PRESS)
+               {
+                    ImGui::NewFrame();
+                    ImGuizmo::BeginFrame();
+                    if(selectedIndex > -1)
+                    EditTransform(engineX->camera, (float *) glm::value_ptr(model),
+                    glm::value_ptr(view), glm::value_ptr(projection));
+                    //ImGui::End();
+                    ImGuizmo::Enable(TRUE);
+                    ImGui::Render();
+               }
                int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
                if(keystate == GLFW_PRESS){
                     selectionVec.clear();
                     selectionBool = false;
+                    selectedIndex = -1;
+
                }
 
           }
