@@ -271,7 +271,17 @@ void Geometry::draw_cube(GLenum mode)
      glBindVertexArray(0); // no need to unbind it every time
 }
 
+void Geometry::updateBuffData(){
+     enable_shader();
+     glBindVertexArray(VAO);
 
+     glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
+
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+     glEnableVertexAttribArray(0);
+
+
+}
 void Geometry::renderTexLayer(int i)
 {
      for(int ii = 0; ii <= i; ii++)

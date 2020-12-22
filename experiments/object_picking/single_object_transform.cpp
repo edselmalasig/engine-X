@@ -330,14 +330,22 @@ int main(int, char**)
           g_cube->lo_shader->setMat4("model", model);
 
           bool reprint = true;
-          for (unsigned int i = 0; i < 1; i++)
+          for (unsigned int i = 0; i < 10; i++)
           {
                // calculate the model matrix for each object and pass it to shader before drawing
                glm::mat4 model = glm::mat4(1.0f);
                model = glm::translate(model, cubePositions[i]);
                float angle = 20.0f * i;
                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+               if(i!=0)
                g_cube->lo_shader->setMat4("model", g_cube->model);
+               else
+               g_cube->lo_shader->setMat4("model", model);
+
+               g_cube->renderTexLayer(1);
+               glPointSize(7.0f);
+               g_cube->draw_cube(GL_POINTS);
+               g_cube->draw_cube(GL_TRIANGLES);
 
                bool selectionBool = false;
                double mousePosX, mousePosY;
@@ -380,15 +388,12 @@ int main(int, char**)
                     glm::value_ptr(view), glm::value_ptr(projection));
                //ImGui::End();
                ImGuizmo::Enable(TRUE);
-               ImGui::Render();
+               //ImGui::Render();
 
-               g_cube->renderTexLayer(1);
-               glPointSize(7.0f);
-               g_cube->draw_cube(GL_POINTS);
-               g_cube->draw_cube(GL_TRIANGLES);
+
 
           }
-
+          ImGui::Render();
           model = glm::mat4(1.0f);
 
           g_cubelamp->enable_shader();

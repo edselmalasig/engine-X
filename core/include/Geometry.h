@@ -320,7 +320,7 @@ public:
      void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
 
      void enable_shader();
-
+     void updateBuffData();
      void draw_triangle();
      void draw_cube(GLenum mode);
      void draw_object();

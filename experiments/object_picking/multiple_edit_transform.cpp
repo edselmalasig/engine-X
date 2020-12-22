@@ -23,67 +23,67 @@
 
 void EditTransform(const Camera * camera, float * matrix, float * view, float * proj)
 {
-     static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
-     static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+    static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
-     if (ImGui::IsKeyPressed(90))
-     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-     if (ImGui::IsKeyPressed(69))
-     mCurrentGizmoOperation = ImGuizmo::ROTATE;
-     if (ImGui::IsKeyPressed(82)) // r Key
-     mCurrentGizmoOperation = ImGuizmo::SCALE;
-     if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-     mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-     ImGui::SameLine();
-     if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-     mCurrentGizmoOperation = ImGuizmo::ROTATE;
-     ImGui::SameLine();
-     if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-     mCurrentGizmoOperation = ImGuizmo::SCALE;
-     float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+    if (ImGui::IsKeyPressed(90))
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    if (ImGui::IsKeyPressed(69))
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    if (ImGui::IsKeyPressed(82)) // r Key
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+    if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+        mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+        mCurrentGizmoOperation = ImGuizmo::ROTATE;
+    ImGui::SameLine();
+    if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+        mCurrentGizmoOperation = ImGuizmo::SCALE;
+    float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 
-     ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
-     ImGui::InputFloat3("Tr", matrixTranslation, 3);
-     ImGui::InputFloat3("Rt", matrixRotation, 3);
-     ImGui::InputFloat3("Sc", matrixScale, 3);
+    ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
+    ImGui::InputFloat3("Tr", matrixTranslation, 3);
+    ImGui::InputFloat3("Rt", matrixRotation, 3);
+    ImGui::InputFloat3("Sc", matrixScale, 3);
 
-     ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+    ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
 
-     if (mCurrentGizmoOperation != ImGuizmo::SCALE)
-     {
-          if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
-          mCurrentGizmoMode = ImGuizmo::LOCAL;
-          ImGui::SameLine();
-          if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
-          mCurrentGizmoMode = ImGuizmo::WORLD;
-     }
-     static bool useSnap(false);
-     if (ImGui::IsKeyPressed(83))
-     useSnap = !useSnap;
-     ImGui::Checkbox("", &useSnap);
-     ImGui::SameLine();
-     /*
-     vec_t snap;
-     switch (mCurrentGizmoOperation)
-     {
-     case ImGuizmo::TRANSLATE:
-     snap = config.mSnapTranslation;
-     ImGui::InputFloat3("Snap", &snap.x);
-     break;
-     case ImGuizmo::ROTATE:
-     snap = config.mSnapRotation;
-     ImGui::InputFloat("Angle Snap", &snap.x);
-     break;
-     case ImGuizmo::SCALE:
-     snap = config.mSnapScale;
-     ImGui::InputFloat("Scale Snap", &snap.x);
-     break;
-}
-*/
+    if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+    {
+        if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+            mCurrentGizmoMode = ImGuizmo::LOCAL;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+            mCurrentGizmoMode = ImGuizmo::WORLD;
+    }
+    static bool useSnap(false);
+    if (ImGui::IsKeyPressed(83))
+        useSnap = !useSnap;
+    ImGui::Checkbox("", &useSnap);
+    ImGui::SameLine();
+    /*
+    vec_t snap;
+    switch (mCurrentGizmoOperation)
+    {
+        case ImGuizmo::TRANSLATE:
+            snap = config.mSnapTranslation;
+            ImGui::InputFloat3("Snap", &snap.x);
+            break;
+        case ImGuizmo::ROTATE:
+            snap = config.mSnapRotation;
+            ImGui::InputFloat("Angle Snap", &snap.x);
+            break;
+        case ImGuizmo::SCALE:
+            snap = config.mSnapScale;
+            ImGui::InputFloat("Scale Snap", &snap.x);
+            break;
+    }
+     */
 
-ImGuiIO& io = ImGui::GetIO();
-ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
+    ImGuiIO& io = ImGui::GetIO();
+    ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+    ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
 }
 
 struct coordinates
@@ -124,10 +124,11 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Geometry * g_cube[10];
-     for(unsigned int i=0; i < 10; i++){
+     Geometry * g_cube[10];// = new Geometry();
+for(int i=0; i <10; i++)
+{
      g_cube[i] = new Geometry();
-     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
+          //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
      g_cube[i]->lo_shader = new Shader("../res/shaders/spotlight.vs", "../res/shaders/spotlight.fs");
      g_cube[i]->enable_shader();
      g_cube[i]->init_cube_wntc();
@@ -164,7 +165,7 @@ int main(int, char**)
      // variables for selected objects.
      std::string selectedType = "container";
      int selectedIndex = -2;
-     std::vector<int> selectionVec;
+
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
      {
@@ -172,7 +173,7 @@ int main(int, char**)
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
 
-          glfwWaitEvents();
+          glfwPollEvents();
 
           {
                // Poll and handle events (inputs, window resize, etc.)
@@ -226,9 +227,9 @@ int main(int, char**)
                     ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
 
                     if( selectedIndex > -1)
-                    ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
                     else
-                    ImGui::Text("Selection: none");
+                         ImGui::Text("Selection: none");
 
                     ImGui::Text("\n");
                     ImGui::Text("Please modify the current style in:");
@@ -277,26 +278,16 @@ int main(int, char**)
                          ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
                          else
                          ImGui::Text("Mouse Position: <invalid>");
-                         if(selectionVec.empty()){
-                              ImGui::Text("Selection: none");
-                         }
+                         if( selectedIndex > -1)
+                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
                          else
-                         {
-                              ImGui::Text("Selection: %s - count %i", selectedType.c_str(), selectionVec.size());
-                              std::string indexString;
-                              for(int i=0; i < selectionVec.size(); i++){
-                                   indexString += std::to_string(selectionVec.at(i)) + " ";
-                              }
-                              ImGui::Text("%s\n", indexString.c_str());
-                              indexString = " ";
-                         }
+                         ImGui::Text("Selection: none");
 
                     }
                     ImGui::End();
                }
-
                // Rendering
-               ImGui::Render();
+               //ImGui::Render();
           }
 
           glfwMakeContextCurrent(engineX->window);
@@ -316,14 +307,14 @@ int main(int, char**)
           glm::mat4 view          = glm::mat4(1.0f);
           glm::mat4 projection    = glm::mat4(1.0f);
 
-          view = engineX->camera->processViewMatrix();
-          projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
-                    bool reprint = true;
-          bool selectionBool = false;
 
+          bool reprint = true;
           for (unsigned int i = 0; i < 10; i++)
           {
+               view = engineX->camera->processViewMatrix();
+               projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
+
                g_cube[i]->enable_shader();
                g_cube[i]->lo_shader->setVec3("light.position", *engineX->camera->getPositionVector());
                g_cube[i]->lo_shader->setVec3("light.direction", *engineX->camera->getFrontVector());
@@ -347,23 +338,20 @@ int main(int, char**)
                g_cube[i]->lo_shader->setMat4("model", model);
                // calculate the model matrix for each object and pass it to shader before drawing
                glm::mat4 model = glm::mat4(1.0f);
-               glm::mat4 rotate = glm::mat4(1.0f);
-               glm::mat4 translate = glm::mat4(1.0f);
-
-               //transform model matrix with translate x rotate
-               translate = glm::translate(translate, cubePositions[i]);
+               model = glm::translate(model, cubePositions[i]);
                float angle = 20.0f * i;
-               rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-
-
-               g_cube[i]->model = translate * rotate;
+               model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+               //if(i<1)
                g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
+               //else
+               //g_cube[i]->lo_shader->setMat4("model", model);
 
                g_cube[i]->renderTexLayer(1);
                glPointSize(7.0f);
                g_cube[i]->draw_cube(GL_POINTS);
                g_cube[i]->draw_cube(GL_TRIANGLES);
 
+               bool selectionBool = false;
                double mousePosX, mousePosY;
                int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
                if(mousestate == GLFW_PRESS)
@@ -384,54 +372,32 @@ int main(int, char**)
                     glm::vec3 aabb_min(-0.5f, -0.5f, -0.5f);
                     glm::vec3 aabb_max( 0.5f,  0.5f,  0.5f);
                     selectionBool = engineX->RayAABBIntersection(
-                         ray_origin,
-                         ray_direction,
-                         aabb_min,
-                         aabb_max,
-                         g_cube[i]->model,
-                         intersection_distance
-                    );
+                                                            ray_origin,
+                                                            ray_direction,
+                                                            aabb_min,
+                                                            aabb_max,
+                                                            g_cube[i]->model,
+                                                            intersection_distance
+                                                       );
 
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "container";
-                         #include <algorithm>
-
-                         std::vector<int>::iterator it;
-                         it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
-                         if(it != selectionVec.end())
-                         selectionVec.erase(it);
-                         else
-                         selectionVec.push_back(selectedIndex);
 
                     }
 
-               }
-
-
-          }
-          int editState = glfwGetKey(engineX->window, GLFW_KEY_L);
-          if(editState == GLFW_PRESS)
-          {
-               ImGui::NewFrame();
+               //ImGui::NewFrame();
                ImGuizmo::BeginFrame();
-               if(selectedIndex > -1)
-               EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[0]->model),
-               glm::value_ptr(view), glm::value_ptr(projection));
+               EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[i]->model),
+                    glm::value_ptr(view), glm::value_ptr(projection));
                //ImGui::End();
                ImGuizmo::Enable(TRUE);
-               ImGui::Render();
+               //ImGui::Render();
           }
-          int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
-          if(keystate == GLFW_PRESS){
-               selectionVec.clear();
-               selectionBool = false;
-               selectedIndex = -1;
+
 
           }
-          selectionBool = false;
-
-
+          ImGui::Render();
           model = glm::mat4(1.0f);
 
           g_cubelamp->enable_shader();

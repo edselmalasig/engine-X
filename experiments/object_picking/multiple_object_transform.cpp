@@ -126,17 +126,17 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
      //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube[i]->lo_shader = new Shader("../res/shaders/spotlight.vs", "../res/shaders/spotlight.fs");
-     g_cube[i]->enable_shader();
-     g_cube[i]->init_cube_wntc();
-     g_cube[i]->init_texture(0, "../res/textures/container2.png");
-     g_cube[i]->init_texture(1, "../res/textures/container2_specular.png");
-     g_cube[i]->lo_shader->setInt("material.diffuse", 0);
-     g_cube[i]->lo_shader->setInt("material.specular", 1);
+     g_cube->lo_shader = new Shader("../res/shaders/spotlight.vs", "../res/shaders/spotlight.fs");
+     g_cube->enable_shader();
+     g_cube->init_cube_wntc();
+     g_cube->init_texture(0, "../res/textures/container2.png");
+     g_cube->init_texture(1, "../res/textures/container2_specular.png");
+     g_cube->lo_shader->setInt("material.diffuse", 0);
+     g_cube->lo_shader->setInt("material.specular", 1);
 
-     g_cube[i]->lo_shader->use();
-     g_cube[i]->lo_shader->setInt("material.diffuse", 0);
-     g_cube[i]->lo_shader->setInt("material.specular", 1);
+     g_cube->lo_shader->use();
+     g_cube->lo_shader->setInt("material.diffuse", 0);
+     g_cube->lo_shader->setInt("material.specular", 1);
 
      Geometry * g_cubelamp = new Geometry();
      g_cubelamp->lo_shader = new Shader("../res/shaders/light_materials.vs", "../res/shaders/light_materials.fs");
@@ -294,7 +294,7 @@ int main(int, char**)
                }
 
                // Rendering
-               //ImGui::Render();
+               ImGui::Render();
           }
 
           glfwMakeContextCurrent(engineX->window);
@@ -317,27 +317,27 @@ int main(int, char**)
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
-          g_cube[i]->enable_shader();
-          g_cube[i]->lo_shader->setVec3("light.position", *engineX->camera->getPositionVector());
-          g_cube[i]->lo_shader->setVec3("light.direction", *engineX->camera->getFrontVector());
-          g_cube[i]->lo_shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-          g_cube[i]->lo_shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+          g_cube->enable_shader();
+          g_cube->lo_shader->setVec3("light.position", *engineX->camera->getPositionVector());
+          g_cube->lo_shader->setVec3("light.direction", *engineX->camera->getFrontVector());
+          g_cube->lo_shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+          g_cube->lo_shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 
-          g_cube[i]->lo_shader->setVec3("viewPos", *engineX->camera->getPositionVector());
+          g_cube->lo_shader->setVec3("viewPos", *engineX->camera->getPositionVector());
 
-          g_cube[i]->lo_shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-          g_cube[i]->lo_shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-          g_cube[i]->lo_shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-          g_cube[i]->lo_shader->setFloat("light.constant", 1.0f);
-          g_cube[i]->lo_shader->setFloat("light.linear", 0.09f);
-          g_cube[i]->lo_shader->setFloat("light.quadratic", 0.032f);
+          g_cube->lo_shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+          g_cube->lo_shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+          g_cube->lo_shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+          g_cube->lo_shader->setFloat("light.constant", 1.0f);
+          g_cube->lo_shader->setFloat("light.linear", 0.09f);
+          g_cube->lo_shader->setFloat("light.quadratic", 0.032f);
 
-          g_cube[i]->lo_shader->setFloat("material.shininess", 32.0f);
+          g_cube->lo_shader->setFloat("material.shininess", 32.0f);
 
-          g_cube[i]->lo_shader->setMat4("projection", projection);
-          g_cube[i]->lo_shader->setMat4("view", view);
+          g_cube->lo_shader->setMat4("projection", projection);
+          g_cube->lo_shader->setMat4("view", view);
           model = glm::mat4(1.0f);
-          g_cube[i]->lo_shader->setMat4("model", model);
+          g_cube->lo_shader->setMat4("model", model);
 
           bool reprint = true;
           bool selectionBool = false;
@@ -355,13 +355,13 @@ int main(int, char**)
                rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
 
-               g_cube[i]->model = translate * rotate;
-               g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
+               model = translate * rotate;
+               g_cube->lo_shader->setMat4("model", model);
 
-               g_cube[i]->renderTexLayer(1);
+               g_cube->renderTexLayer(1);
                glPointSize(7.0f);
-               g_cube[i]->draw_cube(GL_POINTS);
-               g_cube[i]->draw_cube(GL_TRIANGLES);
+               g_cube->draw_cube(GL_POINTS);
+               g_cube->draw_cube(GL_TRIANGLES);
 
                double mousePosX, mousePosY;
                int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
@@ -387,7 +387,7 @@ int main(int, char**)
                          ray_direction,
                          aabb_min,
                          aabb_max,
-                         g_cube[i]->model,
+                         model,
                          intersection_distance
                     );
 
@@ -409,13 +409,14 @@ int main(int, char**)
                int editState = glfwGetKey(engineX->window, GLFW_KEY_L);
                if(editState == GLFW_PRESS)
                {
-                    //ImGui::NewFrame();
+                    ImGui::NewFrame();
                     ImGuizmo::BeginFrame();
                     if(selectedIndex > -1)
-                    EditTransform(engineX->camera, (float *) glm::value_ptr(g_cube[i]->model),
+                    EditTransform(engineX->camera, (float *) glm::value_ptr(model),
                     glm::value_ptr(view), glm::value_ptr(projection));
                     //ImGui::End();
                     ImGuizmo::Enable(TRUE);
+                    ImGui::Render();
                }
                int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
                if(keystate == GLFW_PRESS){
@@ -426,8 +427,6 @@ int main(int, char**)
                }
 
           }
-          ImGui::Render();
-
           selectionBool = false;
 
 
@@ -456,7 +455,7 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     g_cube[i]->delete_object();
+     g_cube->delete_object();
      g_cubelamp->delete_object();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
