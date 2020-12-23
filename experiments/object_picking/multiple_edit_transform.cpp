@@ -174,7 +174,7 @@ for(int i=0; i <10; i++)
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
 
-          glfwWaitEvents();
+          glfwPollEvents();
 
           {
                // Poll and handle events (inputs, window resize, etc.)
@@ -344,7 +344,7 @@ for(int i=0; i <10; i++)
 
                g_cube[i]->lo_shader->setMat4("projection", projection);
                g_cube[i]->lo_shader->setMat4("view", view);
-               model = g_cube[i]->model;
+
                g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
 
                // calculate the model matrix for each object and pass it to shader before drawing
