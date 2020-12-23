@@ -167,6 +167,23 @@ for(int i=0; i <10; i++)
      int selectedIndex = -2;
      std::vector<int> selectionVec;
 
+     // create transformations
+     glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+     glm::mat4 view          = glm::mat4(1.0f);
+     glm::mat4 projection    = glm::mat4(1.0f);
+
+     for(unsigned int i=0; i<10; i++)
+{
+     glm::mat4 rotate = glm::mat4(1.0f);
+     glm::mat4 translate = glm::mat4(1.0f);
+
+     //transform model matrix with translate x rotate
+     translate = glm::translate(translate, cubePositions[i]);
+     float angle = 20.0f * i;
+     rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+     g_cube[i]->model=translate*rotate;
+}
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
      {
@@ -174,7 +191,7 @@ for(int i=0; i <10; i++)
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
 
-          glfwPollEvents();
+          glfwWaitEvents();
 
           {
                // Poll and handle events (inputs, window resize, etc.)
@@ -312,13 +329,6 @@ for(int i=0; i <10; i++)
 
           engineX->camera->computeMatricesFromInputs();
 
-          // create transformations
-          glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-          glm::mat4 view          = glm::mat4(1.0f);
-          glm::mat4 projection    = glm::mat4(1.0f);
-
-
-
           bool reprint = true;
           for (unsigned int i = 0; i < 10; i++)
           {
@@ -345,25 +355,10 @@ for(int i=0; i <10; i++)
                g_cube[i]->lo_shader->setMat4("projection", projection);
                g_cube[i]->lo_shader->setMat4("view", view);
 
-               g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
-
                // calculate the model matrix for each object and pass it to shader before drawing
 
-               glm::mat4 rotate = glm::mat4(1.0f);
-               glm::mat4 translate = glm::mat4(1.0f);
 
-               //transform model matrix with translate x rotate
-               translate = glm::translate(translate, cubePositions[i]);
-               float angle = 20.0f * i;
-               rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-
-
-               model = translate * rotate;               //if(i<1)
-               ////This is where the error is
-               //g_cube[i]->model = model;
                g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
-               //else
-               //g_cube[i]->lo_shader->setMat4("model", model);
 
                g_cube[i]->renderTexLayer(1);
                glPointSize(7.0f);
@@ -402,7 +397,7 @@ for(int i=0; i <10; i++)
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "container";
-                         g_cube[i]->model = model;
+                         //g_cube[i]->model = model;
                          #include <algorithm>
 
                          std::vector<int>::iterator it;
