@@ -344,16 +344,23 @@ for(int i=0; i <10; i++)
 
                g_cube[i]->lo_shader->setMat4("projection", projection);
                g_cube[i]->lo_shader->setMat4("view", view);
-               model = glm::mat4(1.0f);
-               g_cube[i]->lo_shader->setMat4("model", model);
+               model = g_cube[i]->model;
+               g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
 
                // calculate the model matrix for each object and pass it to shader before drawing
-               glm::mat4 model = glm::mat4(1.0f);
-               model = glm::translate(model, cubePositions[i]);
+
+               glm::mat4 rotate = glm::mat4(1.0f);
+               glm::mat4 translate = glm::mat4(1.0f);
+
+               //transform model matrix with translate x rotate
+               translate = glm::translate(translate, cubePositions[i]);
                float angle = 20.0f * i;
-               model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+               rotate = glm::rotate(rotate, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+
+               model = translate * rotate;               //if(i<1)
                ////This is where the error is
-               g_cube[i]->model = model;
+               //g_cube[i]->model = model;
                g_cube[i]->lo_shader->setMat4("model", g_cube[i]->model);
                //else
                //g_cube[i]->lo_shader->setMat4("model", model);
