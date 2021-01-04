@@ -25,12 +25,18 @@ void EditTransform(const Camera * camera, Geometry * g_cube[], float * view, flo
 {
      int sizeGeo = sizeof(g_cube)/sizeof(g_cube[0]);
 
-     std::cout << "Size of g_cube: " << sizeGeo << std::endl;
+     //std::cout << "Size of g_cube: " << sizeGeo << std::endl;
 
      float * matrix[sizeGeo];
      for(unsigned int i=0; i < sizeGeo; i++){
           matrix[i] = glm::value_ptr(g_cube[i]->model);
      }
+
+     float * avgMat;
+     for(unsigned int i=0; i < sizeGeo; i++){
+
+     }
+
      static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
      static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
