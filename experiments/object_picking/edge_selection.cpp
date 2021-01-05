@@ -69,25 +69,25 @@ void EditTransform(const Camera * camera, float * matrix, float * view, float * 
      vec_t snap;
      switch (mCurrentGizmoOperation)
      {
-     case ImGuizmo::TRANSLATE:
-     snap = config.mSnapTranslation;
-     ImGui::InputFloat3("Snap", &snap.x);
-     break;
-     case ImGuizmo::ROTATE:
-     snap = config.mSnapRotation;
-     ImGui::InputFloat("Angle Snap", &snap.x);
-     break;
-     case ImGuizmo::SCALE:
-     snap = config.mSnapScale;
-     ImGui::InputFloat("Scale Snap", &snap.x);
-     break;
-}
-*/
+          case ImGuizmo::TRANSLATE:
+          snap = config.mSnapTranslation;
+          ImGui::InputFloat3("Snap", &snap.x);
+          break;
+          case ImGuizmo::ROTATE:
+          snap = config.mSnapRotation;
+          ImGui::InputFloat("Angle Snap", &snap.x);
+          break;
+          case ImGuizmo::SCALE:
+          snap = config.mSnapScale;
+          ImGui::InputFloat("Scale Snap", &snap.x);
+          break;
+     }
+     */
 
-ImGuiIO& io = ImGui::GetIO();
-ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
-//ImGui::End();
+     ImGuiIO& io = ImGui::GetIO();
+     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+     ImGuizmo::Manipulate(view, proj, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, NULL);
+     //ImGui::End();
 }
 
 struct coordinates
@@ -122,9 +122,9 @@ int main(int, char**)
      // Main loop
      bool show_demo_window = false;
 
-     float clearColor[4];
+     float backgroundColor[4];
 
-     clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
+     backgroundColor[0]=0.35f; backgroundColor[1]=0.35f; backgroundColor[2]=0.35f; backgroundColor[3]=0.0f;
 
      printf("Initializing shaders and objects.\n");
 
@@ -182,7 +182,7 @@ int main(int, char**)
                     ImGui::Begin("Coordinate Controls");
                     ImGui::Checkbox("Show Control Window", &show_demo_window);      // Edit bools storing our window open/close state
 
-                    ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
+                    ImGui::ColorEdit3("Background color", backgroundColor); // Edit 3 floats representing a color
 
                     ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
                     ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
@@ -269,7 +269,7 @@ int main(int, char**)
           glfwMakeContextCurrent(engineX->window);
           glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
           glViewport(0, 0, engineX->window_w, engineX->window_h);
-          glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+          glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
           glEnable(GL_DEPTH_TEST);
 
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -51,9 +51,7 @@ int main(int, char**)
      engineX->init_ImGui();
 
      glm::vec4 viewModel( 1.0f, 1.0f, 1.0f, 0.0f);
-     glm::vec3 * cameraPosition = engineX->camera->getPositionVector();
-     glm::vec3 * cameraFront = engineX->camera->getFrontVector();
-     glm::vec3 * cameraHeadsUp = engineX->camera->getHeadsUpVector();
+
      glm::vec3 cameraProp( 0.1f, 100.0f, *engineX->camera->Zoom);
 
      printf("Starting main loop.\n");
