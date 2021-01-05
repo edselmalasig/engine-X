@@ -84,7 +84,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
 
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
-	CXXFLAGS += -I $(FREEIMAGE_EXT)/
+	CXXFLAGS += -I $(FREEIMAGE_EXT)/ -I $(STB)
 	CXXFLAGS += -g -Wall -Wformat
 	CFLAGS = $(CXXFLAGS)
 endif

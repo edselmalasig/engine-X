@@ -143,11 +143,11 @@ int main(int, char**)
      {
           g_cube[i] = new Geometry();
           //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-          g_cube[i]->lo_shader = new Shader("../res/shaders/spotlight.vs", "../res/shaders/spotlight.fs");
+          g_cube[i]->lo_shader = new Shader("../../resources/shaders/spotlight.vs", "../../resources/shaders/spotlight.fs");
           g_cube[i]->enable_shader();
           g_cube[i]->init_cube_wntc();
-          g_cube[i]->init_texture(0, "../res/textures/container2.png");
-          g_cube[i]->init_texture(1, "../res/textures/container2_specular.png");
+          g_cube[i]->init_texture(0, "../../resources/textures/container2.png");
+          g_cube[i]->init_texture(1, "../../resources/textures/container2_specular.png");
           g_cube[i]->lo_shader->setInt("material.diffuse", 0);
           g_cube[i]->lo_shader->setInt("material.specular", 1);
 
@@ -156,7 +156,7 @@ int main(int, char**)
           g_cube[i]->lo_shader->setInt("material.specular", 1);
      }
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("../res/shaders/light_materials.vs", "../res/shaders/light_materials.fs");
+     g_cubelamp->lo_shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube();
 

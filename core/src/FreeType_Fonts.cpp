@@ -27,7 +27,7 @@ int FreeType_Fonts::init_ftf(){
      }
 
       // find path to font
-     std::string font_name = "../res/fonts/Roboto-Medium.ttf";
+     std::string font_name = "../../resources/fonts/Roboto-Medium.ttf";
      if (font_name.empty())
      {
          std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;

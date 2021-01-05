@@ -79,7 +79,7 @@ int main(int, char**)
 
      // compile and setup the shader
          // ----------------------------
-         Shader shader("../res/shaders/text.vs", "../res/shaders/text.fs");
+         Shader shader("../../resources/shaders/text.vs", "../../resources/shaders/text.fs");
          glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
          shader.use();
          glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -95,7 +95,7 @@ int main(int, char**)
          }
 
      	// find path to font
-         std::string font_name = "../res/fonts/Roboto-Medium.ttf";
+         std::string font_name = "../../resources/fonts/Roboto-Medium.ttf";
          if (font_name.empty())
          {
              std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;

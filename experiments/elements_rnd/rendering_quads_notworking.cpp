@@ -60,17 +60,17 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      //Model obj = Model("nanosuit/nanosuit.obj");
-     Model obj = Model("../res/models/torus.obj");
+     Model obj = Model("../../resources/models/torus.obj");
      for(unsigned int i = 0; i < obj.meshes[0].e_indices.size(); i++){
           if(obj.meshes[0].indices[i] != 0xFFFFFFFE)
           std::cout << obj.meshes[0].e_indices.at(i) << " ";
 
      }
      std::cout << std::endl;
-     Shader o_shader = Shader("../res/shaders/torus_shader.vs", "../res/shaders/torus_shader.fs");
+     Shader o_shader = Shader("../../resources/shaders/torus_shader.vs", "../../resources/shaders/torus_shader.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
-     cubelight->lo_shader = new Shader("../res/shaders/light_materials.vs", "../res/shaders/light_materials.fs");
+     cubelight->lo_shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
      cubelight->enable_shader();
      cubelight->init_cube();
 

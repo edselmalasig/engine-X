@@ -1033,7 +1033,7 @@ void initialize_graphics()
      // glEnable( GL_BLEND );
 
 
-     waveform = new Particle("../res/shaders/waveform.vs", "../res/shaders/waveform.fs", sizeof(GLfloat)*3*g_buffer_size);
+     waveform = new Particle("../../resources/shaders/waveform.vs", "../../resources/shaders/waveform.fs", sizeof(GLfloat)*3*g_buffer_size);
      waveform->initParticles(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
      glm::perspective(*camera->Zoom, (float)g_width/ (float)g_height, 1.0f, 1300.0f);
 
@@ -1046,7 +1046,7 @@ void initialize_graphics()
 
 
     // Bind our Vertex Array Object first, then bind and set our buffers and pointers.
-    lissajous = new Particle("../res/shaders/lissajous.vs", "../res/shaders/lissajous.fs", sizeof(GLfloat) * 3 * NUM_CHANNELS * g_buffer_size);
+    lissajous = new Particle("../../resources/shaders/lissajous.vs", "../../resources/shaders/lissajous.fs", sizeof(GLfloat) * 3 * NUM_CHANNELS * g_buffer_size);
 
     lissajous->initParticles(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
