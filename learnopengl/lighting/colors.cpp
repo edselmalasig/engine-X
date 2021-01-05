@@ -61,12 +61,12 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
 
-     g_cube->lo_shader = new Shader("shaders/colors_lighting.vs", "shaders/colors_lighting.fs");
+     g_cube->shader = new Shader("shaders/colors_lighting.vs", "shaders/colors_lighting.fs");
      g_cube->enable_shader();
      g_cube->init_cube();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("shaders/lampshader.vs", "shaders/lampshader.fs");
+     g_cubelamp->shader = new Shader("shaders/lampshader.vs", "shaders/lampshader.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube_wnml();
 
@@ -180,22 +180,22 @@ int main(int, char**)
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
-          g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-          g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+          g_cube->shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+          g_cube->shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-          g_cube->lo_shader->setMat4("projection", projection);
-          g_cube->lo_shader->setMat4("view", view);
+          g_cube->shader->setMat4("projection", projection);
+          g_cube->shader->setMat4("view", view);
           model = glm::mat4(1.0f);
-          g_cube->lo_shader->setMat4("model", model);
+          g_cube->shader->setMat4("model", model);
           g_cube->draw_cube();
 
-          g_cubelamp->lo_shader->setMat4("projection", projection);
-          g_cubelamp->lo_shader->setMat4("view", view);
+          g_cubelamp->shader->setMat4("projection", projection);
+          g_cubelamp->shader->setMat4("view", view);
 
           model = glm::mat4(1.0f);
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
-          g_cubelamp->lo_shader->setMat4("model", model);
+          g_cubelamp->shader->setMat4("model", model);
           g_cubelamp->draw_cube();
 
           if(engineX->show_ui == true)

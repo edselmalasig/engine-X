@@ -31,7 +31,7 @@ void Geometry::init_triangle()
      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
      glEnableVertexAttribArray(1);
 
-     //lo_shader->use();
+     //shader->use();
 
 }
 
@@ -46,7 +46,7 @@ void Geometry::init_cube()
      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
      glEnableVertexAttribArray(0);
 
-     //lo_shader->use();
+     //shader->use();
 }
 
 void Geometry::init_cube_wnml()
@@ -99,7 +99,7 @@ void Geometry::init_cube_wnml_fixed()
      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
      glEnableVertexAttribArray(1);
 
-     //lo_shader->use();
+     //shader->use();
 }
 
 void Geometry::init_object()
@@ -231,7 +231,7 @@ void Geometry::init_shader(const char *vertexShaderSource, const char * fragment
 
 void Geometry::enable_shader()
 {
-     lo_shader->use();
+     shader->use();
 }
 
 void Geometry::draw_triangle()
@@ -241,7 +241,7 @@ void Geometry::draw_triangle()
      // draw our triiangle
      //glLineWidth(1.5f);
      //glUseProgram(shaderProgram);
-     lo_shader->use();
+     shader->use();
      glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
      glDrawArrays(GL_TRIANGLES, 0, 3);
      glBindVertexArray(0); // no need to unbind it every time
@@ -257,7 +257,7 @@ void Geometry::draw_object()
      //glUseProgram(shaderProgram);
      //if(textureFileIn!=NULL)
 
-     lo_shader->use();
+     shader->use();
      glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
      glBindVertexArray(0);

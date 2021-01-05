@@ -12,6 +12,7 @@
 #include "EngineX.h"
 #include "Geometry.h"
 #include "Model.h"
+#include "ui.h"
 #include "FreeType_Fonts.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -60,22 +61,23 @@ int main(int, char**)
      // Main loop
      bool show_demo_window = false;
 
-     float clearColor[4];
+     float backgroundColor[4];
 
-     clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
-
+     backgroundColor[0]=0.35f; backgroundColor[1]=0.35f; backgroundColor[2]=0.35f; backgroundColor[3]=0.0f;
+     int selectedIndex = -1;
+     string selectedType = "FTF";
      printf("Initializing shaders and objects.\n");
 
      // compile and setup the shader
-         // ----------------------------
-         Shader shader("../../resources/shaders/text.vs", "../../resources/shaders/text.fs");
-         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
-         shader.use();
-         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+     // ----------------------------
+     Shader shader("../../resources/shaders/text.vs", "../../resources/shaders/text.fs");
+     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+     shader.use();
+     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-         FreeType_Fonts * ftf = new FreeType_Fonts();
-         ftf->init_ftf();
-         ftf->init_glVBVA();
+     FreeType_Fonts * ftf = new FreeType_Fonts();
+     ftf->init_ftf();
+     ftf->init_glVBVA();
 
 
 
@@ -98,80 +100,12 @@ int main(int, char**)
 
           glfwPollEvents();
 
-          {
-               // Start the Dear ImGui frame
-               ImGui_ImplOpenGL3_NewFrame();
-               ImGui_ImplGlfw_NewFrame();
-               ImGui::NewFrame();
-
-               // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-
-               //Put this in a new function.
-               if (show_demo_window)
-               ImGui::ShowDemoWindow(&show_demo_window);
-
-               // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-               {
-                    static float f = 0.0f;
-                    static int counter = 0;
-                    ImGui::Begin("Coordinate Controls");
-                    ImGui::Checkbox("Show Control Window", &show_demo_window);      // Edit bools storing our window open/close state
-
-                    ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
-
-                    ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
-                    ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
-                    ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
-
-                    ImGui::DragFloat("View Front X", &cameraFront->x, 0.01);
-                    ImGui::DragFloat("View Front Y", &cameraFront->y, 0.01);
-                    ImGui::DragFloat("View Front Z", &cameraFront->z, 0.01);
-
-                    ImGui::DragFloat("View Heads Up X", &cameraHeadsUp->x, 0.01);
-                    ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
-                    ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
-
-                    ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
-                    ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
-                    ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
-
-                    ImGui::DragFloat("degrees Yaw", &engineX->camera->Yaw, 0.1f);
-                    ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
-
-                    ImGui::Text("\n");
-                    ImGui::Text("Please modify the current style in:");
-                    ImGui::Text("ImGui Test->Window Options->Style Editor");
-                    static bool loadCurrentStyle = false;
-                    static bool saveCurrentStyle = false;
-                    static bool resetCurrentStyle = false;
-                    loadCurrentStyle = ImGui::Button("Load Saved Style");
-                    saveCurrentStyle = ImGui::Button("Save Current Style");
-                    resetCurrentStyle = ImGui::Button("Reset Current Style");
-                    if (loadCurrentStyle)   {
-                         if (!ImGui::LoadStyle("./myimgui.style",ImGui::GetStyle()))   {
-                              fprintf(stderr,"Warning: \"./myimgui.style\" not present.\n");
-                         }
-                    }
-                    if (saveCurrentStyle)   {
-                         if (!ImGui::SaveStyle("./myimgui.style",ImGui::GetStyle()))   {
-                              fprintf(stderr,"Warning: \"./myimgui.style\" cannot be saved.\n");
-                         }
-                    }
-                    if (resetCurrentStyle)  ImGui::GetStyle() = ImGuiStyle();
-
-                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-                    ImGui::End();
-
-               }
-
-               // Rendering
-               ImGui::Render();
-          }
+          displayUI(engineX->camera, show_demo_window, backgroundColor, selectedIndex, selectedType);
 
           glfwMakeContextCurrent(engineX->window);
           glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
           glViewport(0, 0, engineX->window_w, engineX->window_h);
-          glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+          glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
           glEnable(GL_DEPTH_TEST);
 
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -194,8 +128,8 @@ int main(int, char**)
           shader.setMat4("view", view);
           shader.setMat4("model", model);
 
-        ftf->RenderText(shader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        ftf->RenderText(shader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+          ftf->RenderText(shader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+          ftf->RenderText(shader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)

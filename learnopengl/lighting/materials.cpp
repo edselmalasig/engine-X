@@ -61,13 +61,13 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      Geometry * g_cube = new Geometry();
-     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->lo_shader = new Shader("shaders/materials.vs", "shaders/materials.fs");
+     //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
+     g_cube->shader = new Shader("shaders/materials.vs", "shaders/materials.fs");
      g_cube->enable_shader();
      g_cube->init_cube_wnml();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
+     g_cubelamp->shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube();
 
@@ -183,35 +183,35 @@ int main(int, char**)
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
           g_cube->enable_shader();
-          g_cube->lo_shader->setVec3("light.position", cubelampPos);
-          g_cube->lo_shader->setVec3("viewPos", *engineX->camera->getPositionVector());
+          g_cube->shader->setVec3("light.position", cubelampPos);
+          g_cube->shader->setVec3("viewPos", *engineX->camera->getPositionVector());
 
           glm::vec3 lightColor = glm::vec3(2.0f, 0.7f, 1.3f);
           glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
           glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-          g_cube->lo_shader->setVec3("light.ambient", ambientColor);
-          g_cube->lo_shader->setVec3("light.diffuse", diffuseColor);
-          g_cube->lo_shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+          g_cube->shader->setVec3("light.ambient", ambientColor);
+          g_cube->shader->setVec3("light.diffuse", diffuseColor);
+          g_cube->shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-          g_cube->lo_shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-          g_cube->lo_shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-          g_cube->lo_shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-          g_cube->lo_shader->setFloat("material.shininess", 32.0f);
+          g_cube->shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+          g_cube->shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+          g_cube->shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+          g_cube->shader->setFloat("material.shininess", 32.0f);
 
-          g_cube->lo_shader->setMat4("projection", projection);
-          g_cube->lo_shader->setMat4("view", view);
+          g_cube->shader->setMat4("projection", projection);
+          g_cube->shader->setMat4("view", view);
           model = glm::mat4(1.0f);
-          g_cube->lo_shader->setMat4("model", model);
+          g_cube->shader->setMat4("model", model);
           g_cube->draw_cube();
 
           g_cubelamp->enable_shader();
-          g_cubelamp->lo_shader->setMat4("projection", projection);
-          g_cubelamp->lo_shader->setMat4("view", view);
+          g_cubelamp->shader->setMat4("projection", projection);
+          g_cubelamp->shader->setMat4("view", view);
 
           model = glm::mat4(1.0f);
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
-          g_cubelamp->lo_shader->setMat4("model", model);
+          g_cubelamp->shader->setMat4("model", model);
           g_cubelamp->draw_cube();
 
           //draw_object(lo_rectangle);

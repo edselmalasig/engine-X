@@ -59,13 +59,13 @@ int main(int, char**)
      printf("Initializing shaders and objects.\n");
 
      Geometry * g_cube = new Geometry();
-     //lo_rectangle->lo_shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->lo_shader = new Shader("../shaders/basic_lighting.vs", "../shaders/basic_lighting.fs");
+     //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
+     g_cube->shader = new Shader("../shaders/basic_lighting.vs", "../shaders/basic_lighting.fs");
      g_cube->enable_shader();
      g_cube->init_cube_wnml();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->lo_shader = new Shader("../shaders/lampshader.vs", "../shaders/lampshader.fs");
+     g_cubelamp->shader = new Shader("../shaders/lampshader.vs", "../shaders/lampshader.fs");
      g_cubelamp->enable_shader();
      g_cubelamp->init_cube();
 
@@ -181,25 +181,25 @@ int main(int, char**)
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
           g_cube->enable_shader();
-          g_cube->lo_shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-          g_cube->lo_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-          g_cube->lo_shader->setVec3("lightPos", cubelampPos);
-          g_cube->lo_shader->setVec3("viewPos", *engineX->camera->getPositionVector());
+          g_cube->shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+          g_cube->shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+          g_cube->shader->setVec3("lightPos", cubelampPos);
+          g_cube->shader->setVec3("viewPos", *engineX->camera->getPositionVector());
 
-          g_cube->lo_shader->setMat4("projection", projection);
-          g_cube->lo_shader->setMat4("view", view);
+          g_cube->shader->setMat4("projection", projection);
+          g_cube->shader->setMat4("view", view);
           model = glm::mat4(1.0f);
-          g_cube->lo_shader->setMat4("model", model);
+          g_cube->shader->setMat4("model", model);
           g_cube->draw_cube();
 
           g_cubelamp->enable_shader();
-          g_cubelamp->lo_shader->setMat4("projection", projection);
-          g_cubelamp->lo_shader->setMat4("view", view);
+          g_cubelamp->shader->setMat4("projection", projection);
+          g_cubelamp->shader->setMat4("view", view);
 
           model = glm::mat4(1.0f);
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
-          g_cubelamp->lo_shader->setMat4("model", model);
+          g_cubelamp->shader->setMat4("model", model);
           g_cubelamp->draw_cube();
 
           //draw_object(lo_rectangle);

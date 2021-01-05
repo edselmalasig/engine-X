@@ -70,7 +70,7 @@ int main(int, char**)
      Shader o_shader = Shader("../../resources/shaders/torus_shader.vs", "../../resources/shaders/torus_shader.fs");
      //o_shader.use();
      Geometry * cubelight = new Geometry();
-     cubelight->lo_shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
+     cubelight->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
      cubelight->enable_shader();
      cubelight->init_cube();
 
@@ -246,13 +246,13 @@ int main(int, char**)
           obj.Draw(o_shader);
 
           cubelight->enable_shader();
-          cubelight->lo_shader->setMat4("projection", projection);
-          cubelight->lo_shader->setMat4("view", view);
+          cubelight->shader->setMat4("projection", projection);
+          cubelight->shader->setMat4("view", view);
 
           model = glm::mat4(1.0f);
           model = glm::translate(model, cubelightPos);
           model = glm::scale(model, glm::vec3(0.2f));
-          cubelight->lo_shader->setMat4("model", model);
+          cubelight->shader->setMat4("model", model);
           cubelight->draw_cube(GL_TRIANGLES);
 
           if(engineX->show_ui == true)

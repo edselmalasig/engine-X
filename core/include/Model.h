@@ -42,10 +42,77 @@ public:
      string directory;
      bool gammaCorrection;
 
+     Shader * shader;
+     glm::mat4 model;
+     FIBITMAP * textureFileIn;
+
+     unsigned int texture[8];
+
      // constructor, expects a filepath to a 3D model.
      Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
      {
           loadModel(path);
+     }
+
+     void setShader(const char * vsPath, const char * fsPath)
+     {
+          shader = new Shader(vsPath, fsPath);
+     }
+     
+     void init_texture(int i, char * texturefpath)
+     {
+          glGenTextures(1, &texture[i]);
+          glBindTexture(GL_TEXTURE_2D, texture[i]);
+
+          //texture wrapping parameters
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+          // call this ONLY when linking with FreeImage as a static library
+          #ifdef FREEIMAGE_LIB
+          FreeImage_Initialise();
+          #endif // FREEIMAGE_LIB
+
+          // initialize your own FreeImage error handler
+
+          //FreeImage_SetOutputMessage(FreeImageErrorHandler);
+
+          // print version & copyright infos
+
+          printf("FreeImage version : %s", FreeImage_GetVersion());
+          printf("\n");
+          printf(FreeImage_GetCopyrightMessage());
+          printf("\n");
+          FREE_IMAGE_FORMAT format = FreeImage_GetFileType(texturefpath,0);
+          // Load the source image
+          textureFileIn = FreeImage_Load(format, texturefpath, 0);
+          int texture_w = FreeImage_GetWidth(textureFileIn);
+          int texture_h = FreeImage_GetHeight(textureFileIn);
+          int nrChannels;
+
+          BYTE * bits;
+          bits = FreeImage_GetBits(textureFileIn);
+          if(textureFileIn)
+          {
+               if(format == FIF_JPEG)
+               {
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0, GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+                    glGenerateMipmap(GL_TEXTURE_2D);
+               }
+               if(format == FIF_PNG)
+               {
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0, GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+                    glGenerateMipmap(GL_TEXTURE_2D);
+
+               }
+               else
+               {
+                    std::cout << "Failed to load texture" << std::endl;
+               }
+          }
      }
 
      // draws the model, and thus all its meshes

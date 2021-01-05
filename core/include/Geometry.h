@@ -39,7 +39,7 @@ public:
      unsigned int VBO;
      unsigned int VAO;
      unsigned int EBO;
-     Shader * lo_shader;
+     Shader * shader;
 
      int vertexShader;
      int fragmentShader;
