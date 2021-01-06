@@ -58,7 +58,7 @@ public:
      {
           shader = new Shader(vsPath, fsPath);
      }
-     
+
      void init_texture(int i, char * texturefpath)
      {
           glGenTextures(1, &texture[i]);
@@ -266,16 +266,25 @@ private:
                }
                if (!skip)
                {   // if texture hasn't been loaded already, load it
-               Texture texture;
-               texture.id = TextureFromFile(str.C_Str(), this->directory);
-               texture.type = typeName;
-               texture.path = str.C_Str();
-               textures.push_back(texture);
-               textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+                    Texture texture;
+                    texture.id = TextureFromFile(str.C_Str(), this->directory);
+                    texture.type = typeName;
+                    texture.path = str.C_Str();
+                    textures.push_back(texture);
+                    textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+               }
+          }
+          return textures;
+     }
+
+     void renderTexLayer(int i)
+     {
+          for(int ii = 0; ii <= i; ii++)
+          {
+               glActiveTexture(GL_TEXTURE0+ii);
+               glBindTexture(GL_TEXTURE_2D, texture[ii]);
           }
      }
-     return textures;
-}
 };
 
 
