@@ -147,7 +147,7 @@ int main(int, char**)
      {
           g_teapot[i] = new Model("../../resources/models/teapot.obj");
           //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
-          g_teapot[i]->shader = new Shader("../../resources/shaders/spotlight.vs", "../../resources/shaders/spotlight.fs");
+          g_teapot[i]->setShader("../../resources/shaders/teapot_shader.vs", "../../resources/shaders/teapot_shader.fs");
           g_teapot[i]->shader->use();
 
           /*
@@ -188,7 +188,7 @@ for(int i=0; i<10; i++){
      // variables for selected objects.
      std::string selectedType = "container";
      int selectedIndex = -2;
-
+     vector<int> selectionVec;
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
      {
@@ -196,7 +196,7 @@ for(int i=0; i<10; i++){
           engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
           engineX->camera->lastFrame = currentFrame;
 
-          glfwPollEvents();
+          glfwWaitEvents();
 
           {
                // Poll and handle events (inputs, window resize, etc.)
@@ -291,7 +291,6 @@ for(int i=0; i<10; i++){
                          ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
                          ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
                     }
-                    ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
                     if (ImGui::Begin("Information", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
                     {
                          ImGui::Text("engine-X overlay\n" "in the corner of the screen.\n");
@@ -300,17 +299,26 @@ for(int i=0; i<10; i++){
                          ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
                          else
                          ImGui::Text("Mouse Position: <invalid>");
-                         if( selectedIndex > -1)
-                         ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+                         if(selectionVec.empty()){
+                              ImGui::Text("Selection: none");
+                         }
                          else
-                         ImGui::Text("Selection: none");
-
+                         {
+                              ImGui::Text("Selection: %s - count %i", selectedType.c_str(), selectionVec.size());
+                              std::string indexString;
+                              for(unsigned int i=0; i < selectionVec.size(); i++){
+                                   indexString += std::to_string(selectionVec.at(i)) + " ";
+                              }
+                              ImGui::Text("%s\n", indexString.c_str());
+                              indexString = " ";
+                         }
                     }
                     ImGui::End();
-               }
                // Rendering
                //ImGui::Render();
           }
+     }
+
 
           glfwMakeContextCurrent(engineX->window);
           glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
@@ -348,8 +356,6 @@ for(int i=0; i<10; i++){
                g_teapot[i]->shader->setFloat("light.constant", 1.0f);
                g_teapot[i]->shader->setFloat("light.linear", 0.09f);
                g_teapot[i]->shader->setFloat("light.quadratic", 0.032f);
-
-
                g_teapot[i]->shader->setFloat("material.shininess", 32.0f);
 */
                g_teapot[i]->shader->setMat4("projection", projection);
@@ -362,6 +368,13 @@ for(int i=0; i<10; i++){
           {
                // calculate the model matrix for each object and pass it to shader before drawing
                //glm::mat4 model = glm::mat4(1.0f);
+               int mode=1;
+
+               g_teapot[i]->shader->use();
+               g_teapot[i]->shader->setInt("mode", mode);
+               g_teapot[i]->shader->setVec3("objectColor", glm::vec3(i*0.10f,i*0.21f, i*0.019f));
+               g_teapot[i]->Draw(*g_teapot[i]->shader);
+
                bool selectionBool = false;
                double mousePosX, mousePosY;
                int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
@@ -391,32 +404,55 @@ for(int i=0; i<10; i++){
 
                     if ( selectionBool ){
                          selectedIndex = i;
-                         selectedType = "teapot";
+                         selectedType = "container";
+                         //g_cube[i]->model = model;
+                         #include <algorithm>
+
+                         std::vector<int>::iterator it;
+                         it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
+                         if(it != selectionVec.end()){
+                              selectionVec.erase(it);
+                         }
+                         else{
+                              selectionVec.push_back(selectedIndex);
+                              //6std::cout << selectedIndex << " " << std::endl;
+                         }
+
                     }
                }
+               if(selectedIndex > -1){
+                    //ImGui::NewFrame();
+                    ImGuizmo::BeginFrame();
+                    EditTransform(engineX->camera, glm::value_ptr(g_teapot[selectedIndex]->model),
+                    glm::value_ptr(view), glm::value_ptr(projection));
+                    //ImGui::End();
+                    ImGuizmo::Enable(TRUE);
+                    //ImGui::Render();
+               }
+               int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
+               if(keystate == GLFW_PRESS){
+                    selectionVec.clear();
+                    selectionBool = false;
+                    selectedIndex = -1;
+
+               }
+
           }
 
-
-
           //ImGui::NewFrame();
-          ImGuizmo::BeginFrame();
-          if(selectedIndex > -1)
-          EditTransform(engineX->camera, (float *) glm::value_ptr(g_teapot[selectedIndex]->model),
-               (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
+          //ImGuizmo::BeginFrame();
+          //if(selectedIndex > -1)
+          //EditTransform(engineX->camera, (float *) glm::value_ptr(g_teapot[selectedIndex]->model),
+          //     (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
           //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
 
          ImGuizmo::Enable(true);
          ImGui::Render();
 
-          for(int i = 0; i < 10; i++)
-          {
-               //g_teapot[i]->renderTexLayer(1);
-               //glPointSize(7.0f);
-               //g_teapot[i]->draw_cube(GL_POINTS);
-               g_teapot[i]->shader->use();
-               g_teapot[i]->Draw(*g_teapot[i]->shader);
+              //6std::cout << selectedIndex << " " << std::endl;}
+
                //std::cout << "Teapot: " << i << std::endl;
-          }
+
 
           model = glm::mat4(1.0f);
           g_cubelamp->enable_shader();
