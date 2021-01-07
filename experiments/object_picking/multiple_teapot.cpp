@@ -363,7 +363,7 @@ while (!glfwWindowShouldClose(engineX->window))
           g_teapot[i]->shader->setMat4("model", g_teapot[i]->model);
      }
      bool reprint = true;
-
+     int p=1;
      for (unsigned int i = 0; i < 10; i++)
      {
           // calculate the model matrix for each object and pass it to shader before drawing
@@ -371,7 +371,7 @@ while (!glfwWindowShouldClose(engineX->window))
           int mode = 1;
           g_teapot[i]->shader->use();
           g_teapot[i]->shader->setInt("mode", mode);
-          g_teapot[i]->shader->setVec3("objectColor", glm::vec3(i*0.10f,i*0.21f, i*0.019f));
+          g_teapot[i]->shader->setVec3("objectColor", glm::vec3(p*0.10f,p*0.21f, p*0.019f));
           g_teapot[i]->Draw(*g_teapot[i]->shader);
 
           bool selectionBool = false;
@@ -420,7 +420,7 @@ while (!glfwWindowShouldClose(engineX->window))
                }
           }
           std::vector<int>::iterator it;
-          int ii = 0;
+          int ii = 1;
           for(it = selectionVec.begin(); it != selectionVec.end(); it++, ii++){
                if(selectionVec.empty()){
                     //ImGui::NewFrame();
