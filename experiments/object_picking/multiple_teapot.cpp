@@ -169,8 +169,8 @@ int main(int, char**)
           g_teapot[i]->shader->setMat4("model", g_teapot[i]->model);
      }
 
-/*
-for(int i=0; i<10; i++){
+     /*
+     for(int i=0; i<10; i++){
      std::cout << g_teapot[i]->model[0][0] << " " << g_teapot[i]->model[0][1] << " " << g_teapot[i]->model[0][2] << " " << g_teapot[i]->model[0][3] << std::endl;
      std::cout << g_teapot[i]->model[1][0] << " " << g_teapot[i]->model[1][1] << " " << g_teapot[i]->model[1][2] << " " << g_teapot[i]->model[1][3] <<std::endl;
      std::cout << g_teapot[i]->model[2][0] << " " << g_teapot[i]->model[2][1] << " " << g_teapot[i]->model[2][2] << " " << g_teapot[i]->model[2][3] << std::endl;
@@ -178,309 +178,332 @@ for(int i=0; i<10; i++){
 }
 */
 
-     Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
-     g_cubelamp->enable_shader();
-     g_cubelamp->init_cube();
+Geometry * g_cubelamp = new Geometry();
+g_cubelamp->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
+g_cubelamp->enable_shader();
+g_cubelamp->init_cube();
 
-     glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
+glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
-     // variables for selected objects.
-     std::string selectedType = "container";
-     int selectedIndex = -2;
-     vector<int> selectionVec;
-     printf("glfw main loop.\n");
-     while (!glfwWindowShouldClose(engineX->window))
+// variables for selected objects.
+std::string selectedType = "container";
+int selectedIndex = -2;
+vector<int> selectionVec;
+printf("glfw main loop.\n");
+while (!glfwWindowShouldClose(engineX->window))
+{
+     GLfloat currentFrame = (GLfloat) glfwGetTime();
+     engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
+     engineX->camera->lastFrame = currentFrame;
+
+     glfwWaitEvents();
+
      {
-          GLfloat currentFrame = (GLfloat) glfwGetTime();
-          engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
-          engineX->camera->lastFrame = currentFrame;
+          // Poll and handle events (inputs, window resize, etc.)
+          // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+          // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+          // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+          // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+          // Poll and handle events (inputs, window resize, etc.)
+          // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+          // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+          // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+          // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 
-          glfwWaitEvents();
+          // Start the Dear ImGui frame
+          ImGui_ImplOpenGL3_NewFrame();
+          ImGui_ImplGlfw_NewFrame();
+          ImGui::NewFrame();
+          // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+
+          //Put this in a new function.
+          if (show_demo_window)
+          ImGui::ShowDemoWindow(&show_demo_window);
+
+          // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+          {
+               static float f = 0.0f;
+               static int counter = 0;
+               ImGui::Begin("Coordinate Controls");
+               ImGui::Checkbox("Show Control Window", &show_demo_window);      // Edit bools storing our window open/close state
+
+               ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
+
+               ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
+               ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
+               ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
+
+               ImGui::DragFloat("View Front X", &cameraFront->x, 0.01);
+               ImGui::DragFloat("View Front Y", &cameraFront->y, 0.01);
+               ImGui::DragFloat("View Front Z", &cameraFront->z, 0.01);
+
+               ImGui::DragFloat("View Heads Up X", &cameraHeadsUp->x, 0.01);
+               ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
+               ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
+
+               ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
+               ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
+               ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
+
+               ImGui::DragFloat("degrees Yaw", &engineX->camera->Yaw, 0.1f);
+               ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
+
+               if( selectedIndex > -1)
+               ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
+               else
+               ImGui::Text("Selection: none");
+
+               ImGui::Text("\n");
+               ImGui::Text("Please modify the current style in:");
+               ImGui::Text("ImGui Test->Window Options->Style Editor");
+               static bool loadCurrentStyle = false;
+               static bool saveCurrentStyle = false;
+               static bool resetCurrentStyle = false;
+               loadCurrentStyle = ImGui::Button("Load Saved Style");
+               saveCurrentStyle = ImGui::Button("Save Current Style");
+               resetCurrentStyle = ImGui::Button("Reset Current Style");
+               if (loadCurrentStyle)   {
+                    if (!ImGui::LoadStyle("./myimgui.style",ImGui::GetStyle()))   {
+                         fprintf(stderr,"Warning: \"./myimgui.style\" not present.\n");
+                    }
+               }
+               if (saveCurrentStyle)   {
+                    if (!ImGui::SaveStyle("./myimgui.style",ImGui::GetStyle()))   {
+                         fprintf(stderr,"Warning: \"./myimgui.style\" cannot be saved.\n");
+                    }
+               }
+               if (resetCurrentStyle)  ImGui::GetStyle() = ImGuiStyle();
+
+               ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+               ImGui::End();
+
+          }
 
           {
-               // Poll and handle events (inputs, window resize, etc.)
-               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-               // Poll and handle events (inputs, window resize, etc.)
-               // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-               // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-               // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-               // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-
-               // Start the Dear ImGui frame
-               ImGui_ImplOpenGL3_NewFrame();
-               ImGui_ImplGlfw_NewFrame();
-               ImGui::NewFrame();
-               // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-
-               //Put this in a new function.
-               if (show_demo_window)
-               ImGui::ShowDemoWindow(&show_demo_window);
-
-               // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+               const float DISTANCE = 10.0f;
+               static int corner = 0;
+               ImGuiIO& io = ImGui::GetIO();
+               bool p_open;
+               p_open = true;
+               if (corner != -1)
                {
-                    static float f = 0.0f;
-                    static int counter = 0;
-                    ImGui::Begin("Coordinate Controls");
-                    ImGui::Checkbox("Show Control Window", &show_demo_window);      // Edit bools storing our window open/close state
-
-                    ImGui::ColorEdit3("Background color", clearColor); // Edit 3 floats representing a color
-
-                    ImGui::DragFloat("View Pos X", &cameraPosition->x, 0.01);
-                    ImGui::DragFloat("View Pos Y", &cameraPosition->y, 0.01);
-                    ImGui::DragFloat("View Pos Z", &cameraPosition->z, 0.01);
-
-                    ImGui::DragFloat("View Front X", &cameraFront->x, 0.01);
-                    ImGui::DragFloat("View Front Y", &cameraFront->y, 0.01);
-                    ImGui::DragFloat("View Front Z", &cameraFront->z, 0.01);
-
-                    ImGui::DragFloat("View Heads Up X", &cameraHeadsUp->x, 0.01);
-                    ImGui::DragFloat("View Heads Up Y", &cameraHeadsUp->y, 0.01);
-                    ImGui::DragFloat("View Heads Up Z", &cameraHeadsUp->z, 0.01);
-
-                    ImGui::DragFloat("Projection radians", &cameraProp.z, 0.5f);
-                    ImGui::DragFloat("Projection zNear", &cameraProp.x, 0.01f);
-                    ImGui::DragFloat("Projection zFar", &cameraProp.y, 0.01f);
-
-                    ImGui::DragFloat("degrees Yaw", &engineX->camera->Yaw, 0.1f);
-                    ImGui::DragFloat("degrees Pitch", &engineX->camera->Pitch, 0.1f);
-
-                    if( selectedIndex > -1)
-                    ImGui::Text("Selection: %s - %i\n", selectedType.c_str(), selectedIndex);
-                    else
-                    ImGui::Text("Selection: none");
-
-                    ImGui::Text("\n");
-                    ImGui::Text("Please modify the current style in:");
-                    ImGui::Text("ImGui Test->Window Options->Style Editor");
-                    static bool loadCurrentStyle = false;
-                    static bool saveCurrentStyle = false;
-                    static bool resetCurrentStyle = false;
-                    loadCurrentStyle = ImGui::Button("Load Saved Style");
-                    saveCurrentStyle = ImGui::Button("Save Current Style");
-                    resetCurrentStyle = ImGui::Button("Reset Current Style");
-                    if (loadCurrentStyle)   {
-                         if (!ImGui::LoadStyle("./myimgui.style",ImGui::GetStyle()))   {
-                              fprintf(stderr,"Warning: \"./myimgui.style\" not present.\n");
-                         }
-                    }
-                    if (saveCurrentStyle)   {
-                         if (!ImGui::SaveStyle("./myimgui.style",ImGui::GetStyle()))   {
-                              fprintf(stderr,"Warning: \"./myimgui.style\" cannot be saved.\n");
-                         }
-                    }
-                    if (resetCurrentStyle)  ImGui::GetStyle() = ImGuiStyle();
-
-                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-                    ImGui::End();
-
+                    ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
+                    ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+                    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
                }
-
+               if (ImGui::Begin("Information", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
                {
-                    const float DISTANCE = 10.0f;
-                    static int corner = 0;
-                    ImGuiIO& io = ImGui::GetIO();
-                    bool p_open;
-                    p_open = true;
-                    if (corner != -1)
-                    {
-                         ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
-                         ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-                         ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+                    ImGui::Text("engine-X overlay\n" "in the corner of the screen.\n");
+                    ImGui::Separator();
+                    if (ImGui::IsMousePosValid())
+                    ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
+                    else
+                    ImGui::Text("Mouse Position: <invalid>");
+                    if(selectionVec.empty()){
+                         ImGui::Text("Selection: none");
                     }
-                    if (ImGui::Begin("Information", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+                    else
                     {
-                         ImGui::Text("engine-X overlay\n" "in the corner of the screen.\n");
-                         ImGui::Separator();
-                         if (ImGui::IsMousePosValid())
-                         ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
-                         else
-                         ImGui::Text("Mouse Position: <invalid>");
-                         if(selectionVec.empty()){
-                              ImGui::Text("Selection: none");
+                         ImGui::Text("Selection: %s - count %i", selectedType.c_str(), selectionVec.size());
+                         std::string indexString;
+                         for(unsigned int i=0; i < selectionVec.size(); i++){
+                              indexString += std::to_string(selectionVec.at(i)) + " ";
                          }
-                         else
-                         {
-                              ImGui::Text("Selection: %s - count %i", selectedType.c_str(), selectionVec.size());
-                              std::string indexString;
-                              for(unsigned int i=0; i < selectionVec.size(); i++){
-                                   indexString += std::to_string(selectionVec.at(i)) + " ";
-                              }
-                              ImGui::Text("%s\n", indexString.c_str());
-                              indexString = " ";
-                         }
+                         ImGui::Text("%s\n", indexString.c_str());
+                         indexString = " ";
                     }
-                    ImGui::End();
+               }
+               ImGui::End();
                // Rendering
                //ImGui::Render();
           }
      }
 
 
-          glfwMakeContextCurrent(engineX->window);
-          glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
-          glViewport(0, 0, engineX->window_w, engineX->window_h);
-          glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
-          glEnable(GL_DEPTH_TEST);
+     glfwMakeContextCurrent(engineX->window);
+     glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
+     glViewport(0, 0, engineX->window_w, engineX->window_h);
+     glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+     glEnable(GL_DEPTH_TEST);
 
-          glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-          glEnable(GL_CULL_FACE);
-          glCullFace(GL_BACK);
+     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+     glEnable(GL_CULL_FACE);
+     glCullFace(GL_BACK);
 
-          engineX->camera->computeMatricesFromInputs();
+     engineX->camera->computeMatricesFromInputs();
 
-          // create transformations
-          glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-          glm::mat4 view          = glm::mat4(1.0f);
-          glm::mat4 projection    = glm::mat4(1.0f);
+     // create transformations
+     glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+     glm::mat4 view          = glm::mat4(1.0f);
+     glm::mat4 projection    = glm::mat4(1.0f);
 
-          view = engineX->camera->processViewMatrix();
-          projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
-          for(unsigned int i = 0; i < 10; i++)
+     view = engineX->camera->processViewMatrix();
+     projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
+     for(unsigned int i = 0; i < 10; i++)
+     {
+          g_teapot[i]->shader->use();
+          /*
+          g_teapot[i]->shader->setVec3("light.position", *engineX->camera->getPositionVector());
+          g_teapot[i]->shader->setVec3("light.direction", *engineX->camera->getFrontVector());
+          g_teapot[i]->shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+          g_teapot[i]->shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+          */
+          g_teapot[i]->shader->setVec3("viewPos", *engineX->camera->getPositionVector());
+          /*
+          g_teapot[i]->shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+          g_teapot[i]->shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+          g_teapot[i]->shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+          g_teapot[i]->shader->setFloat("light.constant", 1.0f);
+          g_teapot[i]->shader->setFloat("light.linear", 0.09f);
+          g_teapot[i]->shader->setFloat("light.quadratic", 0.032f);
+          g_teapot[i]->shader->setFloat("material.shininess", 32.0f);
+          */
+          g_teapot[i]->shader->setMat4("projection", projection);
+          g_teapot[i]->shader->setMat4("view", view);
+          g_teapot[i]->shader->setMat4("model", g_teapot[i]->model);
+     }
+     bool reprint = true;
+
+     for (unsigned int i = 0; i < 10; i++)
+     {
+          // calculate the model matrix for each object and pass it to shader before drawing
+          //glm::mat4 model = glm::mat4(1.0f);
+          int mode = 1;
+          g_teapot[i]->shader->use();
+          g_teapot[i]->shader->setInt("mode", mode);
+          g_teapot[i]->shader->setVec3("objectColor", glm::vec3(i*0.10f,i*0.21f, i*0.019f));
+          g_teapot[i]->Draw(*g_teapot[i]->shader);
+
+          bool selectionBool = false;
+          double mousePosX, mousePosY;
+          int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
+          if(mousestate == GLFW_PRESS)
           {
-               g_teapot[i]->shader->use();
-/*
-               g_teapot[i]->shader->setVec3("light.position", *engineX->camera->getPositionVector());
-               g_teapot[i]->shader->setVec3("light.direction", *engineX->camera->getFrontVector());
-               g_teapot[i]->shader->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-               g_teapot[i]->shader->setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
-*/
-               g_teapot[i]->shader->setVec3("viewPos", *engineX->camera->getPositionVector());
-/*
-               g_teapot[i]->shader->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-               g_teapot[i]->shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-               g_teapot[i]->shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-               g_teapot[i]->shader->setFloat("light.constant", 1.0f);
-               g_teapot[i]->shader->setFloat("light.linear", 0.09f);
-               g_teapot[i]->shader->setFloat("light.quadratic", 0.032f);
-               g_teapot[i]->shader->setFloat("material.shininess", 32.0f);
-*/
-               g_teapot[i]->shader->setMat4("projection", projection);
-               g_teapot[i]->shader->setMat4("view", view);
-               g_teapot[i]->shader->setMat4("model", g_teapot[i]->model);
-          }
-          bool reprint = true;
+               glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
+               glm::vec3 ray_origin;
+               glm::vec3 ray_direction;
 
-          for (unsigned int i = 0; i < 10; i++)
-          {
-               // calculate the model matrix for each object and pass it to shader before drawing
-               //glm::mat4 model = glm::mat4(1.0f);
-               int mode=1;
+               engineX->ScreenPosToWorldRay(
+                    mousePosX, mousePosY,
+                    fbWidth, fbHeight,
+                    view, projection,
+                    ray_origin, ray_direction
+               );
 
-               g_teapot[i]->shader->use();
-               g_teapot[i]->shader->setInt("mode", mode);
-               g_teapot[i]->shader->setVec3("objectColor", glm::vec3(i*0.10f,i*0.21f, i*0.019f));
-               g_teapot[i]->Draw(*g_teapot[i]->shader);
+               //engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
+               float intersection_distance;
 
-               bool selectionBool = false;
-               double mousePosX, mousePosY;
-               int mousestate = glfwGetMouseButton(engineX->window, GLFW_MOUSE_BUTTON_LEFT);
-               if(mousestate == GLFW_PRESS)
-               {
-                    glfwGetCursorPos(engineX->window, &mousePosX, &mousePosY);
-                    glm::vec3 ray_origin;
-                    glm::vec3 ray_direction;
+               glm::vec3 sC = glm::vec3(g_teapot[i]->model[3][0], g_teapot[i]->model[3][1], g_teapot[i]->model[3][2]);
+               selectionBool = engineX->RayHitSphere(
+                    sC,
+                    0.5f,
+                    ray_origin,
+                    ray_direction
+               );
 
-                    engineX->ScreenPosToWorldRay(
-                         mousePosX, mousePosY,
-                         fbWidth, fbHeight,
-                         view, projection,
-                         ray_origin, ray_direction
-                    );
+               if ( selectionBool ){
+                    selectedIndex = i;
+                    selectedType = "container";
+                    //g_cube[i]->model = model;
+                    #include <algorithm>
 
-                    //engineX->Get3DRayUnderMouse(&ray_origin, &ray_direction);
-                    float intersection_distance;
-
-                    glm::vec3 sC = glm::vec3(g_teapot[i]->model[3][0], g_teapot[i]->model[3][1], g_teapot[i]->model[3][2]);
-                    selectionBool = engineX->RayHitSphere(
-                         sC,
-                         0.5f,
-                         ray_origin,
-                         ray_direction
-                    );
-
-                    if ( selectionBool ){
-                         selectedIndex = i;
-                         selectedType = "container";
-                         //g_cube[i]->model = model;
-                         #include <algorithm>
-
-                         std::vector<int>::iterator it;
-                         it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
-                         if(it != selectionVec.end()){
-                              selectionVec.erase(it);
-                         }
-                         else{
-                              selectionVec.push_back(selectedIndex);
-                              //6std::cout << selectedIndex << " " << std::endl;
-                         }
-
+                    std::vector<int>::iterator it;
+                    it = find(selectionVec.begin(), selectionVec.end(), selectedIndex);
+                    if(it != selectionVec.end()){
+                         selectionVec.erase(it);
                     }
+                    else{
+                         selectionVec.push_back(selectedIndex);
+                         //6std::cout << selectedIndex << " " << std::endl;
+                    }
+
                }
-               if(selectedIndex > -1){
+          }
+          std::vector<int>::iterator it;
+          int ii = 0;
+          for(it = selectionVec.begin(); it != selectionVec.end(); it++, ii++){
+               if(selectionVec.empty()){
                     //ImGui::NewFrame();
                     ImGuizmo::BeginFrame();
-                    EditTransform(engineX->camera, glm::value_ptr(g_teapot[selectedIndex]->model),
+                    EditTransform(engineX->camera, glm::value_ptr(g_teapot[*it]->model),
                     glm::value_ptr(view), glm::value_ptr(projection));
                     //ImGui::End();
-                    ImGuizmo::Enable(TRUE);
+                    //ImGuizmo::Enable(TRUE);
                     //ImGui::Render();
-               }
-               int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
-               if(keystate == GLFW_PRESS){
-                    selectionVec.clear();
-                    selectionBool = false;
-                    selectedIndex = -1;
+                    mode=1;
 
+                    g_teapot[*it]->shader->use();
+                    g_teapot[*it]->shader->setInt("mode", mode);
+                    g_teapot[*it]->shader->setVec3("objectColor", glm::vec3(ii*0.10f,ii*0.21f, ii*0.89f));
+                    g_teapot[*it]->Draw(*g_teapot[*it]->shader);
                }
+               if(!selectionVec.empty()){
+                    ImGuizmo::BeginFrame();
+                    EditTransform(engineX->camera, glm::value_ptr(g_teapot[*it]->model),
+                    glm::value_ptr(view), glm::value_ptr(projection));
+                    //ImGui::End();
+                    //ImGuizmo::Enable(TRUE);
+                    //ImGui::Render();
+                    mode=2;
+
+                    g_teapot[*it]->shader->use();
+                    g_teapot[*it]->shader->setInt("mode", mode);
+                    g_teapot[*it]->shader->setVec3("objectColor", glm::vec3(ii*0.10f,ii*0.21f, ii*0.89f));
+                    g_teapot[*it]->Draw(*g_teapot[*it]->shader);
+               }
+          }
+          int keystate = glfwGetKey(engineX->window, GLFW_KEY_P);
+          if(keystate == GLFW_PRESS){
+               selectionVec.clear();
+               selectionBool = false;
+               selectedIndex = -1;
 
           }
 
-          //ImGui::NewFrame();
-          //ImGuizmo::BeginFrame();
-          //if(selectedIndex > -1)
-          //EditTransform(engineX->camera, (float *) glm::value_ptr(g_teapot[selectedIndex]->model),
-          //     (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
-          //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
-
-         ImGuizmo::Enable(true);
-         ImGui::Render();
-
-              //6std::cout << selectedIndex << " " << std::endl;}
-
-               //std::cout << "Teapot: " << i << std::endl;
-
-
-          model = glm::mat4(1.0f);
-          g_cubelamp->enable_shader();
-          g_cubelamp->shader->setMat4("projection", projection);
-          g_cubelamp->shader->setMat4("view", view);
-
-          model = glm::mat4(1.0f);
-          model = glm::translate(model, cubelampPos);
-          model = glm::scale(model, glm::vec3(0.2f));
-          g_cubelamp->shader->setMat4("model", model);
-          g_cubelamp->draw_cube(GL_TRIANGLES);
-
-          if(engineX->show_ui == true)
-          ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-          glfwMakeContextCurrent(engineX->window);
-          glfwSwapBuffers(engineX->window);
      }
 
-     // Cleanup
-     ImGui_ImplOpenGL3_Shutdown();
-     ImGui_ImplGlfw_Shutdown();
-     ImGui::DestroyContext();
+     //ImGui::NewFrame();
+     //ImGuizmo::BeginFrame();
+     //if(selectedIndex > -1)
+     //EditTransform(engineX->camera, (float *) glm::value_ptr(g_teapot[selectedIndex]->model),
+     //     (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
+     //std::cout << "Selected: " << selectedType << " - " << selectedIndex << std::endl;
 
-     //delete_object;
-     g_cubelamp->delete_object();
-     glfwDestroyWindow(engineX->window);
-     glfwTerminate();
+     ImGuizmo::Enable(true);
+     ImGui::Render();
 
-     return 0;
+     //6std::cout << selectedIndex << " " << std::endl;}
+
+     //std::cout << "Teapot: " << i << std::endl;
+
+
+     model = glm::mat4(1.0f);
+     g_cubelamp->enable_shader();
+     g_cubelamp->shader->setMat4("projection", projection);
+     g_cubelamp->shader->setMat4("view", view);
+
+     model = glm::mat4(1.0f);
+     model = glm::translate(model, cubelampPos);
+     model = glm::scale(model, glm::vec3(0.2f));
+     g_cubelamp->shader->setMat4("model", model);
+     g_cubelamp->draw_cube(GL_TRIANGLES);
+
+     if(engineX->show_ui == true)
+     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+     glfwMakeContextCurrent(engineX->window);
+     glfwSwapBuffers(engineX->window);
+}
+
+// Cleanup
+ImGui_ImplOpenGL3_Shutdown();
+ImGui_ImplGlfw_Shutdown();
+ImGui::DestroyContext();
+
+//delete_object;
+g_cubelamp->delete_object();
+glfwDestroyWindow(engineX->window);
+glfwTerminate();
+
+return 0;
 }
