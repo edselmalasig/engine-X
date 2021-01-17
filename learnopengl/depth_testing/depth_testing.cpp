@@ -142,14 +142,14 @@ int main(int, char**)
      FIBITMAP * texture1;
      FIBITMAP * texture2;
 
-     unsigned int cubeTexture = loadTexture("../textures/container2.png", texture1, cubeTexture);
+     unsigned int cubeTexture = loadTexture("../../resources/textures/container2.png", texture1, cubeTexture);
 
-     unsigned int floorTexture = loadTexture("../textures/metal.png", texture2, floorTexture);
+     unsigned int floorTexture = loadTexture("../../resources/textures/metal.png", texture2, floorTexture);
 
-     Shader shader1("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
+     Shader shader1("../../resources/shaders/depth_testing.vs", "../../resources/shaders/depth_testing.fs");
      shader1.use();
      shader1.setInt("texture1", 0);
-     Shader shader2("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
+     Shader shader2("../../resources/haders/depth_testing.vs", "../../resources/shaders/depth_testing.fs");
      shader2.use();
      shader2.setInt("texture1", 0);
      //glEnable(GL_DEPTH_TEST);
