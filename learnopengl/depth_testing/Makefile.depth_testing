@@ -21,6 +21,7 @@ FREEIMAGE_EXT = ../../external/FreeImage
 IMGUI = ../../../lib/imgui
 IMGUI_IMPL = $(IMGUI)/imgui_impl
 IMGUIADDONS = $(IMGUI)/addons
+STB = ../../external/stb
 SOURCES = depth_testing.cpp ../../core/src/camera.cpp ../../core/src/Geometry.cpp ../../core/src/EngineX.cpp
 SOURCES += $(IMGUI_IMPL)/imgui_impl_glfw.cpp $(IMGUI_IMPL)/imgui_impl_opengl3.cpp
 SOURCES += $(IMGUIADDONS)/imguistyleserializer/imguistyleserializer.cpp
@@ -83,7 +84,7 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CXXFLAGS += -I./ -I$(IMGUI)/ -I$(IMGUI_IMPL)/ -I$(IMGUIADDONS)/ -I$(IMGUIADDONS)/imguistyleserializer/
 
 	CXXFLAGS += -I $(FREEIMAGE)/include -I $(FREEIMAGE_LIB)/Source -I$(FREEIMAGE_LIB)/Wrapper/FreeImagePlus/
-	CXXFLAGS += -I $(FREEIMAGE_EXT)/
+	CXXFLAGS += -I $(FREEIMAGE_EXT)/ -I $(STB)/
 	CXXFLAGS += -g -Wall -Wformat
 	CFLAGS = $(CXXFLAGS)
 endif

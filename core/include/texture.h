@@ -24,7 +24,7 @@
 #endif
 
 
-void loadTexture(char * texturefpath, FIBITMAP * textureFileIn, unsigned int texture)
+unsigned int loadTexture(char * texturefpath, FIBITMAP * textureFileIn, unsigned int texture)
 {
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -79,6 +79,7 @@ void loadTexture(char * texturefpath, FIBITMAP * textureFileIn, unsigned int tex
     {
         std::cout << "Failed to load texture" << std::endl;
     }
+    return texture;
 }
 
 void renderTexLayer(int i, unsigned int texture[])

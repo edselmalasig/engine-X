@@ -142,15 +142,13 @@ int main(int, char**)
      FIBITMAP * texture1;
      FIBITMAP * texture2;
 
-     unsigned int cubeTexture;
-     loadTexture("../textures/container2.png", texture1, cubeTexture);
+     unsigned int cubeTexture = loadTexture("../textures/container2.png", texture1, cubeTexture);
 
-     unsigned int floorTexture;
-     loadTexture("../textures/metal.png", texture2, floorTexture);
+     unsigned int floorTexture = loadTexture("../textures/metal.png", texture2, floorTexture);
 
-     Shader shader("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
-     shader.use();
-     shader.setInt("texture1", 0);
+     Shader shader1("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
+     shader1.use();
+     shader1.setInt("texture1", 0);
      Shader shader2("../shaders/depth_testing.vs", "../shaders/depth_testing.fs");
      shader2.use();
      shader2.setInt("texture1", 0);
@@ -248,10 +246,11 @@ int main(int, char**)
           glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
           glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+          glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
           glEnable(GL_DEPTH_TEST);
           glDepthMask(GL_FALSE);
-          glDepthFunc(GL_ALWAYS);
-          glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+          glDepthFunc(GL_LESS);
 
           engineX->camera->computeMatricesFromInputs();
 
@@ -274,19 +273,22 @@ int main(int, char**)
           //glEnable(GL_CULL_FACE);
           //glCullFace(GL_FRONT);
 
-          shader.use();
-          shader.setMat4("view", view);
-          shader.setMat4("projection", projection);
+          shader1.use();
+          shader1.setMat4("view", view);
+          shader1.setMat4("projection", projection);
+          shader2.use();
+          shader2.setMat4("view", view);
+          shader2.setMat4("projection", projection);
           // cubes
           glBindVertexArray(cubeVAO);
           glActiveTexture(GL_TEXTURE0);
           glBindTexture(GL_TEXTURE_2D, cubeTexture);
           model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-          shader.setMat4("model", model);
+          shader1.setMat4("model", model);
           glDrawArrays(GL_TRIANGLES, 0, 36);
           model = glm::mat4(1.0f);
           model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-          shader.setMat4("model", model);
+          shader1.setMat4("model", model);
           glDrawArrays(GL_TRIANGLES, 0, 36);
           // floor
           glBindVertexArray(planeVAO);

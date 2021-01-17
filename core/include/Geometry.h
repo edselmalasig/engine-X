@@ -309,24 +309,24 @@ public:
           -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
      };
 
-     void init_triangle();
-     void init_cube();
-     void init_cube_wntc();
-     void init_cube_wnml();
-     void init_cube_wnml_fixed();
-     void init_object();
-     void init_texture(int i, char * texturefpath);
+     void initTriangle();
+     void initCube();
+     void initCubeWNTC();
+     void initCubeWNML();
+     void initCubeWNML_fixed();
+     void initObject();
+     void initTexture(int i, char * texturefpath);
 
-     void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
+     void initShader(const char * vertexShaderSource, const char * fragmentShaderSource);
 
-     void enable_shader();
-     void updateBuffData();
-     void draw_triangle();
-     void draw_cube(GLenum mode);
-     void draw_object();
+     void enableShader();
+     void updateBufferData();
+     void drawTriangle();
+     void drawCube(GLenum mode);
+     void drawObject();
 
      void renderTexLayer(int i);
-     void delete_object();
+     void deleteObject();
 };
 
 #endif

@@ -196,7 +196,7 @@ while (!glfwWindowShouldClose(engineX->window))
      engineX->camera->deltaTime = currentFrame - engineX->camera->lastFrame;
      engineX->camera->lastFrame = currentFrame;
 
-     glfwWaitEvents();
+     glfwPollEvents();
 
      {
           // Poll and handle events (inputs, window resize, etc.)
@@ -422,21 +422,7 @@ while (!glfwWindowShouldClose(engineX->window))
           std::vector<int>::iterator it;
           int ii = 1;
           for(it = selectionVec.begin(); it != selectionVec.end(); it++, ii++){
-               if(selectionVec.empty()){
-                    //ImGui::NewFrame();
-                    ImGuizmo::BeginFrame();
-                    EditTransform(engineX->camera, glm::value_ptr(g_teapot[*it]->model),
-                    glm::value_ptr(view), glm::value_ptr(projection));
-                    //ImGui::End();
-                    //ImGuizmo::Enable(TRUE);
-                    //ImGui::Render();
-                    mode=1;
 
-                    g_teapot[*it]->shader->use();
-                    g_teapot[*it]->shader->setInt("mode", mode);
-                    g_teapot[*it]->shader->setVec3("objectColor", glm::vec3(ii*0.10f,ii*0.21f, ii*0.89f));
-                    g_teapot[*it]->Draw(*g_teapot[*it]->shader);
-               }
                if(!selectionVec.empty()){
                     ImGuizmo::BeginFrame();
                     EditTransform(engineX->camera, glm::value_ptr(g_teapot[*it]->model),
@@ -448,7 +434,7 @@ while (!glfwWindowShouldClose(engineX->window))
 
                     g_teapot[*it]->shader->use();
                     g_teapot[*it]->shader->setInt("mode", mode);
-                    g_teapot[*it]->shader->setVec3("objectColor", glm::vec3(ii*0.10f,ii*0.21f, ii*0.89f));
+                    //g_teapot[*it]->shader->setVec3("objectColor", glm::vec3(ii*0.10f,ii*0.21f, ii*0.89f));
                     g_teapot[*it]->Draw(*g_teapot[*it]->shader);
                }
           }

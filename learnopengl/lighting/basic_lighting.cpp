@@ -61,13 +61,13 @@ int main(int, char**)
      Geometry * g_cube = new Geometry();
      //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
      g_cube->shader = new Shader("../shaders/basic_lighting.vs", "../shaders/basic_lighting.fs");
-     g_cube->enable_shader();
-     g_cube->init_cube_wnml();
+     g_cube->enableShader();
+     g_cube->initCubeWNML();
 
      Geometry * g_cubelamp = new Geometry();
      g_cubelamp->shader = new Shader("../shaders/lampshader.vs", "../shaders/lampshader.fs");
-     g_cubelamp->enable_shader();
-     g_cubelamp->init_cube();
+     g_cubelamp->enableShader();
+     g_cubelamp->initCube();
 
      glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
      //glEnable(GL_DEPTH_TEST);
@@ -180,7 +180,7 @@ int main(int, char**)
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
-          g_cube->enable_shader();
+          g_cube->enableShader();
           g_cube->shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
           g_cube->shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           g_cube->shader->setVec3("lightPos", cubelampPos);
@@ -190,9 +190,9 @@ int main(int, char**)
           g_cube->shader->setMat4("view", view);
           model = glm::mat4(1.0f);
           g_cube->shader->setMat4("model", model);
-          g_cube->draw_cube();
+          g_cube->drawCube(GL_TRIANGLES);
 
-          g_cubelamp->enable_shader();
+          g_cubelamp->enableShader();
           g_cubelamp->shader->setMat4("projection", projection);
           g_cubelamp->shader->setMat4("view", view);
 
@@ -200,7 +200,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->shader->setMat4("model", model);
-          g_cubelamp->draw_cube();
+          g_cubelamp->drawCube(GL_TRIANGLES);
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
@@ -216,8 +216,8 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     g_cube->delete_object();
-     g_cubelamp->delete_object();
+     g_cube->deleteObject();
+     g_cubelamp->deleteObject();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 

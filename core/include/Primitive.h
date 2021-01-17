@@ -98,19 +98,19 @@ public:
   unsigned int texture[8];
   FIBITMAP * textureFileIn;
 
-  void init_shader(const char * vertexShaderSource, const char * fragmentShaderSource);
-  void init_object_texture(Primitive * Primitive, int i, char * texturefpath);
+  void initShader(const char * vertexShaderSource, const char * fragmentShaderSource);
+  void initObjectTexture(Primitive * Primitive, int i, char * texturefpath);
   void renderTexLayer(int i);
 
-  void init_object();
-  void init_edges();
-  void update_object_buffer();
-  void draw_object();
-  void draw_edges();
-  void delete_object();
+  void initObject();
+  void initEdges();
+  void updateObjectBuffer();
+  void drawObject();
+  void drawEdges();
+  void deleteObject();
 
-  void init_triangle();
-  void draw_triangle();
+  void initTriangle();
+  void drawTriangle();
 
 };
 

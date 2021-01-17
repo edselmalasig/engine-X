@@ -84,7 +84,7 @@ Primitive::Primitive(float data[], unsigned int indices[], GLuint edges[])
   }
 }
 
-void Primitive::init_shader(const char *vertexShaderSource, const char * fragmentShaderSource)
+void Primitive::initShader(const char *vertexShaderSource, const char * fragmentShaderSource)
 {
   // build and compile our shader program
   // ------------------------------------
@@ -128,7 +128,7 @@ void Primitive::init_shader(const char *vertexShaderSource, const char * fragmen
 
 }
 
-void Primitive::init_object()
+void Primitive::initObject()
 {
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -175,7 +175,7 @@ void Primitive::init_object()
 
 // should i use glBufferSubData
 
-void Primitive::update_object_buffer()
+void Primitive::updateObjectBuffer()
 {
   glBindVertexArray(VAO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -186,7 +186,7 @@ void Primitive::update_object_buffer()
   glBufferData(GL_ARRAY_BUFFER, vertexList.size() * sizeof(VertexP), &vertexList[0], GL_STATIC_DRAW);
 }
 
-void Primitive::init_edges()
+void Primitive::initEdges()
 {
   glGenVertexArrays(1, &eVAO);
   glGenBuffers(1, &eVBO);
@@ -207,7 +207,7 @@ void Primitive::init_edges()
   glBindVertexArray(0);
 }
 
-void Primitive::init_object_texture(Primitive * Primitive, int i, char * texturefpath)
+void Primitive::initObjectTexture(Primitive * Primitive, int i, char * texturefpath)
 {
   glGenTextures(1, &this->texture[i]);
   glBindTexture(GL_TEXTURE_2D, this->texture[i]);
@@ -272,7 +272,7 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
       glBindTexture(GL_TEXTURE_2D, this->texture[i+1]);
     }
 
-    void Primitive::draw_object()
+    void Primitive::drawObject()
     {
       //printf("Drawing object.");
       //glEnable(GL_CULL_FACE);
@@ -288,7 +288,7 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
       glBindVertexArray(0);
     }
 
-    void Primitive::draw_edges()
+    void Primitive::drawEdges()
     {
       prim_shader->use();
       glEnable(GL_PRIMITIVE_RESTART);
@@ -302,7 +302,7 @@ void Primitive::init_object_texture(Primitive * Primitive, int i, char * texture
 
     }
 
-    void Primitive::delete_object()
+    void Primitive::deleteObject()
     {
       glDeleteVertexArrays(1, &VAO);
       glDeleteBuffers(1, &VBO);

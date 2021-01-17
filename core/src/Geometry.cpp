@@ -13,7 +13,7 @@ Geometry::Geometry(float verts[])
      //vertices = verts; Consider implementing this
 }
 
-void Geometry::init_triangle()
+void Geometry::initTriangle()
 {
      glGenVertexArrays(1, &VAO);
 
@@ -35,7 +35,7 @@ void Geometry::init_triangle()
 
 }
 
-void Geometry::init_cube()
+void Geometry::initCube()
 {
      glGenVertexArrays(1, &VAO);
      glBindVertexArray(VAO);
@@ -49,7 +49,7 @@ void Geometry::init_cube()
      //shader->use();
 }
 
-void Geometry::init_cube_wnml()
+void Geometry::initCubeWNML()
 {
      glGenVertexArrays(1, &VAO);
      glBindVertexArray(VAO);
@@ -65,7 +65,7 @@ void Geometry::init_cube_wnml()
      glEnableVertexAttribArray(1);
 }
 
-void Geometry::init_cube_wntc()
+void Geometry::initCubeWNTC()
 {
      glGenVertexArrays(1, &VAO);
      glBindVertexArray(VAO);
@@ -84,7 +84,7 @@ void Geometry::init_cube_wntc()
      glEnableVertexAttribArray(2);
 }
 
-void Geometry::init_cube_wnml_fixed()
+void Geometry::initCubeWNML_fixed()
 {
      glGenVertexArrays(1, &VAO);
      glBindVertexArray(VAO);
@@ -102,7 +102,7 @@ void Geometry::init_cube_wnml_fixed()
      //shader->use();
 }
 
-void Geometry::init_object()
+void Geometry::initObject()
 {
      glGenVertexArrays(1, &VAO);
      glGenBuffers(1, &VBO);
@@ -129,7 +129,7 @@ void Geometry::init_object()
 
 }
 
-void Geometry::init_texture(int i, char * texturefpath)
+void Geometry::initTexture(int i, char * texturefpath)
 {
      glGenTextures(1, &texture[i]);
      glBindTexture(GL_TEXTURE_2D, texture[i]);
@@ -185,7 +185,7 @@ void Geometry::init_texture(int i, char * texturefpath)
      }
 }
 
-void Geometry::init_shader(const char *vertexShaderSource, const char * fragmentShaderSource)
+void Geometry::initShader(const char *vertexShaderSource, const char * fragmentShaderSource)
 {
      // build and compile our shader program
      // ------------------------------------
@@ -229,12 +229,12 @@ void Geometry::init_shader(const char *vertexShaderSource, const char * fragment
 
 }
 
-void Geometry::enable_shader()
+void Geometry::enableShader()
 {
      shader->use();
 }
 
-void Geometry::draw_triangle()
+void Geometry::drawTriangle()
 {
      //glEnable(GL_CULL_FACE);
      //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -247,7 +247,7 @@ void Geometry::draw_triangle()
      glBindVertexArray(0); // no need to unbind it every time
 }
 
-void Geometry::draw_object()
+void Geometry::drawObject()
 {
      //printf("Drawing object.");
      //glEnable(GL_CULL_FACE);
@@ -263,16 +263,16 @@ void Geometry::draw_object()
      glBindVertexArray(0);
 }
 
-void Geometry::draw_cube(GLenum mode)
+void Geometry::drawCube(GLenum mode)
 {
-     enable_shader();
+     enableShader();
      glBindVertexArray(VAO);
      glDrawArrays(mode, 0, 36);
      glBindVertexArray(0); // no need to unbind it every time
 }
 
-void Geometry::updateBuffData(){
-     enable_shader();
+void Geometry::updateBufferData(){
+     enableShader();
      glBindVertexArray(VAO);
 
      glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
@@ -291,7 +291,7 @@ void Geometry::renderTexLayer(int i)
      }
 }
 
-void Geometry::delete_object()
+void Geometry::deleteObject()
 {
      glDeleteVertexArrays(1, &VAO);
      glDeleteBuffers(1, &VBO);
