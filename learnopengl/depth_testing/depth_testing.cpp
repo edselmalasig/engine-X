@@ -57,28 +57,34 @@ int main(int, char**)
      float clearColor[] = { 0.35f, 0.35f, 0.35f, 0.0f };
 
      printf("Initializing shaders and objects.\n");
+     // build and compile shaders
+     // -------------------------
+     Shader shader("../../resources/shaders/depth_testing.vs", "../../resources/shaders/depth_testing.fs");
+
+     // set up vertex data (and buffer(s)) and configure vertex attributes
+     // ------------------------------------------------------------------
      float cubeVertices[] = {
-         // positions          // texture Coords
-         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+          // positions          // texture Coords
+          -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
           0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
           0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
           0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
           0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
           0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
           0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+          -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+          -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
           0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
           0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -87,71 +93,64 @@ int main(int, char**)
           0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
           0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
           0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
           0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
           0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+          -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
           0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
           0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
           0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+          -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+          -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
      };
      float planeVertices[] = {
-         // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
+          // positions          // texture Coords (note we set these higher than 1 (together with GL_REPEAT as texture wrapping mode). this will cause the floor texture to repeat)
           5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-         -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
-         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+          -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+          -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
 
           5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+          -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
           5.0f, -0.5f, -5.0f,  2.0f, 2.0f
      };
-
+     // cube VAO
      unsigned int cubeVAO, cubeVBO;
-
      glGenVertexArrays(1, &cubeVAO);
      glGenBuffers(1, &cubeVBO);
-
      glBindVertexArray(cubeVAO);
      glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
      glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-
      glEnableVertexAttribArray(0);
-     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*) 0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
      glEnableVertexAttribArray(1);
-     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3*sizeof(float)));
+     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
      glBindVertexArray(0);
-
+     // plane VAO
      unsigned int planeVAO, planeVBO;
      glGenVertexArrays(1, &planeVAO);
      glGenBuffers(1, &planeVBO);
-
      glBindVertexArray(planeVAO);
-     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+     glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
      glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
      glEnableVertexAttribArray(0);
-     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*) 0);
+     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
      glEnableVertexAttribArray(1);
-     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3 * sizeof(float)));
+     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
      glBindVertexArray(0);
-     FIBITMAP * texture1;
-     FIBITMAP * texture2;
 
-     unsigned int cubeTexture = loadTexture("../../resources/textures/container2.png", texture1, cubeTexture);
+     // load textures
+     // -------------
+     unsigned int cubeTexture = loadTexture("../../resources/textures/container.jpg");
+     unsigned int floorTexture = loadTexture("../../resources/textures/metal.png");
 
-     unsigned int floorTexture = loadTexture("../../resources/textures/metal.png", texture2, floorTexture);
-
-     Shader shader1("../../resources/shaders/depth_testing.vs", "../../resources/shaders/depth_testing.fs");
-     shader1.use();
-     shader1.setInt("texture1", 0);
-     Shader shader2("../../resources/haders/depth_testing.vs", "../../resources/shaders/depth_testing.fs");
-     shader2.use();
-     shader2.setInt("texture1", 0);
+     // shader configuration
+     // --------------------
+     shader.use();
+     shader.setInt("texture1", 0);
      //glEnable(GL_DEPTH_TEST);
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
@@ -247,11 +246,8 @@ int main(int, char**)
           glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
           glEnable(GL_DEPTH_TEST);
-          glDepthMask(GL_FALSE);
           glDepthFunc(GL_LESS);
-
           engineX->camera->computeMatricesFromInputs();
 
           // create transformations
@@ -273,27 +269,25 @@ int main(int, char**)
           //glEnable(GL_CULL_FACE);
           //glCullFace(GL_FRONT);
 
-          shader1.use();
-          shader1.setMat4("view", view);
-          shader1.setMat4("projection", projection);
-          shader2.use();
-          shader2.setMat4("view", view);
-          shader2.setMat4("projection", projection);
+          shader.use();
+          model = glm::mat4(1.0f);
+          shader.setMat4("view", view);
+          shader.setMat4("projection", projection);
           // cubes
           glBindVertexArray(cubeVAO);
           glActiveTexture(GL_TEXTURE0);
           glBindTexture(GL_TEXTURE_2D, cubeTexture);
           model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-          shader1.setMat4("model", model);
+          shader.setMat4("model", model);
           glDrawArrays(GL_TRIANGLES, 0, 36);
           model = glm::mat4(1.0f);
           model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-          shader1.setMat4("model", model);
+          shader.setMat4("model", model);
           glDrawArrays(GL_TRIANGLES, 0, 36);
           // floor
           glBindVertexArray(planeVAO);
           glBindTexture(GL_TEXTURE_2D, floorTexture);
-          shader2.setMat4("model", glm::mat4(1.0f));
+          shader.setMat4("model", glm::mat4(1.0f));
           glDrawArrays(GL_TRIANGLES, 0, 6);
           glBindVertexArray(0);
           //draw_object(lo_rectangle);

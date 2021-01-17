@@ -24,8 +24,9 @@
 #endif
 
 
-unsigned int loadTexture(char * texturefpath, FIBITMAP * textureFileIn, unsigned int texture)
+unsigned int loadTexture(char * texturefpath)
 {
+     unsigned int texture;
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -53,6 +54,7 @@ unsigned int loadTexture(char * texturefpath, FIBITMAP * textureFileIn, unsigned
   printf("\n");
   FREE_IMAGE_FORMAT format = FreeImage_GetFileType(texturefpath,0);
   // Load the source image
+  FIBITMAP * textureFileIn;
   textureFileIn = FreeImage_Load(format, texturefpath, 0);
   int texture_w = FreeImage_GetWidth(textureFileIn);
   int texture_h = FreeImage_GetHeight(textureFileIn);
