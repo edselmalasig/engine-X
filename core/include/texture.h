@@ -27,67 +27,67 @@
 unsigned int loadTexture(char * texturefpath)
 {
      unsigned int texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
+     glGenTextures(1, &texture);
+     glBindTexture(GL_TEXTURE_2D, texture);
 
-  //texture wrapping parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     //texture wrapping parameters
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  // call this ONLY when linking with FreeImage as a static library
-  #ifdef FREEIMAGE_LIB
-  FreeImage_Initialise();
-  #endif // FREEIMAGE_LIB
+     // call this ONLY when linking with FreeImage as a static library
+     #ifdef FREEIMAGE_LIB
+     FreeImage_Initialise();
+     #endif // FREEIMAGE_LIB
 
-  // initialize your own FreeImage error handler
+     // initialize your own FreeImage error handler
 
-  //FreeImage_SetOutputMessage(FreeImageErrorHandler);
+     //FreeImage_SetOutputMessage(FreeImageErrorHandler);
 
-  // print version & copyright infos
+     // print version & copyright infos
 
-  printf("FreeImage version : %s", FreeImage_GetVersion());
-  printf("\n");
-  printf(FreeImage_GetCopyrightMessage());
-  printf("\n");
-  FREE_IMAGE_FORMAT format = FreeImage_GetFileType(texturefpath,0);
-  // Load the source image
-  FIBITMAP * textureFileIn;
-  textureFileIn = FreeImage_Load(format, texturefpath, 0);
-  int texture_w = FreeImage_GetWidth(textureFileIn);
-  int texture_h = FreeImage_GetHeight(textureFileIn);
-  int nrChannels;
+     printf("FreeImage version : %s", FreeImage_GetVersion());
+     printf("\n");
+     printf(FreeImage_GetCopyrightMessage());
+     printf("\n");
+     FREE_IMAGE_FORMAT format = FreeImage_GetFileType(texturefpath,0);
+     // Load the source image
+     FIBITMAP * textureFileIn;
+     textureFileIn = FreeImage_Load(format, texturefpath, 0);
+     int texture_w = FreeImage_GetWidth(textureFileIn);
+     int texture_h = FreeImage_GetHeight(textureFileIn);
+     int nrChannels;
 
-  BYTE * bits;
-  bits = FreeImage_GetBits(textureFileIn);
-  if(textureFileIn)
-  {
-    if(format == FIF_JPEG)
-    {
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
-        GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    if(format == FIF_PNG)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
-          GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
-          glGenerateMipmap(GL_TEXTURE_2D);
-    }
-  }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    return texture;
-}
+     BYTE * bits;
+     bits = FreeImage_GetBits(textureFileIn);
+     if(textureFileIn)
+     {
+          if(format == FIF_JPEG)
+          {
+               glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_w, texture_h, 0,
+                    GL_BGR, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+                    glGenerateMipmap(GL_TEXTURE_2D);
+               }
+               if(format == FIF_PNG)
+               {
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0,
+                         GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(textureFileIn));
+                         glGenerateMipmap(GL_TEXTURE_2D);
+                    }
+               }
+               else
+               {
+                    std::cout << "Failed to load texture" << std::endl;
+               }
+               return texture;
+          }
 
-void renderTexLayer(int i, unsigned int texture[])
-{
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, texture[i]);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, texture[i+1]);
-}
+          void renderTexLayer(int i, unsigned int texture[])
+          {
+               glActiveTexture(GL_TEXTURE0);
+               glBindTexture(GL_TEXTURE_2D, texture[i]);
+               glActiveTexture(GL_TEXTURE1);
+               glBindTexture(GL_TEXTURE_2D, texture[i+1]);
+          }

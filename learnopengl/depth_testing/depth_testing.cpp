@@ -245,6 +245,7 @@ int main(int, char**)
           glfwGetFramebufferSize(engineX->window, &engineX->window_w, &engineX->window_h);
           glViewport(0, 0, engineX->window_w, engineX->window_h);
           glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
           glEnable(GL_DEPTH_TEST);
           glDepthFunc(GL_LESS);
@@ -255,19 +256,8 @@ int main(int, char**)
           glm::mat4 view          = glm::mat4(1.0f);
           glm::mat4 projection    = glm::mat4(1.0f);
 
-          //view  = engineX->camera->getViewMatrix();
-
-          //projection = engineX->camera->getProjectionMatrix();
-          //glm::vec3 cLAt = *cameraPosition + *cameraLookAt;
-          //view = glm::lookAt(cameraPosition, *cameraPosition + *cameraLookAt, cameraHeadsUp);
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
-          //projection = glm::ortho(0.0f, (float) engineX->window_w, 0.0f, (float) engineX->window_h, 0.1f, 100.0f);
-          //projection = engineX->camera->camera->getProjectionMatrix();
-          // get matrix's uniform location and set matrix
-
-          //glEnable(GL_CULL_FACE);
-          //glCullFace(GL_FRONT);
 
           shader.use();
           model = glm::mat4(1.0f);
