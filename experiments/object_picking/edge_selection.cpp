@@ -130,13 +130,13 @@ int main(int, char**)
 
      Primitive cube(cube_quads_vertices, cube_quads_indices, cube_quads_edges);
      cube.prim_shader = new Shader("../../resources/shaders/cube_quads.vs", "../../resources/shaders/cube_quads.fs");
-     cube.init_object();
-     cube.init_edges();
+     cube.initObject();
+     cube.initEdges();
 
      Geometry * g_cubelamp = new Geometry();
      g_cubelamp->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
-     g_cubelamp->enable_shader();
-     g_cubelamp->init_cube();
+     g_cubelamp->enableShader();
+     g_cubelamp->initCube();
 
      glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
@@ -308,11 +308,17 @@ int main(int, char**)
 
                     Edge e = cube.edgeList[i];
                     glm::vec3 sC = (e.vs + e.ve)/2;
-                    selectionBool = engineX->RaySphereCollide(
-                         sC,
-                         0.3F,
+                    float intersection_distance;
+                    glm::vec3 aabb_min = glm::vec3( e.vs.x, e.vs.y, e.vs.z );
+                    glm::vec3 aabb_max = glm::vec3(e.ve.x, e.ve.y, e.ve.z);
+                    selectionBool = engineX->RayOBBIntersection(
                          ray_origin,
-                         ray_direction
+                         ray_direction,
+                         aabb_min,
+                         aabb_max,
+                         model,
+                         intersection_distance
+
                     );
 
                     if ( selectionBool ){
@@ -334,7 +340,7 @@ int main(int, char**)
                       glm::vec3 posUp = glm::vec3(cube.vertexList[selectedIndex].model[3][0], cube.vertexList[selectedIndex].model[3][1], cube.vertexList[selectedIndex].model[3][2]);
                       cube.vertexList[selectedIndex].Position = glm::vec3(posUp);
 
-                      cube.update_object_buffer();
+                      cube.updateObjectBuffer();
           }
 
           ImGuizmo::Enable(true);
@@ -351,7 +357,7 @@ int main(int, char**)
           int rendermode = 0;
           cube.prim_shader->setInt("mode", rendermode);
           cube.prim_shader->setVec3("objectColor", 0.0f, 0.0f, 1.0f);
-          cube.draw_edges();
+          cube.drawEdges();
 
           rendermode = 4;
           cube.prim_shader->setInt("mode", rendermode);
@@ -361,7 +367,7 @@ int main(int, char**)
 
           model = glm::mat4(1.0f);
 
-          g_cubelamp->enable_shader();
+          g_cubelamp->enableShader();
           g_cubelamp->shader->setMat4("projection", projection);
           g_cubelamp->shader->setMat4("view", view);
 
@@ -369,7 +375,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->shader->setMat4("model", model);
-          g_cubelamp->draw_cube(GL_TRIANGLES);
+          g_cubelamp->drawCube(GL_TRIANGLES);
 
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -384,7 +390,7 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     g_cubelamp->delete_object();
+     g_cubelamp->deleteObject();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 

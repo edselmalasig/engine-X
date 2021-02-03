@@ -710,7 +710,7 @@ void EngineX::ScreenPosToWorldRay(
   out_direction = glm::normalize(lRayDir_world);
 }
 
-bool EngineX::RayAABBIntersection(
+bool EngineX::RayOBBIntersection(
   glm::vec3 ray_origin,        // Ray origin, in world space
   glm::vec3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
   glm::vec3 aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
