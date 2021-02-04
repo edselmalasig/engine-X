@@ -273,19 +273,23 @@ int main(int, char**)
           glEnable(GL_DEPTH_TEST);
 
           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-          glEnable(GL_CULL_FACE);
+          //glEnable(GL_CULL_FACE);
           glCullFace(GL_BACK);
 
           engineX->camera->computeMatricesFromInputs();
 
           // create transformations
-          glm::mat4 model         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+          glm::mat4 model         = glm::mat4(1.0f);
+          glm::mat4 model2         = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
           glm::mat4 view          = glm::mat4(1.0f);
           glm::mat4 projection    = glm::mat4(1.0f);
 
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
           bool reprint = true;
+
+
+          glm::vec3 sC;
 
           for (unsigned int i = 0; i < cube.edgeList.size(); i++)
           {
@@ -307,16 +311,19 @@ int main(int, char**)
                     );
 
                     Edge e = cube.edgeList[i];
-                    glm::vec3 sC = (e.vs + e.ve)/2;
+                    sC = e.vs/2 + e.ve/2;
+                    glm::vec3 aabb_min = e.vs;//(-1.0f, -1.0f, -1.0f);
+                    glm::vec3 aabb_max = e.ve;//( 1.0f,  1.0f,  1.0f);
                     float intersection_distance;
-                    glm::vec3 aabb_min = glm::vec3( e.vs.x, e.vs.y, e.vs.z );
-                    glm::vec3 aabb_max = glm::vec3(e.ve.x, e.ve.y, e.ve.z);
+
+                    model2 = glm::translate(model2,sC);
+
                     selectionBool = engineX->RayOBBIntersection(
                          ray_origin,
                          ray_direction,
                          aabb_min,
                          aabb_max,
-                         model,
+                         model2,
                          intersection_distance
 
                     );
@@ -324,7 +331,7 @@ int main(int, char**)
                     if ( selectionBool ){
                          selectedIndex = i;
                          selectedType = "edge";
-                         std::cout << "edge selected" << ": " << i << " "<< cube.edgeList.size() << " " << sC.x << " " << sC.y << " " << sC.z << std::endl;
+                         std::cout << "edge list size" << ": " << cube.edgeList.size() << " edge: "<<  i << " ::: " << sC.x << " " << sC.y << " " << sC.z << " ::: " << aabb_max.x << " " << aabb_max.y << " " << aabb_max.z << " ::: " << aabb_min.x << " " << aabb_min.y << " " << aabb_min.z << std::endl;
                     }
                }
 
@@ -334,13 +341,13 @@ int main(int, char**)
           //ImGui::NewFrame();
           ImGuizmo::BeginFrame();
           if(selectedIndex > -1){
-              EditTransform(engineX->camera, (float *) glm::value_ptr(cube.vertexList[selectedIndex].model),
+              EditTransform(engineX->camera, (float *) glm::value_ptr(model2),
                       (float *) glm::value_ptr(view), (float *) glm::value_ptr(projection));
                       // Update vertex position with vertex model matrix;
-                      glm::vec3 posUp = glm::vec3(cube.vertexList[selectedIndex].model[3][0], cube.vertexList[selectedIndex].model[3][1], cube.vertexList[selectedIndex].model[3][2]);
-                      cube.vertexList[selectedIndex].Position = glm::vec3(posUp);
+                      //glm::vec3 posUp = glm::vec3(cube.vertexList[selectedIndex].model[3][0], cube.vertexList[selectedIndex].model[3][1], cube.vertexList[selectedIndex].model[3][2]);
+                      //cube.vertexList[selectedIndex].Position = glm::vec3(posUp);
 
-                      cube.updateObjectBuffer();
+                      //cube.updateObjectBuffer();
           }
 
           ImGuizmo::Enable(true);
