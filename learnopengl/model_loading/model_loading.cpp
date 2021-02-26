@@ -59,8 +59,8 @@ int main(int, char**)
 
      printf("Initializing shaders and objects.\n");
 
-     Model nanosuit = Model("../../resources/nanosuit/nanosuit.obj");
-     Shader nanosuitShader = Shader("../../resources/shaders/model_loading.vs", "../../resources/shaders/model_loading.fs");
+     Model nanosuit = Model("resources/nanosuit/nanosuit.obj");
+     Shader nanosuitShader = Shader("resources/shaders/model_loading.vs", "resources/shaders/model_loading.fs");
 
      nanosuitShader.use();
      //glEnable(GL_DEPTH_TEST);
@@ -126,9 +126,9 @@ int main(int, char**)
                     ImGui::Text("\n");
                     ImGui::Text("Please modify the current style in:");
                     ImGui::Text("ImGui Test->Window Options->Style Editor");
-                    static bool loadCurrentStyle = false;
-                    static bool saveCurrentStyle = false;
-                    static bool resetCurrentStyle = false;
+                     bool loadCurrentStyle = false;
+                     bool saveCurrentStyle = false;
+                     bool resetCurrentStyle = false;
                     loadCurrentStyle = ImGui::Button("Load Saved Style");
                     saveCurrentStyle = ImGui::Button("Save Current Style");
                     resetCurrentStyle = ImGui::Button("Reset Current Style");

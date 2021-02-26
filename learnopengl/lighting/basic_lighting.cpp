@@ -60,12 +60,12 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
      //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->shader = new Shader("../shaders/basic_lighting.vs", "../shaders/basic_lighting.fs");
+     g_cube->shader = new Shader("./resources/shaders/basic_lighting.vs", "./resources/shaders/basic_lighting.fs");
      g_cube->enableShader();
      g_cube->initCubeWNML();
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->shader = new Shader("../shaders/lampshader.vs", "../shaders/lampshader.fs");
+     g_cubelamp->shader = new Shader("./resources/shaders/lampshader.vs", "./resources/shaders/lampshader.fs");
      g_cubelamp->enableShader();
      g_cubelamp->initCube();
 

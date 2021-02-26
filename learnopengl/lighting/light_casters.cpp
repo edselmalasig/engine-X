@@ -62,11 +62,11 @@ int main(int, char**)
 
      Geometry * g_cube = new Geometry();
      //lo_rectangle->shader = new Shader("rectangle.vs", "rectangle.fs");
-     g_cube->shader = new Shader("shaders/light_casters.vs", "shaders/light_casters.fs");
-     g_cube->enable_shader();
-     g_cube->init_cube_wntc();
-     g_cube->init_texture(0, "textures/container2.png");
-     g_cube->init_texture(1, "textures/container2_specular.png");
+     g_cube->shader = new Shader("./resources/shaders/light_casters.vs", "./resources/shaders/light_casters.fs");
+     g_cube->enableShader();
+     g_cube->initCubeWNTC();
+     g_cube->initTexture(0, "./resources/textures/container2.png");
+     g_cube->initTexture(1, "./resources/textures/container2_specular.png");
      g_cube->shader->setInt("material.diffuse", 0);
      g_cube->shader->setInt("material.specular", 1);
 
@@ -75,9 +75,9 @@ int main(int, char**)
      g_cube->shader->setInt("material.specular", 1);
 
      Geometry * g_cubelamp = new Geometry();
-     g_cubelamp->shader = new Shader("shaders/light_materials.vs", "shaders/light_materials.fs");
-     g_cubelamp->enable_shader();
-     g_cubelamp->init_cube();
+     g_cubelamp->shader = new Shader("./resources/shaders/light_materials.vs", "./resources/shaders/light_materials.fs");
+     g_cubelamp->enableShader();
+     g_cubelamp->initCube();
 
      glm::vec3 cubelampPos(1.2f, 1.0f, 2.0f);
 
@@ -204,7 +204,7 @@ int main(int, char**)
           view = engineX->camera->processViewMatrix();
           projection = glm::perspective(glm::radians(*engineX->camera->Zoom), (float)engineX->window_w / (float)engineX->window_h, cameraProp.x, cameraProp.y);
 
-          g_cube->enable_shader();
+          g_cube->enableShader();
           g_cube->shader->setVec3("light.position", cubelampPos);
           g_cube->shader->setVec3("viewPos", *engineX->camera->getPositionVector());
 
@@ -232,10 +232,10 @@ int main(int, char**)
                g_cube->shader->setMat4("model", model);
 
                g_cube->renderTexLayer(1);
-               g_cube->draw_cube();
+               g_cube->drawCube(GL_TRIANGLES);
           }
 
-          g_cubelamp->enable_shader();
+          g_cubelamp->enableShader();
           g_cubelamp->shader->setMat4("projection", projection);
           g_cubelamp->shader->setMat4("view", view);
 
@@ -243,7 +243,7 @@ int main(int, char**)
           model = glm::translate(model, cubelampPos);
           model = glm::scale(model, glm::vec3(0.2f));
           g_cubelamp->shader->setMat4("model", model);
-          g_cubelamp->draw_cube();
+          g_cubelamp->drawCube(GL_TRIANGLES);
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
@@ -259,8 +259,8 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     g_cube->delete_object();
-     g_cubelamp->delete_object();
+     g_cube->deleteObject();
+     g_cubelamp->deleteObject();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 

@@ -51,9 +51,9 @@ int main(int, char**)
      //---------------------------------------
      // Main loop
      bool show_demo_window = false;
-
      float clearColor[4];
      clearColor[0]=0.35f; clearColor[1]=0.35f; clearColor[2]=0.35f; clearColor[3]=0.0f;
+
 
      printf("glfw main loop.\n");
      while (!glfwWindowShouldClose(engineX->window))
