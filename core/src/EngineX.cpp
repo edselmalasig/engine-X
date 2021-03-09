@@ -103,7 +103,7 @@ void EngineX::init_glfw()
 
   printf("FreeImage version : %s", FreeImage_GetVersion());
   printf("\n");
-  printf(FreeImage_GetCopyrightMessage());
+//  printf(FreeImage_GetCopyrightMessage());
   printf("\n");
 
 }
