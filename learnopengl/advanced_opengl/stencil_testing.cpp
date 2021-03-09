@@ -278,22 +278,7 @@ int main(int, char**)
           shader.setMat4("model", glm::mat4(1.0f));
           glDrawArrays(GL_TRIANGLES, 0, 6);
           glBindVertexArray(0);
-          // cubes
-          // 1st. render pass, draw objects as normal, writing to the stencil buffer
-          // --------------------------------------------------------------------
-          glStencilFunc(GL_ALWAYS, 1, 0xFF);
-          glStencilMask(0xFF);
-          // cubes
-          glBindVertexArray(cubeVAO);
-          glActiveTexture(GL_TEXTURE0);
-          glBindTexture(GL_TEXTURE_2D, cubeTexture);
-          model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-          shader.setMat4("model", model);
-          glDrawArrays(GL_TRIANGLES, 0, 36);
-          model = glm::mat4(1.0f);
-          model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-          shader.setMat4("model", model);
-          glDrawArrays(GL_TRIANGLES, 0, 36);
+
           // floor
           // 2nd. render pass: now draw slightly scaled versions of the objects, this time disabling stencil writing.
           // Because the stencil buffer is now filled with several 1s. The parts of the buffer that are 1 are not drawn, thus only drawing
@@ -302,16 +287,18 @@ int main(int, char**)
           glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
           glStencilMask(0x00);
           glDisable(GL_DEPTH_TEST);
-          shaderSingleColor.use();
+
           float scale = 1.1;
           // cubes
+          shaderSingleColor.use();
           glBindVertexArray(cubeVAO);
           glBindTexture(GL_TEXTURE_2D, cubeTexture);
           model = glm::mat4(1.0f);
           model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
           model = glm::scale(model, glm::vec3(scale, scale, scale));
-          shaderSingleColor.setMat4("model", model);
+          shader.setMat4("model", model);
           glDrawArrays(GL_TRIANGLES, 0, 36);
+          shaderSingleColor.use();
           model = glm::mat4(1.0f);
           model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
           model = glm::scale(model, glm::vec3(scale, scale, scale));
@@ -321,6 +308,25 @@ int main(int, char**)
           glStencilMask(0xFF);
           glStencilFunc(GL_ALWAYS, 0, 0xFF);
           glEnable(GL_DEPTH_TEST);
+
+          // cubes
+          // 1st. render pass, draw objects as normal, writing to the stencil buffer
+          // --------------------------------------------------------------------
+          glStencilFunc(GL_ALWAYS, 1, 0xFF);
+          glStencilMask(0xFF);
+          // cubes
+          shader.use();
+          glBindVertexArray(cubeVAO);
+          glActiveTexture(GL_TEXTURE0);
+          glBindTexture(GL_TEXTURE_2D, cubeTexture);
+          model = glm::mat4(1.0f);
+          model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+          shader.setMat4("model", model);
+          glDrawArrays(GL_TRIANGLES, 0, 36);
+          model = glm::mat4(1.0f);
+          model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+          shader.setMat4("model", model);
+          glDrawArrays(GL_TRIANGLES, 0, 36);
 
           //draw_object(lo_rectangle);
           if(engineX->show_ui == true)
