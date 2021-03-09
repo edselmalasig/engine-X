@@ -34,7 +34,7 @@ set LIBPATHS=%LIBPATHS% /libpath:%ASSIMP%\lib\Release\ assimp-vc142-mt.lib
 
 set BUILDTYPE=Release
 set DFLAGS=/D WIN32 /D WINDOWS /D RELEASE /D _CONSOLE /D _WIN32 /D IMGUI_IMPL_OPENGL_LOADER_GLEW
-set SOURCES=%EX%\learnopengl\advanced_opengl\depth_testing.cpp %external%\imgui\imgui.cpp %external%\imgui\imgui_demo.cpp
+set SOURCES=%EX%\learnopengl\advanced_opengl\stencil_testing.cpp %external%\imgui\imgui.cpp %external%\imgui\imgui_demo.cpp
 set SOURCES=%SOURCES% %external%\imgui\imgui_draw.cpp  %external%\imgui\imgui_widgets.cpp  %external%\imgui\imgui_impl\imgui_impl_opengl3.cpp %external%\imgui\imgui_impl\imgui_impl_glfw.cpp
 set SOURCES=%SOURCES% %EX%\core\src\camera.cpp %external%\imgui\addons\imguistyleserializer\imguistyleserializer.cpp %EX%\core\src\camera.cpp
 set SOURCES=%SOURCES% %EX%\core\src\Geometry.cpp %EX%\core\src\Primitive.cpp %EX%\core\src\EngineX.cpp
