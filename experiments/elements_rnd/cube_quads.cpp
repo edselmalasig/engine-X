@@ -179,8 +179,8 @@ int main(int, char**)
      //o_shader.use();
      Geometry * cubelight = new Geometry();
      cubelight->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
-     cubelight->enable_shader();
-     cubelight->init_cube();
+     cubelight->enableShader();
+     cubelight->initCube();
 
      glm::vec3 cubelightPos(1.2f, 1.0f, 2.0f);
 
@@ -249,10 +249,10 @@ int main(int, char**)
           glm::mat4 scale = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
           o_shader.setMat4("model", scale);
           glBindVertexArray(VAO);
-          glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
+          //glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
 
-          cubelight->enable_shader();
+          cubelight->enableShader();
           cubelight->shader->setMat4("projection", projection);
           cubelight->shader->setMat4("view", view);
 
@@ -260,7 +260,17 @@ int main(int, char**)
           model = glm::translate(model, cubelightPos);
           model = glm::scale(model, glm::vec3(0.2f));
           cubelight->shader->setMat4("model", model);
-          cubelight->draw_cube(GL_TRIANGLES);
+          cubelight->drawCube(GL_TRIANGLES);
+
+          glBegin(GL_QUAD_STRIP);
+               glEdgeFlag(GL_TRUE);
+               glVertex3f(-1.0f, -1.0f, 0.0f);
+               glVertex3f( -1.0f, 1.0f, 0.0f);
+               glVertex3f( 0.0f, -1.0f, 0.0f);
+               glVertex3f( 0.0f, 1.0f, 0.0f);
+               glVertex3f( 1.0f, -1.0f, 0.0f);
+               glVertex3f( 1.0f, 1.0f, 0.0f);
+          glEnd();
 
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -275,7 +285,7 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     cubelight->delete_object();
+     cubelight->deleteObject();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 
