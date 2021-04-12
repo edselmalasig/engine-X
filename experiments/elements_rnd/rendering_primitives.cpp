@@ -65,8 +65,8 @@ int main(int, char**)
 
      Primitive cube(cube_quads_vertices, cube_quads_indices, cube_quads_edges);
      cube.prim_shader = new Shader("../../resources/shaders/cube_quads.vs", "../../resources/shaders/cube_quads.fs");
-     cube.init_object();
-     cube.init_edges();
+     cube.initObject();
+     cube.initEdges();
      /*
      for(int i=0; i < cube.vertexList.size(); i++)
      {
@@ -89,8 +89,8 @@ int main(int, char**)
      */
      Geometry * cubelight = new Geometry();
      cubelight->shader = new Shader("../../resources/shaders/light_materials.vs", "../../resources/shaders/light_materials.fs");
-     cubelight->enable_shader();
-     cubelight->init_cube();
+     cubelight->enableShader();
+     cubelight->initCube();
 
      glm::vec3 cubelightPos(1.2f, 1.0f, 2.0f);
 
@@ -142,7 +142,7 @@ int main(int, char**)
           int rendermode = 0;
           cube.prim_shader->setInt("mode", rendermode);
           cube.prim_shader->setVec3("objectColor", 0.0f, 0.0f, 1.0f);
-          cube.draw_edges();
+          cube.drawEdges();
 
           rendermode = 4;
           cube.prim_shader->setInt("mode", rendermode);
@@ -150,9 +150,9 @@ int main(int, char**)
           cube.prim_shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
           glm::mat4 scale = glm::scale(model, glm::vec3(0.99f, 0.99f, 0.99f));
           cube.prim_shader->setMat4("model", scale);
-          cube.draw_object();
+          cube.drawObject();
 
-          cubelight->enable_shader();
+          cubelight->enableShader();
           cubelight->shader->setMat4("projection", projection);
           cubelight->shader->setMat4("view", view);
 
@@ -160,7 +160,7 @@ int main(int, char**)
           model = glm::translate(model, cubelightPos);
           model = glm::scale(model, glm::vec3(0.2f));
           cubelight->shader->setMat4("model", model);
-          cubelight->draw_cube(GL_TRIANGLES);
+          cubelight->drawCube(GL_TRIANGLES);
 
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -175,7 +175,7 @@ int main(int, char**)
      ImGui::DestroyContext();
 
      //delete_object;
-     cubelight->delete_object();
+     cubelight->deleteObject();
      glfwDestroyWindow(engineX->window);
      glfwTerminate();
 
