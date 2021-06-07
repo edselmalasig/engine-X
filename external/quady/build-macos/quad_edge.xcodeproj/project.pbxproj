@@ -1,0 +1,2080 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		5703D415CA6143CC88A9283F /* Nightly */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = DC0CC76D6ADB453BAA49A538 /* Build configuration list for PBXAggregateTarget "Nightly" */;
+			buildPhases = (
+				35DB16DC4CD7C628765C39DD /* Generate CMakeFiles/Nightly */,
+			);
+			dependencies = (
+				BB4CDDAEB98B4951B51AD67B /* PBXTargetDependency */,
+			);
+			name = Nightly;
+			productName = Nightly;
+		};
+		78A9E1C3581E46AB84359ADB /* Continuous */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 4459366890674468A1DBB2EF /* Build configuration list for PBXAggregateTarget "Continuous" */;
+			buildPhases = (
+				A1D6D70F13AEEC456B84F9A4 /* Generate CMakeFiles/Continuous */,
+			);
+			dependencies = (
+				46BC9104B93444839FBA754C /* PBXTargetDependency */,
+			);
+			name = Continuous;
+			productName = Continuous;
+		};
+		A3169E588EF847BFBE9108C8 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 88A5195B808947B3B2E2BAE1 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				85E7F7F3A9DF17550C19B43D /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		B7D86CA0A2954144970CCC03 /* Experimental */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C40F18842A5047D1B539331F /* Build configuration list for PBXAggregateTarget "Experimental" */;
+			buildPhases = (
+				17E2E4C26BDDD876AA4911A9 /* Generate CMakeFiles/Experimental */,
+			);
+			dependencies = (
+				7A6C877D8E1043908E0DD838 /* PBXTargetDependency */,
+			);
+			name = Experimental;
+			productName = Experimental;
+		};
+		BF88C3305EAF4EC2BEC53544 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5EE7F3263A0345DAAA35DAEA /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				F17FFB1BDE8F5FC13DA3DA61 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				E4D6156B3DC44978B37CF83A /* PBXTargetDependency */,
+				45480517E2034F63AF9D66EA /* PBXTargetDependency */,
+				52D7DAD6F2E2460C9064C3B4 /* PBXTargetDependency */,
+				7477D606F4A647A79450F250 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		C7C041FD70174E8DADB4629C /* RUN_TESTS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 29F369A60BE54C099C0A7F24 /* Build configuration list for PBXAggregateTarget "RUN_TESTS" */;
+			buildPhases = (
+				003C8D08B0008F35F218E126 /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+			);
+			name = RUN_TESTS;
+			productName = RUN_TESTS;
+		};
+		F15A1FDB13134511B13DE607 /* NightlyMemoryCheck */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = BE5561D2DA1C409CBD0844D6 /* Build configuration list for PBXAggregateTarget "NightlyMemoryCheck" */;
+			buildPhases = (
+				68A4280722FCD57B0E6590D2 /* Generate CMakeFiles/NightlyMemoryCheck */,
+			);
+			dependencies = (
+				097219C01DD64F5D9CD32094 /* PBXTargetDependency */,
+			);
+			name = NightlyMemoryCheck;
+			productName = NightlyMemoryCheck;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		14CC4F99D1AC4ECB9CB20C92 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = B9BB259E37994337A30E1477 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */; };
+		352E7CEBB31644AAB927A3FB /* /Users/edselmalasig/dev/engine-X/external/quady/edge.cc */ = {isa = PBXBuildFile; fileRef = BF56588569204AAE81F76EE3 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.cc */; };
+		57A2CE54203342088C9DD69F /* /Users/edselmalasig/dev/engine-X/external/quady/edge.hh */ = {isa = PBXBuildFile; fileRef = 4871B8D505214F0E967EF626 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.hh */; };
+		6B5EE1E8CDF14F18A295DE10 /* /Users/edselmalasig/dev/engine-X/external/quady/array.cc */ = {isa = PBXBuildFile; fileRef = 8558CDCF5CBF4279A40F10F4 /* /Users/edselmalasig/dev/engine-X/external/quady/array.cc */; };
+		6E4D60992F2C411897BE48D7 /* /Users/edselmalasig/dev/engine-X/external/quady/tests.cc */ = {isa = PBXBuildFile; fileRef = 629DF3518AEF4428B84597A2 /* /Users/edselmalasig/dev/engine-X/external/quady/tests.cc */; };
+		71DDB2FF327A4DC4BDDC07BA /* /Users/edselmalasig/dev/engine-X/external/quady/array.hh */ = {isa = PBXBuildFile; fileRef = 489859BAFE9145C1ADCA201B /* /Users/edselmalasig/dev/engine-X/external/quady/array.hh */; };
+		7716DC3B90CD4AE29BEEF5AE /* /Users/edselmalasig/dev/engine-X/external/quady/obj.cc */ = {isa = PBXBuildFile; fileRef = E08DF3876C6D46A1850E1EA4 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.cc */; };
+		7FD6E99FA5E2476F915F98F4 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.cc */ = {isa = PBXBuildFile; fileRef = 21A53E1F03B44F2D9AFC4CD0 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.cc */; };
+		8114992FA524489DABA47450 /* /Users/edselmalasig/dev/engine-X/external/quady/list.cc */ = {isa = PBXBuildFile; fileRef = 408664ADB3B1414D98CD95EA /* /Users/edselmalasig/dev/engine-X/external/quady/list.cc */; };
+		A108B2AF7F9C40B980E35E94 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.hh */ = {isa = PBXBuildFile; fileRef = 0B0870D1C391430E89194810 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.hh */; };
+		AF9F3C8865454ABD87AC1505 /* /Users/edselmalasig/dev/engine-X/external/quady/face.hh */ = {isa = PBXBuildFile; fileRef = F046616C17084249AC8D1706 /* /Users/edselmalasig/dev/engine-X/external/quady/face.hh */; };
+		B515EA4F48CC439B808AE32B /* /Users/edselmalasig/dev/engine-X/external/quady/test-obj.cc */ = {isa = PBXBuildFile; fileRef = F3B00B84F4B345E8BB455302 /* /Users/edselmalasig/dev/engine-X/external/quady/test-obj.cc */; };
+		BDB29B8B32BF42EBBF880A0E /* /Users/edselmalasig/dev/engine-X/external/quady/cell.cc */ = {isa = PBXBuildFile; fileRef = 3CB57323226D45379B6E5512 /* /Users/edselmalasig/dev/engine-X/external/quady/cell.cc */; };
+		D56F622A23FD4075A37DA7BF /* /Users/edselmalasig/dev/engine-X/external/quady/list.hh */ = {isa = PBXBuildFile; fileRef = C6816632B7EA436DAE23DA79 /* /Users/edselmalasig/dev/engine-X/external/quady/list.hh */; };
+		DB2E74C226C64CC1A177E8D9 /* /Users/edselmalasig/dev/engine-X/external/quady/face.cc */ = {isa = PBXBuildFile; fileRef = 114C1F11205C43CE990DC245 /* /Users/edselmalasig/dev/engine-X/external/quady/face.cc */; };
+		E03E936CB965438D94F4324F /* /Users/edselmalasig/dev/engine-X/external/quady/obj.hh */ = {isa = PBXBuildFile; fileRef = E9293DA9DF854734B17D2805 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.hh */; };
+		F44972CDA1544D198619DCFB /* /Users/edselmalasig/dev/engine-X/external/quady/cell.hh */ = {isa = PBXBuildFile; fileRef = 585ACC0E73874860ADCE8FFF /* /Users/edselmalasig/dev/engine-X/external/quady/cell.hh */; };
+		FB5380E379DE40708B42E845 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = D7113A0DF09946F886C8F845 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */; };
+		FDD7BB4742824A2BB3A659B7 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = E9014445765C4232812FE474 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		3F977D5716D44002B298FE20 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		4A70B21E4CAF413DAA3F5BFF /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		CF022FB14AE64D71B2BE5582 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		F0C1961D4CA64D258D33F34A /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		029580BD3C7F49C0A818DD49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 747D4F2EB0E94FD2A2FD0797;
+			remoteInfo = quad_edge;
+		};
+		0A34F1055E09466DBE27486A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 747D4F2EB0E94FD2A2FD0797;
+			remoteInfo = quad_edge;
+		};
+		16F897F2B07D44D38701DE54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5A170AEB55C47C6AAB5B082;
+			remoteInfo = tests;
+		};
+		4AC36899D2D4415EAC4BB4BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		589E5BE5B1ED41C9963B5AF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DD1CA4587AA4DD7A5084EA3;
+			remoteInfo = "test-obj";
+		};
+		602EDD2CE6FD4B299EBF62C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		687AFDFF6EFE41B2B41456BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		807AF9BFB3DA41DDB9E04C95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 747D4F2EB0E94FD2A2FD0797;
+			remoteInfo = quad_edge;
+		};
+		8FD5215FE2BE4422AAEB5014 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		952A1CE96DEB4508A5D9E387 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		B14CC335FB4C4990AA55E7D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		D7FBE76C3C2740C0969DEF8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+		F73E6146FF1D46DD99B864D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ACEF092984FA44A8A3B1539B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3169E588EF847BFBE9108C8;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0B0870D1C391430E89194810 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = vertex.hh; path = vertex.hh; sourceTree = SOURCE_ROOT; };
+		0E2B2B6AE5294676AD155EA4 /* test-obj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = "test-obj"; sourceTree = BUILT_PRODUCTS_DIR; };
+		114C1F11205C43CE990DC245 /* /Users/edselmalasig/dev/engine-X/external/quady/face.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = face.cc; path = face.cc; sourceTree = SOURCE_ROOT; };
+		21A53E1F03B44F2D9AFC4CD0 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = vertex.cc; path = vertex.cc; sourceTree = SOURCE_ROOT; };
+		2D0570EBDC1E48D0982FECEC /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		3CB57323226D45379B6E5512 /* /Users/edselmalasig/dev/engine-X/external/quady/cell.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = cell.cc; path = cell.cc; sourceTree = SOURCE_ROOT; };
+		408664ADB3B1414D98CD95EA /* /Users/edselmalasig/dev/engine-X/external/quady/list.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = list.cc; path = list.cc; sourceTree = SOURCE_ROOT; };
+		4871B8D505214F0E967EF626 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = edge.hh; path = edge.hh; sourceTree = SOURCE_ROOT; };
+		489859BAFE9145C1ADCA201B /* /Users/edselmalasig/dev/engine-X/external/quady/array.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = array.hh; path = array.hh; sourceTree = SOURCE_ROOT; };
+		585ACC0E73874860ADCE8FFF /* /Users/edselmalasig/dev/engine-X/external/quady/cell.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = cell.hh; path = cell.hh; sourceTree = SOURCE_ROOT; };
+		6274BB29B76241F2BEF85142 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		629DF3518AEF4428B84597A2 /* /Users/edselmalasig/dev/engine-X/external/quady/tests.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tests.cc; path = tests.cc; sourceTree = SOURCE_ROOT; };
+		70DAD9137782498BA7017CA3 /* tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = tests; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EDE23EBEAD64C6AA38D05C2 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		8558CDCF5CBF4279A40F10F4 /* /Users/edselmalasig/dev/engine-X/external/quady/array.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = array.cc; path = array.cc; sourceTree = SOURCE_ROOT; };
+		B0B40CB2182F41A984740B64 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		B9BB259E37994337A30E1477 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		BF56588569204AAE81F76EE3 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = edge.cc; path = edge.cc; sourceTree = SOURCE_ROOT; };
+		C6816632B7EA436DAE23DA79 /* /Users/edselmalasig/dev/engine-X/external/quady/list.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = list.hh; path = list.hh; sourceTree = SOURCE_ROOT; };
+		D7113A0DF09946F886C8F845 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		E08DF3876C6D46A1850E1EA4 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = obj.cc; path = obj.cc; sourceTree = SOURCE_ROOT; };
+		E7DE7E4FA6414519AE08B415 /* quad_edge */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libquad_edge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9014445765C4232812FE474 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		E926D0CAEA0B416FA761D7F9 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		E9293DA9DF854734B17D2805 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = obj.hh; path = obj.hh; sourceTree = SOURCE_ROOT; };
+		F046616C17084249AC8D1706 /* /Users/edselmalasig/dev/engine-X/external/quady/face.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = face.hh; path = face.hh; sourceTree = SOURCE_ROOT; };
+		F3B00B84F4B345E8BB455302 /* /Users/edselmalasig/dev/engine-X/external/quady/test-obj.cc */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = "test-obj.cc"; path = "test-obj.cc"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		25F8E3FD52A942BC94442746 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A5D4B713AAF4A428F4D86A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71F40DB069DE4B899B816EFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		023989FD6C9C4264A0F21E1A /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		042712075ECA42E68188CA7E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E7DE7E4FA6414519AE08B415 /* quad_edge */,
+				0E2B2B6AE5294676AD155EA4 /* test-obj */,
+				70DAD9137782498BA7017CA3 /* tests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AED97BC50DE401A9A58C8FC /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				BAD5D3D10C434A8B80E5C02E /* Source Files */,
+				E9014445765C4232812FE474 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = tests;
+			sourceTree = "<group>";
+		};
+		4144ED17CBB945D78EC6AEFB /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				489859BAFE9145C1ADCA201B /* /Users/edselmalasig/dev/engine-X/external/quady/array.hh */,
+				585ACC0E73874860ADCE8FFF /* /Users/edselmalasig/dev/engine-X/external/quady/cell.hh */,
+				4871B8D505214F0E967EF626 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.hh */,
+				F046616C17084249AC8D1706 /* /Users/edselmalasig/dev/engine-X/external/quady/face.hh */,
+				C6816632B7EA436DAE23DA79 /* /Users/edselmalasig/dev/engine-X/external/quady/list.hh */,
+				E9293DA9DF854734B17D2805 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.hh */,
+				0B0870D1C391430E89194810 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.hh */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		44431DC9E0264C4D98BA5314 /* quad_edge */ = {
+			isa = PBXGroup;
+			children = (
+				617B63CB0DA84B7998390D9B /* Source Files */,
+				4144ED17CBB945D78EC6AEFB /* Header Files */,
+				D7113A0DF09946F886C8F845 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = quad_edge;
+			sourceTree = "<group>";
+		};
+		4E3EE143C54C4833B520D47D /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				F3B00B84F4B345E8BB455302 /* /Users/edselmalasig/dev/engine-X/external/quady/test-obj.cc */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		617B63CB0DA84B7998390D9B /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				8558CDCF5CBF4279A40F10F4 /* /Users/edselmalasig/dev/engine-X/external/quady/array.cc */,
+				3CB57323226D45379B6E5512 /* /Users/edselmalasig/dev/engine-X/external/quady/cell.cc */,
+				BF56588569204AAE81F76EE3 /* /Users/edselmalasig/dev/engine-X/external/quady/edge.cc */,
+				114C1F11205C43CE990DC245 /* /Users/edselmalasig/dev/engine-X/external/quady/face.cc */,
+				408664ADB3B1414D98CD95EA /* /Users/edselmalasig/dev/engine-X/external/quady/list.cc */,
+				E08DF3876C6D46A1850E1EA4 /* /Users/edselmalasig/dev/engine-X/external/quady/obj.cc */,
+				21A53E1F03B44F2D9AFC4CD0 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.cc */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		651D69C3EB894C37AE7F85F8 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		86232C8AB986416FB8411A93 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		983B8F2423EA431486004DE5 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		9A69437E51694A769912E001 = {
+			isa = PBXGroup;
+			children = (
+				D31D7CAF9D044261973C7ED7 /* Continuous */,
+				B45E1461870A4E63BEB2F5C0 /* Nightly */,
+				E1748F6222CC49B280935DDC /* test-obj */,
+				DBE14360745B4ACEA7A1728C /* NightlyMemoryCheck */,
+				0AED97BC50DE401A9A58C8FC /* tests */,
+				B51EFAA90FE3428598801324 /* Experimental */,
+				44431DC9E0264C4D98BA5314 /* quad_edge */,
+				9BE2F65991934287A23ACED4 /* ALL_BUILD */,
+				042712075ECA42E68188CA7E /* Products */,
+				9AFFEF192B3D4B68849320D6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9AFFEF192B3D4B68849320D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9BE2F65991934287A23ACED4 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				86232C8AB986416FB8411A93 /* CMake Rules */,
+				B0B40CB2182F41A984740B64 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		B45E1461870A4E63BEB2F5C0 /* Nightly */ = {
+			isa = PBXGroup;
+			children = (
+				023989FD6C9C4264A0F21E1A /* CMake Rules */,
+				E926D0CAEA0B416FA761D7F9 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = Nightly;
+			sourceTree = "<group>";
+		};
+		B51EFAA90FE3428598801324 /* Experimental */ = {
+			isa = PBXGroup;
+			children = (
+				651D69C3EB894C37AE7F85F8 /* CMake Rules */,
+				7EDE23EBEAD64C6AA38D05C2 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = Experimental;
+			sourceTree = "<group>";
+		};
+		BAD5D3D10C434A8B80E5C02E /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				629DF3518AEF4428B84597A2 /* /Users/edselmalasig/dev/engine-X/external/quady/tests.cc */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		C7CD6443673441FFA570BA52 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		D31D7CAF9D044261973C7ED7 /* Continuous */ = {
+			isa = PBXGroup;
+			children = (
+				983B8F2423EA431486004DE5 /* CMake Rules */,
+				6274BB29B76241F2BEF85142 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = Continuous;
+			sourceTree = "<group>";
+		};
+		DBE14360745B4ACEA7A1728C /* NightlyMemoryCheck */ = {
+			isa = PBXGroup;
+			children = (
+				C7CD6443673441FFA570BA52 /* CMake Rules */,
+				2D0570EBDC1E48D0982FECEC /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = NightlyMemoryCheck;
+			sourceTree = "<group>";
+		};
+		E1748F6222CC49B280935DDC /* test-obj */ = {
+			isa = PBXGroup;
+			children = (
+				4E3EE143C54C4833B520D47D /* Source Files */,
+				B9BB259E37994337A30E1477 /* /Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt */,
+			);
+			name = "test-obj";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2DD1CA4587AA4DD7A5084EA3 /* test-obj */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26682DD8357C4B94A756911F /* Build configuration list for PBXNativeTarget "test-obj" */;
+			buildPhases = (
+				B9CE3C4AF6204287B956AE8F /* Sources */,
+				25F8E3FD52A942BC94442746 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A61AD0E1CBAC45A6B5BC54E6 /* PBXTargetDependency */,
+				F882E0A2C87E48189223C0E3 /* PBXTargetDependency */,
+			);
+			name = "test-obj";
+			productName = "test-obj";
+			productReference = 0E2B2B6AE5294676AD155EA4 /* test-obj */;
+			productType = "com.apple.product-type.tool";
+		};
+		747D4F2EB0E94FD2A2FD0797 /* quad_edge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C380EC1926DF4A5D8DA691EC /* Build configuration list for PBXNativeTarget "quad_edge" */;
+			buildPhases = (
+				4AB0498B086946C796E3FE0D /* Sources */,
+				3A5D4B713AAF4A428F4D86A3 /* Frameworks */,
+				B8D63959DC52D632D8EE2369 /* CMake PostBuild Rules */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				88D735B444354FB4A140008A /* PBXTargetDependency */,
+			);
+			name = quad_edge;
+			productName = quad_edge;
+			productReference = E7DE7E4FA6414519AE08B415 /* quad_edge */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		A5A170AEB55C47C6AAB5B082 /* tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8726B60E94E8434D8E4CFA99 /* Build configuration list for PBXNativeTarget "tests" */;
+			buildPhases = (
+				7E4AAB5DA8F546BA8A879516 /* Sources */,
+				71F40DB069DE4B899B816EFC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CD12E82358F1492E88F95D5E /* PBXTargetDependency */,
+				81E8322D7A684F0CA9C47147 /* PBXTargetDependency */,
+			);
+			name = tests;
+			productName = tests;
+			productReference = 70DAD9137782498BA7017CA3 /* tests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ACEF092984FA44A8A3B1539B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1230;
+			};
+			buildConfigurationList = 458DC7CF3B064FBB97D123C6 /* Build configuration list for PBXProject "quad_edge" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				F0C1961D4CA64D258D33F34A /* Debug */,
+				3F977D5716D44002B298FE20 /* Release */,
+				4A70B21E4CAF413DAA3F5BFF /* MinSizeRel */,
+				CF022FB14AE64D71B2BE5582 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 9A69437E51694A769912E001;
+			projectDirPath = ../;
+			projectRoot = "";
+			targets = (
+				BF88C3305EAF4EC2BEC53544 /* ALL_BUILD */,
+				78A9E1C3581E46AB84359ADB /* Continuous */,
+				B7D86CA0A2954144970CCC03 /* Experimental */,
+				5703D415CA6143CC88A9283F /* Nightly */,
+				F15A1FDB13134511B13DE607 /* NightlyMemoryCheck */,
+				C7C041FD70174E8DADB4629C /* RUN_TESTS */,
+				A3169E588EF847BFBE9108C8 /* ZERO_CHECK */,
+				747D4F2EB0E94FD2A2FD0797 /* quad_edge */,
+				2DD1CA4587AA4DD7A5084EA3 /* test-obj */,
+				A5A170AEB55C47C6AAB5B082 /* tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		003C8D08B0008F35F218E126 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest --force-new-ctest-process -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest --force-new-ctest-process -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest --force-new-ctest-process -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest --force-new-ctest-process -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		09FB783FD30DC6E66DF354AF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		17E2E4C26BDDD876AA4911A9 /* Generate CMakeFiles/Experimental */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/Experimental";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Experimental"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Experimental
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Experimental
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Experimental
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Experimental
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		23E0E19C1FE635DB84934AD9 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		323E6CE94951678BF055CC89 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		35DB16DC4CD7C628765C39DD /* Generate CMakeFiles/Nightly */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/Nightly";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Nightly"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Nightly
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Nightly
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Nightly
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Nightly
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		68A4280722FCD57B0E6590D2 /* Generate CMakeFiles/NightlyMemoryCheck */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/NightlyMemoryCheck";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/NightlyMemoryCheck"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D NightlyMemoryCheck
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D NightlyMemoryCheck
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D NightlyMemoryCheck
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D NightlyMemoryCheck
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		85E7F7F3A9DF17550C19B43D /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/ZERO_CHECK"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  make -f /Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  make -f /Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  make -f /Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  make -f /Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		910A41151295C5F9742C25BD = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		A1D6D70F13AEEC456B84F9A4 /* Generate CMakeFiles/Continuous */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/Continuous";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Continuous"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Continuous
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Continuous
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Continuous
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/ctest -C $CONFIGURATION$EFFECTIVE_PLATFORM_NAME -D Continuous
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		A68D7F74133ED74D8658B427 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		B8D63959DC52D632D8EE2369 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/cmake -E cmake_symlink_library /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/libquad_edge.0.1.0.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/libquad_edge.1.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/libquad_edge.dylib
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/cmake -E cmake_symlink_library /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/libquad_edge.0.1.0.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/libquad_edge.1.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/libquad_edge.dylib
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/cmake -E cmake_symlink_library /Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/libquad_edge.0.1.0.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/libquad_edge.1.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/libquad_edge.dylib
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  /usr/local/Cellar/cmake/3.20.2/bin/cmake -E cmake_symlink_library /Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/libquad_edge.0.1.0.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/libquad_edge.1.dylib /Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/libquad_edge.dylib
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		F17FFB1BDE8F5FC13DA3DA61 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+"/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/ALL_BUILD"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4AB0498B086946C796E3FE0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B5EE1E8CDF14F18A295DE10 /* /Users/edselmalasig/dev/engine-X/external/quady/array.cc */,
+				BDB29B8B32BF42EBBF880A0E /* /Users/edselmalasig/dev/engine-X/external/quady/cell.cc */,
+				352E7CEBB31644AAB927A3FB /* /Users/edselmalasig/dev/engine-X/external/quady/edge.cc */,
+				DB2E74C226C64CC1A177E8D9 /* /Users/edselmalasig/dev/engine-X/external/quady/face.cc */,
+				8114992FA524489DABA47450 /* /Users/edselmalasig/dev/engine-X/external/quady/list.cc */,
+				7716DC3B90CD4AE29BEEF5AE /* /Users/edselmalasig/dev/engine-X/external/quady/obj.cc */,
+				7FD6E99FA5E2476F915F98F4 /* /Users/edselmalasig/dev/engine-X/external/quady/vertex.cc */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E4AAB5DA8F546BA8A879516 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E4D60992F2C411897BE48D7 /* /Users/edselmalasig/dev/engine-X/external/quady/tests.cc */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9CE3C4AF6204287B956AE8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B515EA4F48CC439B808AE32B /* /Users/edselmalasig/dev/engine-X/external/quady/test-obj.cc */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		097219C01DD64F5D9CD32094 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = 4AC36899D2D4415EAC4BB4BD /* PBXContainerItemProxy */;
+		};
+		45480517E2034F63AF9D66EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 747D4F2EB0E94FD2A2FD0797 /* quad_edge */;
+			targetProxy = 807AF9BFB3DA41DDB9E04C95 /* PBXContainerItemProxy */;
+		};
+		46BC9104B93444839FBA754C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = 602EDD2CE6FD4B299EBF62C3 /* PBXContainerItemProxy */;
+		};
+		52D7DAD6F2E2460C9064C3B4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = 952A1CE96DEB4508A5D9E387 /* PBXContainerItemProxy */;
+		};
+		7477D606F4A647A79450F250 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DD1CA4587AA4DD7A5084EA3 /* test-obj */;
+			targetProxy = 589E5BE5B1ED41C9963B5AF1 /* PBXContainerItemProxy */;
+		};
+		7A6C877D8E1043908E0DD838 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = D7FBE76C3C2740C0969DEF8C /* PBXContainerItemProxy */;
+		};
+		81E8322D7A684F0CA9C47147 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = B14CC335FB4C4990AA55E7D5 /* PBXContainerItemProxy */;
+		};
+		88D735B444354FB4A140008A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = F73E6146FF1D46DD99B864D7 /* PBXContainerItemProxy */;
+		};
+		A61AD0E1CBAC45A6B5BC54E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 747D4F2EB0E94FD2A2FD0797 /* quad_edge */;
+			targetProxy = 0A34F1055E09466DBE27486A /* PBXContainerItemProxy */;
+		};
+		BB4CDDAEB98B4951B51AD67B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = 687AFDFF6EFE41B2B41456BD /* PBXContainerItemProxy */;
+		};
+		CD12E82358F1492E88F95D5E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 747D4F2EB0E94FD2A2FD0797 /* quad_edge */;
+			targetProxy = 029580BD3C7F49C0A818DD49 /* PBXContainerItemProxy */;
+		};
+		E4D6156B3DC44978B37CF83A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5A170AEB55C47C6AAB5B082 /* tests */;
+			targetProxy = 16F897F2B07D44D38701DE54 /* PBXContainerItemProxy */;
+		};
+		F882E0A2C87E48189223C0E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3169E588EF847BFBE9108C8 /* ZERO_CHECK */;
+			targetProxy = 8FD5215FE2BE4422AAEB5014 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0A8460EC495546D1923BE846 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = tests;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		1033B7C0E4734A0C8A3AA490 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NightlyMemoryCheck;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		12C47FCBD9F24725972E7B66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 0.1.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",quad_edge_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CPLUSPLUSFLAGS = "   -fPIC ";
+				OTHER_LDFLAGS = (" -dynamiclib -Wl,-headerpad_max_install_names -install_name @rpath/libquad_edge.1.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = quad_edge.0.1.0;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		14ED8D2394394020B6900D9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "test-obj";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		15256BFEC9CA4EE184549FDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = tests;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		1765D7E29B334E04A438E8BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		19CA8B7480F240E0A5415F3F /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk;
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/build";
+			};
+			name = MinSizeRel;
+		};
+		23091E86EC21426EB5EB6E76 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		2576EBC9FD244D85B08F547C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Experimental;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		2761877D3E6349789E6D3928 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk;
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/build";
+			};
+			name = Release;
+		};
+		2EEA073995E6453C956F59F7 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		4378B744F3CE450FB49AFA0A /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "test-obj";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		47256093325348C188D9B254 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Experimental;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		4C2AB0AE69A64281BA3B69CC /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = tests;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		4D36AC9CD00F4170A5B6C8CC /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		5DC1950E6C924C09BD481310 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "test-obj";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		5FFFA5B46FE148D6886C3F8A /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk;
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/build";
+			};
+			name = RelWithDebInfo;
+		};
+		65EC64B2E9CD4F3595D54463 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		6C3E8FA5D13C4D108313147C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Experimental;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		6CC3CF8A5F9B49C080E91A27 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		7880D5CDA0C34CD39556D8A6 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Nightly;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		7D43DA7743C346DE8849250B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk;
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/build";
+			};
+			name = Debug;
+		};
+		82CFC6BCF1B54356B69DE41D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 0.1.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",quad_edge_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG -fPIC ";
+				OTHER_LDFLAGS = (" -dynamiclib -Wl,-headerpad_max_install_names -install_name @rpath/libquad_edge.1.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = quad_edge.0.1.0;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		87B04303872D48869F32FFC2 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = tests;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		882393F04D4E4237936DFC53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 0.1.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",quad_edge_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG -fPIC ";
+				OTHER_LDFLAGS = (" -dynamiclib -Wl,-headerpad_max_install_names -install_name @rpath/libquad_edge.1.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = quad_edge.0.1.0;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		8DA2E9FD5ADB42938114EE6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Nightly;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		8DC4C68028014BF3913A4411 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		8FEAA9CDFB534A719026F09C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		93FB1C14A4D745FAA48CC28A /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Nightly;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		9BCAE75E4DBA436488593C8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		9F852ABB60BB460FAC7AEC69 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 0.1.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",quad_edge_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG -fPIC ";
+				OTHER_LDFLAGS = (" -dynamiclib -Wl,-headerpad_max_install_names -install_name @rpath/libquad_edge.1.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = quad_edge.0.1.0;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		9FBB16ED68794066AA7A837E /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		A4EB9BCE1DE6487B90435D3B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Continuous;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		B11987B8C0904B78A762E9D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Continuous;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		B3E7DECD689B4C448DF1BBF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release","$(inherited)");
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++17' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/libquad_edge.0.1.0.dylib");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "test-obj";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/edselmalasig/dev/engine-X/external/quady/extern/catch","$(inherited)");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		C99761FBC4254BE18562DDCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NightlyMemoryCheck;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		D22DF1CDE8AB4499A1CC8A7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Continuous;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		D265CB503EB045DB958F7A51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		D36F354FEB814262B993BAB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NightlyMemoryCheck;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		E70A3CAAAF5B479F80E8CD81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Nightly;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		F8275AC933AF4D00B446EC2B /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = NightlyMemoryCheck;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		F8FFD72DC0EA4ADC8DCADAF7 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Continuous;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		FCD65971AF3B41889060A2B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		FE87C70C85DD4426BE36B2B0 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Experimental;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/edselmalasig/dev/engine-X/external/quady/build-macos";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26682DD8357C4B94A756911F /* Build configuration list for PBXNativeTarget "test-obj" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14ED8D2394394020B6900D9C /* Debug */,
+				B3E7DECD689B4C448DF1BBF2 /* Release */,
+				4378B744F3CE450FB49AFA0A /* MinSizeRel */,
+				5DC1950E6C924C09BD481310 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		29F369A60BE54C099C0A7F24 /* Build configuration list for PBXAggregateTarget "RUN_TESTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BCAE75E4DBA436488593C8B /* Debug */,
+				8FEAA9CDFB534A719026F09C /* Release */,
+				4D36AC9CD00F4170A5B6C8CC /* MinSizeRel */,
+				2EEA073995E6453C956F59F7 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4459366890674468A1DBB2EF /* Build configuration list for PBXAggregateTarget "Continuous" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B11987B8C0904B78A762E9D0 /* Debug */,
+				D22DF1CDE8AB4499A1CC8A7C /* Release */,
+				F8FFD72DC0EA4ADC8DCADAF7 /* MinSizeRel */,
+				A4EB9BCE1DE6487B90435D3B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		458DC7CF3B064FBB97D123C6 /* Build configuration list for PBXProject "quad_edge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D43DA7743C346DE8849250B /* Debug */,
+				2761877D3E6349789E6D3928 /* Release */,
+				19CA8B7480F240E0A5415F3F /* MinSizeRel */,
+				5FFFA5B46FE148D6886C3F8A /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5EE7F3263A0345DAAA35DAEA /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1765D7E29B334E04A438E8BA /* Debug */,
+				D265CB503EB045DB958F7A51 /* Release */,
+				6CC3CF8A5F9B49C080E91A27 /* MinSizeRel */,
+				8DC4C68028014BF3913A4411 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8726B60E94E8434D8E4CFA99 /* Build configuration list for PBXNativeTarget "tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15256BFEC9CA4EE184549FDC /* Debug */,
+				0A8460EC495546D1923BE846 /* Release */,
+				4C2AB0AE69A64281BA3B69CC /* MinSizeRel */,
+				87B04303872D48869F32FFC2 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		88A5195B808947B3B2E2BAE1 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCD65971AF3B41889060A2B9 /* Debug */,
+				65EC64B2E9CD4F3595D54463 /* Release */,
+				9FBB16ED68794066AA7A837E /* MinSizeRel */,
+				23091E86EC21426EB5EB6E76 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BE5561D2DA1C409CBD0844D6 /* Build configuration list for PBXAggregateTarget "NightlyMemoryCheck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99761FBC4254BE18562DDCD /* Debug */,
+				D36F354FEB814262B993BAB8 /* Release */,
+				F8275AC933AF4D00B446EC2B /* MinSizeRel */,
+				1033B7C0E4734A0C8A3AA490 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C380EC1926DF4A5D8DA691EC /* Build configuration list for PBXNativeTarget "quad_edge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12C47FCBD9F24725972E7B66 /* Debug */,
+				882393F04D4E4237936DFC53 /* Release */,
+				9F852ABB60BB460FAC7AEC69 /* MinSizeRel */,
+				82CFC6BCF1B54356B69DE41D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C40F18842A5047D1B539331F /* Build configuration list for PBXAggregateTarget "Experimental" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C3E8FA5D13C4D108313147C /* Debug */,
+				2576EBC9FD244D85B08F547C /* Release */,
+				47256093325348C188D9B254 /* MinSizeRel */,
+				FE87C70C85DD4426BE36B2B0 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC0CC76D6ADB453BAA49A538 /* Build configuration list for PBXAggregateTarget "Nightly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E70A3CAAAF5B479F80E8CD81 /* Debug */,
+				8DA2E9FD5ADB42938114EE6B /* Release */,
+				93FB1C14A4D745FAA48CC28A /* MinSizeRel */,
+				7880D5CDA0C34CD39556D8A6 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ACEF092984FA44A8A3B1539B /* Project object */;
+}

@@ -1,0 +1,10 @@
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/RUN_TESTS.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Continuous.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Nightly.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/test-obj.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/NightlyMemoryCheck.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/tests.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/Experimental.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/quad_edge.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/ALL_BUILD.dir
+/Users/edselmalasig/dev/engine-X/external/quady/build-macos/CMakeFiles/ZERO_CHECK.dir

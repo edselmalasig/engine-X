@@ -1,0 +1,36 @@
+# CMake generated Testfile for 
+# Source directory: /Users/edselmalasig/dev/engine-X/external/quady
+# Build directory: /Users/edselmalasig/dev/engine-X/external/quady/build-macos
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+if("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
+  add_test(tests "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/tests")
+  set_tests_properties(tests PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;39;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
+  add_test(tests "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/tests")
+  set_tests_properties(tests PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;39;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
+  add_test(tests "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/tests")
+  set_tests_properties(tests PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;39;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
+  add_test(tests "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/tests")
+  set_tests_properties(tests PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;39;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+else()
+  add_test(tests NOT_AVAILABLE)
+endif()
+if("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
+  add_test(test-obj "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Debug/test-obj")
+  set_tests_properties(test-obj PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;40;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
+  add_test(test-obj "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/Release/test-obj")
+  set_tests_properties(test-obj PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;40;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
+  add_test(test-obj "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/MinSizeRel/test-obj")
+  set_tests_properties(test-obj PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;40;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+elseif("${CTEST_CONFIGURATION_TYPE}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
+  add_test(test-obj "/Users/edselmalasig/dev/engine-X/external/quady/build-macos/RelWithDebInfo/test-obj")
+  set_tests_properties(test-obj PROPERTIES  _BACKTRACE_TRIPLES "/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;40;add_test;/Users/edselmalasig/dev/engine-X/external/quady/CMakeLists.txt;0;")
+else()
+  add_test(test-obj NOT_AVAILABLE)
+endif()

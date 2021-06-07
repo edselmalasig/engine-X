@@ -80,52 +80,52 @@ int main(int, char**)
      GLuint cube_quads_edges[] = {
 
           0, 4,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           4, 6,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           6, 2,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           2, 0,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           3, 2,
-          0xFFFFFFFE,
-          2, 6,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
+//          2, 6,
+//          0xFFFFFFFE,
           6, 7,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           7, 3,
-          0xFFFFFFFE,
-          7, 6,
-          0xFFFFFFFE,
-          6, 4,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
+//          7, 6,
+//          0xFFFFFFFE,
+//          6, 4,
+//          0xFFFFFFFE,
           4, 5,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           5, 7,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           5, 1,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
           1, 3,
-          0xFFFFFFFE,
-          3, 7,
-          0xFFFFFFFE,
-          7, 5,
-          0xFFFFFFFE,
+//          0xFFFFFFFE,
+//          3, 7,
+//          0xFFFFFFFE,
+//          7, 5,
+//          0xFFFFFFFE,
           1, 0,
-          0xFFFFFFFE,
-          0, 2,
-          0xFFFFFFFE,
-          2, 3,
-          0xFFFFFFFE,
-          3, 1,
-          0xFFFFFFFE,
-          5, 4,
-          0xFFFFFFFE,
-          4, 0,
-          0xFFFFFFFE,
-          0, 1,
-          0xFFFFFFFE,
-          1, 5
+//          0xFFFFFFFE,
+//          0, 2,
+//          0xFFFFFFFE,
+//          2, 3,
+//          0xFFFFFFFE,
+//          3, 1,
+//          0xFFFFFFFE,
+//          5, 4,
+//          0xFFFFFFFE,
+//          4, 0,
+//          0xFFFFFFFE,
+//          0, 1,
+//          0xFFFFFFFE,
+//          1, 5
      };
 
      GLuint cube_quads_indices[] = {
@@ -221,8 +221,8 @@ int main(int, char**)
 
           model = glm::mat4(1.0f);
 
-          glEnable(GL_PRIMITIVE_RESTART);
-          glPrimitiveRestartIndex(0xFFFFFFFE);
+          //glEnable(GL_PRIMITIVE_RESTART);
+          //glPrimitiveRestartIndex(0xFFFFFFFE);
 
           o_shader.use();
           glBindVertexArray(VAO_2);
@@ -239,7 +239,7 @@ int main(int, char**)
 
           glDrawElements(GL_LINES, sizeof(cube_quads_edges)/sizeof(cube_quads_edges[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
-          glDisable(GL_PRIMITIVE_RESTART);
+          //glDisable(GL_PRIMITIVE_RESTART);
           //std::cout << sizeof(edges)/sizeof(edges[0]) << std::endl;
           rendermode = 4;
           o_shader.use();
@@ -249,7 +249,7 @@ int main(int, char**)
           glm::mat4 scale = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
           o_shader.setMat4("model", scale);
           glBindVertexArray(VAO);
-          //glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
+          glDrawElements(GL_TRIANGLES, sizeof(cube_quads_indices)/sizeof(cube_quads_indices[0]), GL_UNSIGNED_INT, 0);
           glBindVertexArray(0);
 
           cubelight->enableShader();
@@ -262,15 +262,17 @@ int main(int, char**)
           cubelight->shader->setMat4("model", model);
           cubelight->drawCube(GL_TRIANGLES);
 
+/*
           glBegin(GL_QUAD_STRIP);
                glEdgeFlag(GL_TRUE);
-               glVertex3f(-1.0f, -1.0f, 0.0f);
+               glVertex3f(-4.0f, -1.0f, 0.0f);
                glVertex3f( -1.0f, 1.0f, 0.0f);
                glVertex3f( 0.0f, -1.0f, 0.0f);
                glVertex3f( 0.0f, 1.0f, 0.0f);
                glVertex3f( 1.0f, -1.0f, 0.0f);
                glVertex3f( 1.0f, 1.0f, 0.0f);
           glEnd();
+*/
 
           if(engineX->show_ui == true)
           ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
